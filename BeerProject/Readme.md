@@ -1,0 +1,1 @@
+This is project to manage and support participants during beer day fest
