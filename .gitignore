@@ -1,0 +1,25 @@
+BeerProject/HELP.md
+BeerProject/target/
+BeerProject/!.mvn/wrapper/maven-wrapper.jar
+BeerProject/!**/src/main/**
+BeerProject/!**/src/test/**
+
+### STS ###
+BeerProject/.apt_generated
+BeerProject/.classpath
+BeerProject/.factorypath
+BeerProject/.project
+BeerProject/.settings
+BeerProject/.springBeans
+BeerProject/.sts4-cache
+
+### IntelliJ IDEA ###
+BeerProject/.idea
+BeerProject/*.iws
+BeerProject/*.iml
+BeerProject/*.ipr
+
+### VS Code ###
+BeerProject/.vscode/
+
+
