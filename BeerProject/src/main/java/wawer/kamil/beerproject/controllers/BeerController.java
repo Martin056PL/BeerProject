@@ -25,7 +25,7 @@ public class BeerController {
     private final BeerService service;
 
     @GetMapping
-    public ResponseEntity<Page<Beer>> getAllBeers(Pageable pageable) throws NoContentException {
+    public ResponseEntity<Page<Beer>> getAllBeers(Pageable pageable) {
         Page<Beer> listOfBeers = service.findAllBeersPage(pageable);
         return ResponseEntity.ok().body(listOfBeers);
     }
@@ -50,13 +50,8 @@ public class BeerController {
 
     @PutMapping("{beerId}")
     public ResponseEntity<Beer> updateBeer(@PathVariable Long beerId, @RequestBody Beer beer) throws NoContentException {
-        Optional<Beer> requestBodyBeer = Optional.ofNullable(beer);
-        if(requestBodyBeer.isPresent()) {
             Beer result = service.updateBeerByBeerID(beerId,beer);
             return ResponseEntity.ok().body(result);
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("{beerId}")

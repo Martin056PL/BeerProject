@@ -17,14 +17,8 @@ public class BreweryServiceImpl implements BreweryService {
     private final BreweryRepository repository;
 
     @Override
-    public Page<Brewery> getAllBrewery(Pageable pageable) throws NoContentException {
-        Page<Brewery> getBreweryList = repository.findAll(pageable);
-        Optional<Page<Brewery>> optionalBreweryPage = Optional.ofNullable(getBreweryList);
-        if (optionalBreweryPage.isPresent()) {
-            return optionalBreweryPage.get();
-        } else {
-            throw new NoContentException();
-        }
+    public Page<Brewery> getAllBrewery(Pageable pageable) {
+         return repository.findAll(pageable);
     }
 
     @Override

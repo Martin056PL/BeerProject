@@ -7,7 +7,7 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 
 public interface BeerService {
 
-    Page<Beer> findAllBeersPage(Pageable pageable) throws NoContentException;
+    Page<Beer> findAllBeersPage(Pageable pageable);
 
     Beer findBeerByBeerId(Long beerId) throws NoContentException;
 

@@ -8,7 +8,6 @@ import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -17,14 +16,8 @@ public class BeerServiceImpl implements BeerService {
     private final BeerRepository repository;
 
     @Override
-    public Page<Beer> findAllBeersPage(Pageable pageable) throws NoContentException {
-        Page<Beer> beerListFromRepository = repository.findAll(pageable);
-        Optional<Page<Beer>> optionalListOfBeers = Optional.ofNullable(beerListFromRepository);
-        if (optionalListOfBeers.isPresent()) {
-            return optionalListOfBeers.get();
-        } else {
-            throw new NoContentException();
-        }
+    public Page<Beer> findAllBeersPage(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
