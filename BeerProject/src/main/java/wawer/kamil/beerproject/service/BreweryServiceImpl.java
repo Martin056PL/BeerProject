@@ -46,8 +46,8 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     public Brewery updateBreweryById(Long breweryId, Brewery brewery) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
-            repository.save(brewery);
-            return brewery;
+            brewery.setBreweryId(breweryId);
+            return repository.save(brewery);
         } else {
             throw new NoContentException();
         }

@@ -30,7 +30,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Beer findBeerByBeerId(Long beerId) throws NoContentException {
         if (repository.existsBeerByBeerId(beerId)) {
-            return repository.getAllByBeerId(beerId);
+            return repository.getBeerByBeerId(beerId);
         } else {
             throw new NoContentException();
         }
@@ -44,8 +44,8 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Beer updateBeerByBeerID(Long beerId, Beer beer) throws NoContentException {
         if (repository.existsBeerByBeerId(beerId)) {
-            repository.save(beer);
-            return beer;
+           beer.setBeerId(beerId);
+           return repository.save(beer);
         } else {
             throw new NoContentException();
         }
