@@ -18,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin
 @Controller
 @RequestMapping("beer")
+@RestControllerAdvice
 public class BeerController {
 
     private final BeerService service;

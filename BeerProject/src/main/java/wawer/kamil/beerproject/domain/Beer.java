@@ -1,15 +1,17 @@
 package wawer.kamil.beerproject.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Data
-@Builder
 @Entity
+@NoArgsConstructor
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;

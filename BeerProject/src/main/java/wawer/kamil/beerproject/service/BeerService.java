@@ -29,7 +29,7 @@ public class BeerService {
 
     public Beer findBeerByBeerId(Long beerId) throws NoContentException {
         if (repository.existsBeerByBeerId(beerId)) {
-            return repository.findAllByBeerId(beerId);
+            return repository.getAllByBeerId(beerId);
         } else {
             throw new NoContentException();
         }

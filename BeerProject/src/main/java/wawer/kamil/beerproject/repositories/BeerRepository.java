@@ -11,7 +11,7 @@ public interface BeerRepository extends JpaRepository<Beer, Long> {
 
     Page<Beer> findAll(Pageable pageable);
 
-    Beer findAllByBeerId(Long beerId);
+    Beer getAllByBeerId(Long beerId);
 
     void deleteByBeerId(Long beerId);
 
