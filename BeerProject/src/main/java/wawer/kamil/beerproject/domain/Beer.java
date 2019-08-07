@@ -18,11 +18,19 @@ public class Beer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "beer_id")
     private Long beerId;
+
     private String name;
-    private String brewery;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "brewery_id")
+    private Brewery brewery;
+
     private StyleBeer style;
+
     private Integer extract;
-    private Integer alcohol;
+
+    private Double alcohol;
+
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> ingredients;
 
