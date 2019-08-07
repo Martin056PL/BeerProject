@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
+import wawer.kamil.beerproject.service.BeerServiceImpl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @CrossOrigin
 @Controller
-@RequestMapping("beer")
+@RequestMapping("/beer")
 @RestControllerAdvice
 public class BeerController {
 
@@ -26,13 +27,13 @@ public class BeerController {
     @GetMapping
     public ResponseEntity<Page<Beer>> getAllBeers(Pageable pageable) throws NoContentException {
         Page<Beer> listOfBeers = service.findAllBeersPage(pageable);
-        return ResponseEntity.ok(listOfBeers);
+        return ResponseEntity.ok().body(listOfBeers);
     }
 
-    @GetMapping("/{beerId}")
+    @GetMapping("{beerId}")
     public ResponseEntity<Beer> getBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
         Beer beer = service.findBeerByBeerId(beerId);
-        return ResponseEntity.ok(beer);
+        return ResponseEntity.ok().body(beer);
     }
 
     @PostMapping
@@ -40,7 +41,7 @@ public class BeerController {
         Optional<Beer> requestBodyBeer = Optional.ofNullable(beer);
         if (requestBodyBeer.isPresent()) {
             Beer result = service.addNewBeerToRepository(beer);
-            return ResponseEntity.created(new URI("add-movie" + result.getBeerId()))
+            return ResponseEntity.created(new URI("add-beer" + result.getBeerId()))
                     .body(result);
         } else {
             return ResponseEntity.badRequest().build();
@@ -52,7 +53,7 @@ public class BeerController {
         Optional<Beer> requestBodyBeer = Optional.ofNullable(beer);
         if(requestBodyBeer.isPresent()) {
             Beer result = service.updateBeerByBeerID(beerId,beer);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok().body(result);
         }else{
             return ResponseEntity.badRequest().build();
         }

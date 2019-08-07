@@ -27,6 +27,7 @@ public class Beer implements Serializable {
     @JoinColumn(name = "brewery_id")
     private Brewery brewery;
 
+    @Enumerated(EnumType.STRING)
     private StyleBeer style;
 
     private Integer extract;
