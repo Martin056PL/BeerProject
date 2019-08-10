@@ -24,8 +24,8 @@ public class Beer implements Serializable {
 
     private String name;
 
-    /*@Enumerated(EnumType.STRING)
-    private StyleBeer style;*/
+
+    private String style;
 
     private Integer extract;
 

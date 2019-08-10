@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.domain.Beer;
+import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
@@ -16,38 +17,63 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 @CrossOrigin
 @Controller
-@RequestMapping("/beer")
 @RestControllerAdvice
 public class BeerController {
 
     private final BeerService service;
 
-    @GetMapping
-    public ResponseEntity<Page<Beer>> getAllBeers(Pageable pageable) {
-        Page<Beer> listOfBeers = service.findAllBeersPage(pageable);
-        return ResponseEntity.ok().body(listOfBeers);
+    //get methods
+
+    @GetMapping("beer")
+    public ResponseEntity<Page<Beer>> findAllBeers(Pageable pageable) {
+        Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
+        return ResponseEntity.ok().body(resultListOfBeers);
     }
 
-    @GetMapping("{beerId}")
-    public ResponseEntity<Beer> getBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
-        Beer beer = service.findBeerByBeerId(beerId);
-        return ResponseEntity.ok().body(beer);
+    @GetMapping("beer/{beerId}")
+    public ResponseEntity<Beer> findProperBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
+        Beer resultBeer = service.findBeerByBeerId(beerId);
+        return ResponseEntity.ok().body(resultBeer);
     }
 
-    @PostMapping
+    @GetMapping("brewery/{breweryId}/beer")
+    public ResponseEntity<Page<Beer>> findAllBeersByBreweryId(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
+        Page<Beer> resultListOfBeers = service.findAllBeersByBreweryId(breweryId,pageable);
+        return ResponseEntity.ok().body(resultListOfBeers);
+    }
+
+    @GetMapping("brewery/{breweryId}/beer/{beerId}")
+    public ResponseEntity<Beer> findProperBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+        Beer resultBeer = service.findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
+        return ResponseEntity.ok().body(resultBeer);
+    }
+
+    //post methods
+
+    @PostMapping("beer")
     public ResponseEntity<Beer> addNewBeer(@RequestBody Beer beer) throws URISyntaxException {
-            Beer result = service.addNewBeerToRepository(beer);
-            return ResponseEntity.created(new URI("add-beer" + result.getBeerId()))
-                    .body(result);
+            Beer resultBeer = service.addNewBeerToRepository(beer);
+            return ResponseEntity.created(new URI("add-beer" + resultBeer.getBeerId()))
+                    .body(resultBeer);
     }
 
-    @PutMapping("{beerId}")
+    @PostMapping("brewery/{breweryId}/beer")
+    public ResponseEntity<Brewery> AddNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody Beer beer) throws NoContentException {
+        Brewery brewery = service.addNewBeerAssignedToBreweryByBreweryId(breweryId,beer);
+        return ResponseEntity.ok().body(brewery);
+    }
+
+    //put methods
+
+    @PutMapping("beer/{beerId}")
     public ResponseEntity<Beer> updateBeer(@PathVariable Long beerId, @RequestBody Beer beer) throws NoContentException {
             Beer result = service.updateBeerByBeerID(beerId,beer);
             return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("{beerId}")
+    //delete methods
+
+    @DeleteMapping("beer/{beerId}")
     public ResponseEntity deleteBeerById(@PathVariable Long beerId) throws NoContentException {
         service.deleteBeerByBeerId(beerId);
         return ResponseEntity.noContent().build();

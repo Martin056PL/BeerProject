@@ -1,5 +1,6 @@
 package wawer.kamil.beerproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,6 +37,7 @@ public class Brewery implements Serializable {
     private String website;
 
     @ElementCollection(fetch = FetchType.LAZY)
+    @JsonIgnore
     @OneToMany(mappedBy = "brewery",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

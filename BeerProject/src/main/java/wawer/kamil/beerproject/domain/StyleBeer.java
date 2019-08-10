@@ -1,8 +1,10 @@
 package wawer.kamil.beerproject.domain;
 
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum StyleBeer {
 
@@ -101,5 +103,9 @@ public enum StyleBeer {
     //skonczyłem na piwie przenicznym, http://www.beerpubs.pl/i78,Style-piwa
 
     private final String style;
+
+    public String showStyle(){
+        return style;
+    }
 
 }

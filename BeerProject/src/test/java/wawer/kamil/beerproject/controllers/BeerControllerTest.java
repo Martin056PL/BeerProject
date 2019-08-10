@@ -34,7 +34,7 @@ public class BeerControllerTest {
     Beer beer;
 
     @InjectMocks
-    BeerController controller;
+    BeerController beerController;
 
     private static final Long beerID = 1L;
 
@@ -43,7 +43,7 @@ public class BeerControllerTest {
     @Test
     public void should_be_equal_with_content_from_db_when_controller_returns_content(){
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page), controller.getAllBeers(pageable));
+        assertEquals(ResponseEntity.ok().body(page), beerController.findAllBeers(pageable));
     }
 
     @Test
@@ -56,13 +56,13 @@ public class BeerControllerTest {
     @Test
     public void should_return_proper_beer_base_on_id_from_db_when_controller_returns_beer() throws NoContentException {
         when(service.findBeerByBeerId(beerID)).thenReturn(beer);
-        assertEquals(ResponseEntity.ok().body(beer), controller.getBeerByBeerId(beerID));
+        assertEquals(ResponseEntity.ok().body(beer), beerController.findProperBeerByBeerId(beerID));
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_controller_did_not_found_beer_base_on_id() throws NoContentException {
         when(service.findBeerByBeerId(beerID)).thenThrow(NoContentException.class);
-        controller.getBeerByBeerId(beerID);
+        beerController.findProperBeerByBeerId(beerID);
     }
 
     //post
@@ -70,7 +70,7 @@ public class BeerControllerTest {
     @Test
     public void should_response_be_equal_to_response_body_from_controller() throws URISyntaxException {
         when(service.addNewBeerToRepository(beer)).thenReturn(beer);
-        assertEquals(beer,controller.addNewBeer(beer).getBody());
+        assertEquals(beer, beerController.addNewBeer(beer).getBody());
     }
 
     //put
@@ -78,17 +78,17 @@ public class BeerControllerTest {
     @Test
     public void should_properly_update_beer_base_on_delivered_beer_id() throws NoContentException {
         when(service.updateBeerByBeerID(beerID, beer)).thenReturn(beer);
-        assertEquals(ResponseEntity.ok().body(beer),controller.updateBeer(beerID,beer));
+        assertEquals(ResponseEntity.ok().body(beer), beerController.updateBeer(beerID,beer));
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_there_is_no_beer_base_on_id() throws NoContentException {
         when(service.updateBeerByBeerID(beerID,beer)).thenThrow(NoContentException.class);
-        controller.updateBeer(beerID,beer);
+        beerController.updateBeer(beerID,beer);
     }
 
     @Test
     public void should_return_status_no_content_when_controller_successfully_delete_beer_base_on_id() throws NoContentException {
-        assertEquals(ResponseEntity.noContent().build(), controller.deleteBeerById(beerID));
+        assertEquals(ResponseEntity.noContent().build(), beerController.deleteBeerById(beerID));
     }
 }
