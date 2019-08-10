@@ -1,5 +1,6 @@
 package wawer.kamil.beerproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +34,7 @@ public class Beer implements Serializable {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "brewery_id")
+    @JsonIgnore
     private Brewery brewery;
 
     @ElementCollection(fetch = FetchType.LAZY)
