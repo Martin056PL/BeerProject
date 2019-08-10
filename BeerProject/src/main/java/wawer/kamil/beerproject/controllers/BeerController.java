@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.domain.Beer;
-import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
@@ -58,17 +57,25 @@ public class BeerController {
     }
 
     @PostMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<Brewery> AddNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody Beer beer) throws NoContentException {
-        Brewery brewery = service.addNewBeerAssignedToBreweryByBreweryId(breweryId,beer);
-        return ResponseEntity.ok().body(brewery);
+    public ResponseEntity<Beer> AddNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody Beer beer) throws NoContentException {
+        Beer resultBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId,beer);
+        return ResponseEntity.ok().body(resultBeer);
     }
 
     //put methods
 
     @PutMapping("beer/{beerId}")
     public ResponseEntity<Beer> updateBeer(@PathVariable Long beerId, @RequestBody Beer beer) throws NoContentException {
-            Beer result = service.updateBeerByBeerID(beerId,beer);
-            return ResponseEntity.ok().body(result);
+            Beer resultBeer = service.updateBeerByBeerId(beerId,beer);
+            return ResponseEntity.ok().body(resultBeer);
+    }
+
+    @PutMapping("brewery/{breweryId}/beer/{beerId}")
+    public ResponseEntity<Beer> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
+                                                                   @PathVariable Long beerId,
+                                                                   @RequestBody Beer beer) throws NoContentException {
+        Beer resultBeer = service.updateBeerByBreweryIdAndBeerId(breweryId,beerId,beer);
+        return ResponseEntity.ok().body(resultBeer);
     }
 
     //delete methods

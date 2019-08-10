@@ -77,13 +77,13 @@ public class BeerControllerTest {
 
     @Test
     public void should_properly_update_beer_base_on_delivered_beer_id() throws NoContentException {
-        when(service.updateBeerByBeerID(beerID, beer)).thenReturn(beer);
+        when(service.updateBeerByBeerId(beerID, beer)).thenReturn(beer);
         assertEquals(ResponseEntity.ok().body(beer), beerController.updateBeer(beerID,beer));
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_there_is_no_beer_base_on_id() throws NoContentException {
-        when(service.updateBeerByBeerID(beerID,beer)).thenThrow(NoContentException.class);
+        when(service.updateBeerByBeerId(beerID,beer)).thenThrow(NoContentException.class);
         beerController.updateBeer(beerID,beer);
     }
 

@@ -10,6 +10,8 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
+import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -65,12 +67,14 @@ public class BeerServiceImpl implements BeerService {
         return beerRepository.save(beer);
     }
 
-    public Brewery addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
+    @Override
+    public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryID)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryID);
             brewery.addBeer(beer);
-            Brewery resultBrewery = breweryRepository.save(brewery);
-            return breweryRepository.save(resultBrewery);
+            int indexListOfNewestAddedBeer = brewery.getBeerList().size() - 1;
+            Beer resultBeer = breweryRepository.save(brewery).getBeerList().get(indexListOfNewestAddedBeer);
+            return resultBeer;
         } else {
             throw new NoContentException();
         }
@@ -79,10 +83,26 @@ public class BeerServiceImpl implements BeerService {
     //put beers
 
     @Override
-    public Beer updateBeerByBeerID(Long beerId, Beer beer) throws NoContentException {
+    public Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beer.setBeerId(beerId);
             return beerRepository.save(beer);
+        } else {
+            throw new NoContentException();
+        }
+    }
+
+    public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException {
+        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
+            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
+            Optional<Beer> searchedBeer = brewery.getBeerList().stream().filter(beer -> beer.getBeerId().equals(beerId)).findAny();
+            if (searchedBeer.isPresent()) {
+                updatedBeer.setBeerId(beerId);
+                Beer resultBeer = beerRepository.save(updatedBeer);
+                return resultBeer;
+            } else {
+                throw new NoContentException();
+            }
         } else {
             throw new NoContentException();
         }
@@ -99,5 +119,8 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
+    private boolean isBreweryAndBeerExist(Long breweryId, Long beerId) {
+        return breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId);
+    }
 
 }

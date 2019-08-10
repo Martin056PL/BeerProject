@@ -3,7 +3,6 @@ package wawer.kamil.beerproject.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.domain.Beer;
-import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 
 public interface BeerService {
@@ -16,9 +15,11 @@ public interface BeerService {
 
     Beer addNewBeerToRepository(Beer beer);
 
-    Brewery addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException;
+    Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException;
 
-    Beer updateBeerByBeerID(Long beerId, Beer beer) throws NoContentException;
+    Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException;
+
+    Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException;
 
     void deleteBeerByBeerId(Long beerId) throws NoContentException;
 
