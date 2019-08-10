@@ -1,15 +1,20 @@
 package wawer.kamil.beerproject.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+
 @Entity
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "brewery")
 public class Brewery implements Serializable {
 
     private static final long serialVersionUID = -9149691662724951820L;
@@ -30,4 +35,19 @@ public class Brewery implements Serializable {
 
     private String website;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "brewery",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Beer> beerList;
+
+
+    public void addBeer(Beer beer) {
+        if (beerList == null) {
+            beerList = new ArrayList<>();
+        }
+        beerList.add(beer);
+        beer.setBrewery(this);
+
+    }
 }

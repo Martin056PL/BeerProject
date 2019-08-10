@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
-import wawer.kamil.beerproject.service.BeerServiceImpl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @CrossOrigin
@@ -38,14 +36,9 @@ public class BeerController {
 
     @PostMapping
     public ResponseEntity<Beer> addNewBeer(@RequestBody Beer beer) throws URISyntaxException {
-        Optional<Beer> requestBodyBeer = Optional.ofNullable(beer);
-        if (requestBodyBeer.isPresent()) {
             Beer result = service.addNewBeerToRepository(beer);
             return ResponseEntity.created(new URI("add-beer" + result.getBeerId()))
                     .body(result);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PutMapping("{beerId}")

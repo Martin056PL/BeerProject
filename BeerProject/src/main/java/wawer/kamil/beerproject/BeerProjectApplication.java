@@ -10,4 +10,5 @@ public class BeerProjectApplication {
         SpringApplication.run(BeerProjectApplication.class, args);
     }
 
+
 }

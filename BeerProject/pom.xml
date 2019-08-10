@@ -16,6 +16,11 @@
 
     <properties>
         <java.version>12</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.jdbc.username>admin</sonar.jdbc.username>
+        <sonar.jdbc.password>admin</sonar.jdbc.password>
+        <sonar.exclusions>**/domain/*.java</sonar.exclusions>
+        <sonar.dynamic>reuseReports</sonar.dynamic>
     </properties>
 
     <dependencies>
@@ -66,6 +71,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -87,6 +94,16 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.6.0.1398</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

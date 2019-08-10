@@ -1,17 +1,17 @@
 package wawer.kamil.beerproject.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Data
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
+@Table(name = "beer")
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;
@@ -23,16 +23,17 @@ public class Beer implements Serializable {
 
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "brewery_id")
-    private Brewery brewery;
-
-    @Enumerated(EnumType.STRING)
-    private StyleBeer style;
+    /*@Enumerated(EnumType.STRING)
+    private StyleBeer style;*/
 
     private Integer extract;
 
     private Double alcohol;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "brewery_id")
+    private Brewery brewery;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> ingredients;
