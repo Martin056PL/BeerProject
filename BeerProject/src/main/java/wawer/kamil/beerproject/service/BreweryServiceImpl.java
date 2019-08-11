@@ -8,8 +8,6 @@ import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class BreweryServiceImpl implements BreweryService {
@@ -23,10 +21,8 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public Brewery getBreweryByBreweryId(Long breweryId) throws NoContentException {
-        Brewery getBreweryList = repository.findByBreweryId(breweryId);
-        Optional<Brewery> optionalBreweryList = Optional.ofNullable(getBreweryList);
-        if (optionalBreweryList.isPresent()) {
-            return optionalBreweryList.get();
+        if (repository.existsBreweryByBreweryId(breweryId)) {
+            return repository.findByBreweryId(breweryId);
         } else {
             throw new NoContentException();
         }
