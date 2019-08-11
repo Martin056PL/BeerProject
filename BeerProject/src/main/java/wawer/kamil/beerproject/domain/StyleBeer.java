@@ -1,0 +1,111 @@
+package wawer.kamil.beerproject.domain;
+
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum StyleBeer {
+
+    Altbier("Altbier"),
+    AmericanAdjunctLager("American Adjunct Lager"),
+    AmericanMaltLiquor("American Malt Liquor"),
+    AmericanAmberRedLager("American Amber/Red Lager"),
+    AmericanDarkLager("American Dark Lager"),
+    AmericanPaleLager("American Pale Lager"),
+    AmericanLightLager("American Light Lager"),
+    AmericanDoubleImperialPilsner("American Double/Imperial Pilsner"),
+    AmericanPorter("American Porter"),
+    AmericanStout("American Stout"),
+    AmericanDoubleImperialStout("American Double/Imperial Stout"),
+    AmericanBlackIPA("American Black IPA"),
+    AmericanBlondeAle("American Blonde Ale"),
+    AmericanBrownAle("American Brown Ale"),
+    AmericanAmberRedAle("American Amber/Red Ale"),
+    AmericanDoubleImperialIPA("American Double/Imperial IPA"),
+    AmericanSourWildAle("American Sour/Wild Ale"),
+    AmericanIndiaPaleAle("American India Pale Ale"),
+    AmericanPaleAle("American Pale Ale"),
+    AmericanPaleDarkWheatAle("American Pale/Dark Wheat Ale"),
+    AmericanStrongAle("American Strong Ale"),
+    AmericanBarleyWine("American Barley Wine"),
+    AustralianLager("Australian Lager"),
+    BelgianAle("Belgian Ale"),
+    BelgianIPA("Belgian IPA"),
+    BelgianStrongDarkAle("Belgian Strong Dark Ale"),
+    BelgianStrongPaleAle("Belgian Strong Pale Ale"),
+    BiereDeGarde("Bière de Garde"),
+    BiereRouge("Bière Rouge"),
+    Bock("Bock"),
+    CaliforniaCommonSteamBeer("California Common/Steam Beer"),
+    ChocolateBeer("Chocolate Beer"),
+    CreamAle("Cream Ale"),
+    CzechPilsner("Czech Pilsner"),
+    DortmunderExport("Dortmunder Export"),
+    Doppelbock("Doppelbock"),
+    Dubbel("Dubbel"),
+    Dunkelweizen("Dunkelweizen"),
+    DunklerBock("Dunkler Bock"),
+    Eisbock("Eisbock"),
+    EnglishBitter("English Bitter"),
+    EnglishPorter("English Porter"),
+    EnglishStout("English Stout"),
+    EnglishBrownAle("English Brown Ale"),
+    EnglishDarkMildAle("English Dark Mild Ale"),
+    EnglishIPA("English IPA"),
+    EnglishPaleAle("English Pale Ale"),
+    EnglishPaleMildAle(" English Pale Mild Ale"),
+    EnglishSummerAle("English Summer Ale"),
+    EnglishStrongAle("English Strong Ale"),
+    EnglishOldAle("English Old Ale"),
+    EnglishBarleyWine("English Barley Wine"),
+    EuropeanDarkLager("European Dark Lager"),
+    EuropeanFruitAndFlavoured("European Fruit & Flavoured"),
+    EuropeanHoneyBeer("European Honey Beer"),
+    EuropeanPaleLightLager("European Pale Light Lager"),
+    EuropeanPaleStrongLager("European Pale Strong Lager"),
+    EuropeanPaleFullLager("European Pale Full Lager"),
+    EuropeanPilsner("EuropeanPilsner"),
+    EuropeanWheatBeer("European Wheat Beer"),
+    ExtraSpecialStrongBitter("Extra Special/Strong Bitter "),
+    ExtraStout("Extra Stout"),
+    Faro("Faro"),
+    FlandersOudBruin("Flanders Oud Bruin"),
+    GermanPilsner("German Pilsner"),
+    Gose("Gose"),
+    Gruit("Gruit"),
+    Gueuze("Gueuze "),
+    Hefeweizen("Hefeweizen"),
+    IrishDryStout("Irish Dry Stout"),
+    IrishRedAle("Irish Red Ale"),
+    KellerbierZwickelbierLandbier("Kellerbier/Zwickelbier/Landbier"),
+    Kolsch("Kölsch"),
+    Kristalweizen("Kristalweizen"),
+    Lambic("Lambic"),
+    LowAlcohol("Low Alcohol"),
+    MaibockHellesBock("Maibock/Helles Bock"),
+    MarzenOktoberfest("Märzen/Oktoberfest"),
+    MilkSweetStout("Milk/Sweet Stout"),
+    MunichDunkelLager("Munich Dunkel Lager"),
+    MunichHellesLager("Munich Helles Lager"),
+    PolishAmberLager("Polish Amber Lager"),
+    PolishDarkLager("Polish Dark Lager"),
+    PolishPaleLightLager("Polish Pale Light Lager"),
+    PolishPaleStrongLager("Polish Pale Strong Lager"),
+    PolishPaleFullLager("Polish Pale Full Lager"),
+    PolishHoneyBeer("Polish Honey Beer"),
+    PumpkinAle("Pumpkin Ale"),
+    Weizenbock("Weizenbock"),
+    WheatBeer("Wheat Beer "),
+    ViennaLager("Vienna Lager");
+
+    //skonczyłem na piwie przenicznym, http://www.beerpubs.pl/i78,Style-piwa
+
+    private final String style;
+
+    public String showStyle(){
+        return style;
+    }
+
+}
