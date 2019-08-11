@@ -24,7 +24,6 @@ public class Beer implements Serializable {
 
     private String name;
 
-
     private String style;
 
     private Integer extract;
