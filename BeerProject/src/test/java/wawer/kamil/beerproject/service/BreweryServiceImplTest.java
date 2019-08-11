@@ -37,14 +37,14 @@ public class BreweryServiceImplTest {
     }
 
     @Test
-    public void verify_get_Brewery_By_Brewery_Id_when_Brewery_Id_exists() throws NoContentException {
+    public void verify_get_brewery_by_brewery_id_when_brewery_id_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
         service.getBreweryByBreweryId(ID);
         verify(repository).findByBreweryId(ID);
     }
 
     @Test(expected = NoContentException.class)
-    public void verify_get_Brewery_By_Brewery_Id_when_Brewery_Id_do_not_exists() throws NoContentException {
+    public void verify_get_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(false);
         service.getBreweryByBreweryId(ID);
         verify(repository).findByBreweryId(ID);
@@ -57,28 +57,28 @@ public class BreweryServiceImplTest {
     }
 
     @Test
-    public void verify_update_Brewery_By_Brewery_Id_when_Brewery_Id_exists() throws NoContentException {
+    public void verify_update_brewery_by_brewery_id_when_brewery_id_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
         service.updateBreweryById(ID,brewery);
         verify(repository).save(brewery);
     }
 
     @Test(expected = NoContentException.class)
-    public void verify_update_Brewery_By_Brewery_Id_when_Brewery_Id_do_not_exists() throws NoContentException {
+    public void verify_update_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(false);
         service.updateBreweryById(ID,brewery);
         verify(repository).save(brewery);
     }
 
     @Test
-    public void verify_delete_Brewery_By_Brewery_Id_when_Brewery_Id_exists() throws NoContentException {
+    public void verify_delete_brewery_by_brewery_id_when_brewery_id_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
         service.deleteBreweryByBreweryId(ID);
         verify(repository).deleteById(ID);
     }
 
     @Test(expected = NoContentException.class)
-    public void verify_delete_Brewery_By_Brewery_Id_when_Brewery_Id_do_not_exists() throws NoContentException {
+    public void verify_delete_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(false);
         service.deleteBreweryByBreweryId(ID);
         verify(repository).deleteById(ID);

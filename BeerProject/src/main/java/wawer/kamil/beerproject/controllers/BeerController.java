@@ -57,9 +57,10 @@ public class BeerController {
     }
 
     @PostMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<Beer> AddNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody Beer beer) throws NoContentException {
+    public ResponseEntity<Beer> AddNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody Beer beer) throws NoContentException, URISyntaxException {
         Beer resultBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId,beer);
-        return ResponseEntity.ok().body(resultBeer);
+        return ResponseEntity.created(new  URI("add-beer" + resultBeer.getBeerId()))
+                .body(resultBeer);
     }
 
     //put methods
