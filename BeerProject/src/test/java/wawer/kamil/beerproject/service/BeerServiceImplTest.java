@@ -8,7 +8,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
-import wawer.kamil.beerproject.domain.StyleBeer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
@@ -30,8 +29,6 @@ public class BeerServiceImplTest {
     @Mock
     Brewery brewery;
 
-
-
     @Mock
     BeerRepository beerRepository;
 
@@ -45,27 +42,27 @@ public class BeerServiceImplTest {
     private static final Long breweryID = 1L;
 
     @Test
-    public void asdasd() {
+    public void verify_find_all_beers_page() {
         service.findAllBeersPage(pageable);
         verify(beerRepository).findAll(pageable);
     }
 
     @Test
-    public void asfe() throws NoContentException {
+    public void verify_find_beer_by_beer_id_when_id_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         service.findBeerByBeerId(beerID);
         verify(beerRepository).findBeerByBeerId(beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void asfeasd() throws NoContentException {
+    public void verify_find_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
         service.findBeerByBeerId(beerID);
         verify(beerRepository).findBeerByBeerId(beerID);
     }
 
     @Test
-    public void asdw() throws NoContentException {
+    public void verify_find_all_beers_by_brewery_id_when_id_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
         service.findAllBeersByBreweryId(breweryID, pageable);
@@ -73,13 +70,13 @@ public class BeerServiceImplTest {
     }
 
     @Test(expected = NoContentException.class)
-    public void dfsdqwd() throws NoContentException {
+    public void verify_find_all_beers_by_brewery_id_when_id_do_not_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
         service.findAllBeersByBreweryId(breweryID, pageable);
     }
 
     @Test
-    public void fdsd() throws NoContentException {
+    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_both_ids_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
@@ -88,121 +85,108 @@ public class BeerServiceImplTest {
     }
 
     @Test(expected = NoContentException.class)
-    public void sdfwe() throws NoContentException {
+    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_only_brewery_id_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
         service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void sdfwed() throws NoContentException {
+    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_only_beer_id_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
         service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID);
     }
 
     @Test
-    public void dgfdq() {
+    public void verify_add_new_beer_to_repository() {
         service.addNewBeerToRepository(beer);
         beerRepository.save(beer);
     }
 
     @Test
-    public void wefdw() throws NoContentException {
+    public void verify_add_new_beer_assigned_to_brewery_by_brewery_id_when_id_exists() throws NoContentException {
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
         when(beerRepository.save(beer)).thenReturn(beer);
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer);
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
         verify(breweryRepository).findById(beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void wefdwds() throws NoContentException {
+    public void verify_add_new_beer_assigned_to_brewery_by_brewery_id_when_id_do_not_exists() throws NoContentException {
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer);
-
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
     }
 
     //update
 
     @Test
-    public void asdf() throws NoContentException {
+    public void verify_update_beer_by_beer_id_when_id_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.updateBeerByBeerId(breweryID,beer);
+        service.updateBeerByBeerId(breweryID, beer);
         verify(beerRepository).save(beer);
     }
 
     @Test(expected = NoContentException.class)
-    public void fwe() throws NoContentException {
+    public void verify_update_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.updateBeerByBeerId(breweryID,beer);
+        service.updateBeerByBeerId(breweryID, beer);
     }
 
     @Test
-    public void asdfew() throws NoContentException {
+    public void verify_update_beer_by_brewery_id_and_beer_id_when_both_ids_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         when(beerRepository.findBeerByBeerId(beerID)).thenReturn(beer);
-        service.updateBeerByBreweryIdAndBeerId(breweryID,beerID,beer);
+        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
         verify(beerRepository).save(beer);
     }
 
     @Test(expected = NoContentException.class)
-    public void asdfewd() throws NoContentException {
+    public void verify_update_beer_by_brewery_id_and_beer_id_when_brewery_id_do_not_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
-        service.updateBeerByBreweryIdAndBeerId(breweryID,beerID,beer);
+        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
     }
 
     @Test(expected = NoContentException.class)
-    public void asdfewdzxc() throws NoContentException {
+    public void verify_update_beer_by_brewery_id_and_beer_id_when_only_brewery_id_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(breweryID)).thenReturn(false);
-        service.updateBeerByBreweryIdAndBeerId(breweryID,beerID,beer);
+        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
     }
 
     //delete
 
     @Test
-    public void sdgawd() throws NoContentException {
+    public void verify_delete_beer_by_beer_id_when_id_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         service.deleteBeerByBeerId(beerID);
         verify(beerRepository).deleteById(beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void sdgawdd() throws NoContentException {
+    public void verify_delete_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
         service.deleteBeerByBeerId(beerID);
     }
 
     @Test
-    public void sdfwedf() throws NoContentException {
+    public void verify_delete_beer_by_brewery_id_and_beer_id_when_both_ids_exist() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID,beerID);
+        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
         verify(beerRepository).deleteById(beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void sasddfwedf() throws NoContentException {
+    public void verify_delete_beer_by_brewery_id_and_beer_id_when_brewery_id_do_not_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID,beerID);
+        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
     }
 
     @Test(expected = NoContentException.class)
-    public void sasddfweddsaf() throws NoContentException {
+    public void verify_delete_beer_by_brewery_id_and_beer_id_when_beer_id_do_not_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID,beerID);
+        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
     }
-
-    private Beer returnBeer(){
-        Beer beer = Beer.builder()
-                .alcohol(5.2)
-                .extract(12)
-                .name("Porter")
-                .style(StyleBeer.AmericanPorter.getStyle())
-                .build();
-        return beer;
-    }
-
-
 }
