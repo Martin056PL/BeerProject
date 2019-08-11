@@ -10,8 +10,6 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
-import java.util.Optional;
-
 
 @Service
 @AllArgsConstructor
@@ -94,12 +92,14 @@ public class BeerServiceImpl implements BeerService {
 
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
-            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-            Optional<Beer> searchedBeer = brewery.getBeerList().stream().filter(beer -> beer.getBeerId().equals(beerId)).findAny();
-            if (searchedBeer.isPresent()) {
-                updatedBeer.setBeerId(beerId);
-                Beer resultBeer = beerRepository.save(updatedBeer);
-                return resultBeer;
+            if (beerRepository.existsBeerByBeerId(beerId)) {
+                Beer beer = beerRepository.findBeerByBeerId(beerId);
+                beer.setName(updatedBeer.getName());
+                beer.setAlcohol(updatedBeer.getAlcohol());
+                beer.setStyle(updatedBeer.getStyle());
+                beer.setExtract(updatedBeer.getExtract());
+                beer.setIngredients(updatedBeer.getIngredients());
+                return beerRepository.save(beer);
             } else {
                 throw new NoContentException();
             }
@@ -108,7 +108,7 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
-    //delete beers
+//delete beers
 
     @Override
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
