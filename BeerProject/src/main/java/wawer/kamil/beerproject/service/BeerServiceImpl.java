@@ -119,8 +119,5 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
-    private boolean isBreweryAndBeerExist(Long breweryId, Long beerId) {
-        return breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId);
-    }
 
 }
