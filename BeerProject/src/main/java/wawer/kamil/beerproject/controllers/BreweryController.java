@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryService;
@@ -51,6 +50,6 @@ public class BreweryController {
     @DeleteMapping("{breweryId}")
     public ResponseEntity deleteBrewery(@PathVariable Long breweryId) throws NoContentException {
         service.deleteBreweryByBreweryId(breweryId);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

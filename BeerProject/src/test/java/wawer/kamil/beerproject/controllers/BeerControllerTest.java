@@ -48,7 +48,7 @@ public class BeerControllerTest {
 
     @Test
     public void should_return_status_ok_when_controller_returns_the_same_content(){
-        assertEquals(ResponseEntity.ok().body(page).getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK,ResponseEntity.ok().body(page).getStatusCode());
     }
 
     //get by id
