@@ -100,7 +100,7 @@ public class BeerServiceImplTest {
     @Test
     public void verify_add_new_beer_to_repository() {
         service.addNewBeerToRepository(beer);
-        beerRepository.save(beer);
+        verify(beerRepository).save(beer);
     }
 
     @Test

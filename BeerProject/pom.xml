@@ -22,7 +22,8 @@
         <sonar.exclusions>
             **/domain/*.java,
             **/exceptions/NoContentException.java,
-            **/BeerProjectApplication.java
+            **/BeerProjectApplication.java,
+            **/utils/Generator.java
         </sonar.exclusions>
 
         <sonar.dynamic>reuseReports</sonar.dynamic>

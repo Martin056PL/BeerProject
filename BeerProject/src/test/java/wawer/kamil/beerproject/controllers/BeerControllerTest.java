@@ -42,9 +42,9 @@ public class BeerControllerTest {
     //get all
 
     @Test
-    public void should_body_response_be_equal_to_response_given_by_controller() {
+    public void should_return_response_body_equal_to_controller_response_with_some_beer_list() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page), beerController.findAllBeers(pageable));
+        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeers(pageable).getBody());
     }
 
     @Test
@@ -119,19 +119,19 @@ public class BeerControllerTest {
     @Test
     public void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer_and_brewery_id() throws NoContentException, URISyntaxException {
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer)).thenReturn(beer);
-        assertEquals(ResponseEntity.ok().body(beer).getBody(),beerController.AddNewBeerAssignedToBreweryByBreweryId(breweryID,beer).getBody());
+        assertEquals(ResponseEntity.ok().body(beer).getBody(),beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer).getBody());
     }
 
     @Test
     public void should_return_status_created_when_controller_successfully_add_beer_base_on_request_body_beer_and_brewery_id() throws NoContentException, URISyntaxException {
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer)).thenReturn(beer);
-        assertEquals(HttpStatus.CREATED,beerController.AddNewBeerAssignedToBreweryByBreweryId(breweryID,beer).getStatusCode());
+        assertEquals(HttpStatus.CREATED,beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer).getStatusCode());
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_controller_did_not_found_brewery_base_on_brewery_id_during_add_new_beer() throws NoContentException, URISyntaxException {
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer)).thenThrow(NoContentException.class);
-        beerController.AddNewBeerAssignedToBreweryByBreweryId(breweryID,beer);
+        beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beer);
     }
 
     //put
@@ -167,7 +167,7 @@ public class BeerControllerTest {
     }
 
     @Test(expected = NoContentException.class)
-    public void should_throw_exception_when_there_is_no_beer_base_on_beer_id_orbrewery_id_during_updating_beer() throws NoContentException {
+    public void should_throw_exception_when_there_is_no_beer_base_on_beer_id_or_brewery_id_during_updating_beer() throws NoContentException {
         when(service.updateBeerByBreweryIdAndBeerId(breweryID,beerID,beer)).thenThrow(NoContentException.class);
         beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID,beerID,beer);
     }
