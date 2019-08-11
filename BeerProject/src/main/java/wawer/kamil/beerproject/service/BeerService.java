@@ -25,5 +25,5 @@ public interface BeerService {
 
     Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException;
 
-
+    void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException;
 }

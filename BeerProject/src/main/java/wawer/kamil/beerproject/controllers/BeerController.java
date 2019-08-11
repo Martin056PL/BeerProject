@@ -81,8 +81,14 @@ public class BeerController {
     //delete methods
 
     @DeleteMapping("beer/{beerId}")
-    public ResponseEntity deleteBeerById(@PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity deleteBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
         service.deleteBeerByBeerId(beerId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("brewery/{breweryId}/beer/{beerId}")
+    public ResponseEntity deleteBeerByBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+        service.deleteBeerByBreweryIdAndBeerId(breweryId,beerId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -67,15 +67,12 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
-        if (breweryRepository.existsBreweryByBreweryId(breweryID)) {
-            Brewery brewery = breweryRepository.findByBreweryId(breweryID);
-            brewery.addBeer(beer);
-            int indexListOfNewestAddedBeer = brewery.getBeerList().size() - 1;
-            Beer resultBeer = breweryRepository.save(brewery).getBeerList().get(indexListOfNewestAddedBeer);
-            return resultBeer;
-        } else {
-            throw new NoContentException();
-        }
+        return breweryRepository.findById(breweryID)
+                .map(brewery -> {
+                    beer.setBrewery(brewery);
+                    return beerRepository.save(beer);
+                }).orElseThrow(NoContentException::new);
+
     }
 
     //put beers
@@ -113,6 +110,15 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
+            beerRepository.deleteById(beerId);
+        } else {
+            throw new NoContentException();
+        }
+    }
+
+    @Override
+    public void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
+        if (breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
         } else {
             throw new NoContentException();
