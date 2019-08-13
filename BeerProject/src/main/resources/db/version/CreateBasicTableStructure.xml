@@ -1,0 +1,43 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="Kamil Wawer">
+        <createTable tableName="beer">
+            <column name="beer_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="brewery_id" type="bigint"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="style" type="varchar(255)"/>
+            <column name="extract" type="double"/>
+            <column name="alcohol" type="double"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Kamil Wawer">
+        <createTable tableName="brewery">
+            <column name="brewery_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="phone_number" type="bigint"/>
+            <column name="website" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="Kamil Wawer">
+        <addForeignKeyConstraint
+                baseColumnNames="beer_id"
+                baseTableName="beer"
+                constraintName="a68c9545adf1b8b8a903976a84fe09a9"
+                referencedTableName="brewery"
+                referencedColumnNames="brewery_id"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -74,11 +74,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.17</version>
         </dependency>
-       <!-- <dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>3.7.0</version>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <build>
@@ -109,6 +109,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.0.5</version>
+                <configuration>
+                    <propertyFile>src/main/resources/db/master.xml</propertyFile>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:32768/beerProjectDevelop</url>
+                    <username>root</username>
+                    <password>root</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
 
         <pluginManagement>

@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Builder
@@ -36,7 +35,7 @@ public class Beer implements Serializable {
     @JsonIgnore
     private Brewery brewery;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> ingredients;
+    /*@ElementCollection(fetch = FetchType.LAZY)
+    private List<String> ingredients;*/
 
 }
