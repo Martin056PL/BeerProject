@@ -32,12 +32,9 @@
     </changeSet>
 
     <changeSet id="3" author="Kamil Wawer">
-        <addForeignKeyConstraint
-                baseColumnNames="beer_id"
-                baseTableName="beer"
-                constraintName="a68c9545adf1b8b8a903976a84fe09a9"
-                referencedTableName="brewery"
-                referencedColumnNames="brewery_id"/>
+        <createIndex indexName="4939e7cde33371150f79d4bee5b3c15a" tableName="beer">
+            <column name="brewery_id"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

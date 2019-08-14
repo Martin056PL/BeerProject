@@ -1,6 +1,8 @@
 package wawer.kamil.beerproject.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
@@ -13,7 +15,7 @@ public class Generator {
 
     private final BreweryRepository repository;
 
-    //@EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void addData(){
 
         Beer beer1 = Beer.builder()
