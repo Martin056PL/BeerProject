@@ -1,6 +1,7 @@
 package wawer.kamil.beerproject.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.dto.BreweryDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryService;
 
@@ -21,30 +23,31 @@ import java.net.URISyntaxException;
 public class BreweryController {
 
     private final BreweryService service;
+    private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<Brewery>> getAllBrewery(Pageable pageable) throws NoContentException {
-        Page<Brewery> listOfBeers = service.getAllBrewery(pageable);
+    public ResponseEntity<Page<BreweryDTO>> getAllBrewery(Pageable pageable) throws NoContentException {
+        Page<BreweryDTO> listOfBeers = service.getAllBrewery(pageable).map(brewery -> mapper.map(brewery, BreweryDTO.class));
         return ResponseEntity.ok(listOfBeers);
     }
 
     @GetMapping("{breweryId}")
-    public ResponseEntity<Brewery> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
-        Brewery brewery = service.getBreweryByBreweryId(breweryId);
+    public ResponseEntity<BreweryDTO> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
+        BreweryDTO brewery = mapper.map(service.getBreweryByBreweryId(breweryId), BreweryDTO.class);
         return ResponseEntity.ok().body(brewery);
     }
 
     @PostMapping
-    public ResponseEntity<Brewery> addNewBrewery(@RequestBody Brewery brewery) throws URISyntaxException {
-        Brewery result = service.createNewBrewery(brewery);
+    public ResponseEntity<BreweryDTO> addNewBrewery(@RequestBody BreweryDTO breweryDTO) throws URISyntaxException {
+        Brewery result = service.createNewBrewery(mapper.map(breweryDTO, Brewery.class));
         return ResponseEntity.created(new URI("add-beer" + result.getBreweryId()))
-                .body(result);
+                .body(mapper.map(result, BreweryDTO.class));
     }
 
     @PutMapping("{breweryId}")
-    public ResponseEntity<Brewery> updateBrewery(@PathVariable Long breweryId, @RequestBody Brewery brewery) throws NoContentException {
-        Brewery result = service.updateBreweryById(breweryId,brewery);
-        return ResponseEntity.ok().body(result);
+    public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @RequestBody BreweryDTO breweryDTO) throws NoContentException {
+        Brewery result = service.updateBreweryById(breweryId,mapper.map(breweryDTO, Brewery.class));
+        return ResponseEntity.ok().body(mapper.map(result, BreweryDTO.class));
     }
 
     @DeleteMapping("{breweryId}")
