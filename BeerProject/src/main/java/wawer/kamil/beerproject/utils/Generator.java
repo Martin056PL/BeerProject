@@ -46,6 +46,48 @@ public class Generator {
                 .style(StyleBeer.AmericanPorter.getStyle())
                 .build();
 
+        Beer beer17 = Beer.builder()
+                .alcohol(8.0)
+                .extract(19.0)
+                .name("600% normy")
+                .style(StyleBeer.AmericanDoubleImperialIPA.getStyle())
+                .build();
+
+        Beer beer18 = Beer.builder()
+                .alcohol(5.3)
+                .extract(15.0)
+                .name("Szybki strzał")
+                .style(StyleBeer.EnglishPaleAle.getStyle())
+                .build();
+
+        Beer beer19 = Beer.builder()
+                .alcohol(9.7)
+                .extract(24.0)
+                .name("Pan Porter")
+                .style(StyleBeer.AmericanPorter.getStyle())
+                .build();
+
+        Beer beer20 = Beer.builder()
+                .alcohol(9.0)
+                .extract(24.0)
+                .name("Pan Kierownik")
+                .style(StyleBeer.AmericanStout.getStyle())
+                .build();
+
+        Beer beer21 = Beer.builder()
+                .alcohol(6.6)
+                .extract(18.0)
+                .name("Zadymiarz")
+                .style(StyleBeer.DunklerBock.getStyle())
+                .build();
+
+        Beer beer22 = Beer.builder()
+                .alcohol(5.8)
+                .extract(14.0)
+                .name("Kolektyw")
+                .style(StyleBeer.AmericanPorter.getStyle())
+                .build();
+
         Brewery brewery1 = Brewery.builder()
                 .name("Browar Zakładowy")
                 .address("Przemysłowa 43, 24-320 Poniatowa")
@@ -58,6 +100,13 @@ public class Generator {
         brewery1.addBeer(beer2);
         brewery1.addBeer(beer3);
         brewery1.addBeer(beer4);
+        brewery1.addBeer(beer17);
+        brewery1.addBeer(beer18);
+        brewery1.addBeer(beer19);
+        brewery1.addBeer(beer20);
+        brewery1.addBeer(beer21);
+        brewery1.addBeer(beer22);
+
 
         repository.save(brewery1);
 
