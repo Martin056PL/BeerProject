@@ -8,5 +8,5 @@ spring:
     database-platform : org.hibernate.dialect.H2Dialect
 
   liquibase:
-    change-log: classpath:db/master-test.xml
+    change-log: classpath:db/test.xml
 

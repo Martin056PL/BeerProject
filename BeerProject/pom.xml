@@ -109,27 +109,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.0.5</version>
-                <configuration>
-                    <propertyFile>src/main/resources/db/master.xml</propertyFile>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:32768/beerProjectDevelop</url>
-                    <username>root</username>
-                    <password>root</password>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
 
         <pluginManagement>
