@@ -95,7 +95,7 @@ public class BeerServiceImpl implements BeerService {
                 beer.setAlcohol(updatedBeer.getAlcohol());
                 beer.setStyle(updatedBeer.getStyle());
                 beer.setExtract(updatedBeer.getExtract());
-                beer.setIngredients(updatedBeer.getIngredients());
+                //beer.setIngredients(updatedBeer.getIngredients());
                 return beerRepository.save(beer);
             } else {
                 throw new NoContentException();
