@@ -20,3 +20,6 @@ spring:
   h2:
     console:
       enabled: false
+
+server:
+  port: 8085

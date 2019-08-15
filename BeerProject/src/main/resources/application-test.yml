@@ -10,3 +10,5 @@ spring:
   liquibase:
     change-log: classpath:db/test.xml
 
+server:
+  port: 8086

@@ -24,13 +24,13 @@
 
     <changeSet author="Kamil Wawer" id="8">
         <addColumn tableName="brewery">
-            <column name="address_id" type="numeric"/>
+            <column name="address_id" type="bigint"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="9" author="Kamil Wawer">
         <createIndex indexName="5039e7cde33371150f79d4bee5b3c15a" tableName="brewery">
-            <column name="address_id" />
+            <column name="address_id"/>
         </createIndex>
     </changeSet>
 </databaseChangeLog>
