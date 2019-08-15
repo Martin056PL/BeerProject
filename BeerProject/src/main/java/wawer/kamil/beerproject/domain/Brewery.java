@@ -32,7 +32,9 @@ public class Brewery implements Serializable {
     @Column(name = "phone_number")
     private Long phoneNumber;
 
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     private String website;
 

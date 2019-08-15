@@ -1,0 +1,6 @@
+address_id,street,parcel_number,local_number,zip_code,city
+1,Przemyslowa,43,NULL,24-320,Poniatowa
+2,Przemyslowa,81,22,87-100,Toruń
+3,Al. Gen. Wł. Sikorskiego,2,NULL,10-057,Olsztyn
+4,Smoluchowskiego,7,NULL,20-474,Lublin
+5,Na Oklu,22,NULL,34-300,Żywiec
