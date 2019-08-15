@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="6" author="Kamil Wawer">
+        <createTable tableName="address">
+            <column name="address_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="street" type="varchar(255)"/>
+            <column name="parcel_number" type="integer"/>
+            <column name="local_number" type="integer"/>
+            <column name="zip_code" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Kamil Wawer" id="7">
+        <dropColumn columnName="address"
+                    tableName="brewery"/>
+    </changeSet>
+
+    <changeSet author="Kamil Wawer" id="8">
+        <addColumn tableName="brewery">
+            <column name="address_id" type="numeric"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="9" author="Kamil Wawer">
+        <createIndex indexName="5039e7cde33371150f79d4bee5b3c15a" tableName="brewery">
+            <column name="address_id" />
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

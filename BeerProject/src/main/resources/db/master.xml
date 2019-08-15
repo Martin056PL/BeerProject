@@ -5,4 +5,6 @@
 
     <include file="version/001-CreateBasicTableStructure.xml" relativeToChangelogFile="true"/>
     <include file="version/003-AddUserTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

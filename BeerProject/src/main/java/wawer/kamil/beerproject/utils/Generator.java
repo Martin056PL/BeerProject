@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import wawer.kamil.beerproject.domain.Address;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.domain.StyleBeer;
@@ -88,7 +89,6 @@ public class Generator {
 
         Brewery brewery1 = Brewery.builder()
                 .name("Browar Zakładowy")
-                .address("Przemysłowa 43, 24-320 Poniatowa")
                 .email("kontakt@browarzakladowy.pl")
                 .website("http://browarzakladowy.pl")
                 .phoneNumber(123123123L)
@@ -105,7 +105,14 @@ public class Generator {
         brewery1.addBeer(beer21);
         brewery1.addBeer(beer22);
 
+        Address address1 = Address.builder()
+                .city("Poniatowa")
+                .parcelNumber(43)
+                .zipCode("24-320")
+                .street("Przemyslowa")
+                .build();
 
+        brewery1.setAddress(address1);
         repository.save(brewery1);
 
         Beer beer5 = Beer.builder()
@@ -131,11 +138,20 @@ public class Generator {
 
         Brewery brewery2 = Brewery.builder()
                 .name("Deer Bear")
-                .address("Kościuszki 81 lok. 22, 87-100 Toruń")
                 .email("browar@deerbear.pl")
                 .website("http://deerbear.pl/")
                 .phoneNumber(731533688L)
                 .build();
+
+        Address address2 = Address.builder()
+                .city("Toruń")
+                .localNumber(22)
+                .parcelNumber(81)
+                .zipCode("87-100")
+                .street("Przemyslowa")
+                .build();
+
+        brewery2.setAddress(address2);
 
         brewery2.addBeer(beer5);
         brewery2.addBeer(beer6);
@@ -166,11 +182,19 @@ public class Generator {
 
         Brewery brewery3 = Brewery.builder()
                 .name("Kormoran")
-                .address("Al. Gen. Wł. Sikorskiego 2 10-057 Olsztyn")
                 .email("biuro@browarkormoran.pl")
                 .website("https://browarkormoran.pl/")
                 .phoneNumber(600305620L)
                 .build();
+
+        Address address3 = Address.builder()
+                .city("Olsztyn")
+                .parcelNumber(2)
+                .zipCode("10-057")
+                .street("Al. Gen. Wł. Sikorskiego")
+                .build();
+
+        brewery3.setAddress(address3);
 
         brewery3.addBeer(beer8);
         brewery3.addBeer(beer9);
@@ -201,11 +225,19 @@ public class Generator {
 
         Brewery brewery4 = Brewery.builder()
                 .name("Dziki wschod")
-                .address("Smoluchowskiego 7 20-474 Lublin")
                 .email("kontakt@browardzikiwschod.pl")
                 .website("https://browardzikiwschod.pl")
                 .phoneNumber(506448234L)
                 .build();
+
+        Address address4 = Address.builder()
+                .city("Lublin")
+                .parcelNumber(7)
+                .zipCode("20-474")
+                .street("Smoluchowskiego")
+                .build();
+
+        brewery4.setAddress(address4);
 
         brewery4.addBeer(beer11);
         brewery4.addBeer(beer12);
@@ -236,11 +268,19 @@ public class Generator {
 
         Brewery brewery5 = Brewery.builder()
                 .name("Pinta")
-                .address("Na Oklu 22, 34-300 Żywiec ")
                 .email("pinta@browarpinta.pl")
                 .website("http://www.browarpinta.pl/")
                 .phoneNumber(514295723L)
                 .build();
+
+        Address address5 = Address.builder()
+                .city("Żywiec")
+                .parcelNumber(22)
+                .zipCode("34-300")
+                .street("Na Oklu")
+                .build();
+
+        brewery5.setAddress(address5);
 
         brewery5.addBeer(beer14);
         brewery5.addBeer(beer15);
