@@ -27,21 +27,21 @@ public class BeerController {
     //get methods
 
     @GetMapping("beer")
-    public ResponseEntity<Page<BeerDTO>> findAllBeers(Pageable pageable) {
-        Page<BeerDTO> resultListOfBeersDTO = service.findAllBeersPage(pageable).map(beer -> mapper.map(beer, BeerDTO.class));
-        return ResponseEntity.ok().body(resultListOfBeersDTO);
+    public ResponseEntity<Page<Beer>> findAllBeers(Pageable pageable) {
+        Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
+        return ResponseEntity.ok().body(resultListOfBeers);
+    }
+
+    @GetMapping("brewery/{breweryId}/beer")
+    public ResponseEntity<Page<Beer>> findAllBeersByBreweryId(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
+        Page<Beer> resultListOfBeers = service.findAllBeersByBreweryId(breweryId, pageable);
+        return ResponseEntity.ok().body(resultListOfBeers);
     }
 
     @GetMapping("beer/{beerId}")
     public ResponseEntity<BeerDTO> findProperBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
         BeerDTO resultBeerDTO = mapper.map(service.findBeerByBeerId(beerId), BeerDTO.class);
         return ResponseEntity.ok().body(resultBeerDTO);
-    }
-
-    @GetMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<Page<BeerDTO>> findAllBeersByBreweryId(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
-        Page<BeerDTO> resultListOfBeers = service.findAllBeersByBreweryId(breweryId, pageable).map(beer -> mapper.map(beer, BeerDTO.class));
-        return ResponseEntity.ok().body(resultListOfBeers);
     }
 
     @GetMapping("brewery/{breweryId}/beer/{beerId}")

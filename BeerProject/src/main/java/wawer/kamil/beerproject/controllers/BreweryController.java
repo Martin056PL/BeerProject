@@ -26,9 +26,9 @@ public class BreweryController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<BreweryDTO>> getAllBrewery(Pageable pageable) throws NoContentException {
-        Page<BreweryDTO> listOfBeers = service.getAllBrewery(pageable).map(brewery -> mapper.map(brewery, BreweryDTO.class));
-        return ResponseEntity.ok(listOfBeers);
+    public ResponseEntity<Page<Brewery>> getAllBrewery(Pageable pageable) throws NoContentException {
+        Page<Brewery> listOfBeers = service.getAllBrewery(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(listOfBeers);
     }
 
     @GetMapping("{breweryId}")

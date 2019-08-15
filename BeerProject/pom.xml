@@ -21,11 +21,12 @@
         <sonar.jdbc.password>admin</sonar.jdbc.password>
         <sonar.exclusions>
             **/domain/*.java,
+            **/configuration/*.java,
+            **/dto/*.java,
             **/exceptions/NoContentException.java,
             **/BeerProjectApplication.java,
             **/utils/Generator.java
         </sonar.exclusions>
-
         <sonar.dynamic>reuseReports</sonar.dynamic>
     </properties>
 
