@@ -34,8 +34,4 @@ public class Beer implements Serializable {
     @JoinColumn(name = "brewery_id")
     @JsonIgnore
     private Brewery brewery;
-
-    /*@ElementCollection(fetch = FetchType.LAZY)
-    private List<String> ingredients;*/
-
 }
