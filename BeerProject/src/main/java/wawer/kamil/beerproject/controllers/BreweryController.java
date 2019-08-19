@@ -31,9 +31,9 @@ public class BreweryController {
     @GetMapping
     public ResponseEntity<Page<Brewery>> getAllBrewery(Pageable pageable) throws NoContentException {
         log.debug("Endpoint address: 'brewery' with GET method, request parameter - pageable: {}", pageable);
-        Page<Brewery> listOfBeers = service.getAllBrewery(pageable);
-        log.debug("List of returned Id: {}", listOfBeers.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(listOfBeers);
+        Page<Brewery> listOfBrewery = service.getAllBrewery(pageable);
+        log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(listOfBrewery);
     }
 
     @GetMapping("{breweryId}")

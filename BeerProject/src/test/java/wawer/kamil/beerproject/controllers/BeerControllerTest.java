@@ -57,6 +57,7 @@ public class BeerControllerTest {
 
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_list() {
+        when(service.findAllBeersPage(pageable)).thenReturn(page);
         assertEquals(HttpStatus.OK, beerController.findAllBeers(pageable).getStatusCode());
     }
 
