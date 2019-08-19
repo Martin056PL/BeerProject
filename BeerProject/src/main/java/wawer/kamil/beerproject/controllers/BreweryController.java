@@ -38,7 +38,7 @@ public class BreweryController {
 
     @GetMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryid}' with GET method, request parameter - id: {}", breweryId);
+        log.debug("Endpoint address: 'brewery/{breweryId}' with GET method, request parameter - id: {}", breweryId);
         BreweryDTO brewery = mapper.map(service.getBreweryByBreweryId(breweryId), BreweryDTO.class);
         return ResponseEntity.ok().body(brewery);
     }
@@ -58,7 +58,7 @@ public class BreweryController {
 
     @PutMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @RequestBody BreweryDTO breweryDTO) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryid}' with PUT method, request parameter -brewery id: {};  brewery data: {}; {}; {}; {}"
+        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter -brewery id: {};  brewery data: {}; {}; {}; {}"
                 ,breweryId
                 ,breweryDTO.getName()
                 ,breweryDTO.getWebsite()
@@ -71,7 +71,7 @@ public class BreweryController {
 
     @DeleteMapping("{breweryId}")
     public ResponseEntity deleteBrewery(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryid}' with DELETE method, request parameter - id: {}", breweryId);
+        log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
