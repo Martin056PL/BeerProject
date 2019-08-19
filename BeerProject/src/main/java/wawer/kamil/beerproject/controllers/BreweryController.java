@@ -1,6 +1,7 @@
 package wawer.kamil.beerproject.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +16,13 @@ import wawer.kamil.beerproject.service.BreweryService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 @CrossOrigin
 @RequestMapping("brewery")
+@Slf4j(topic = "application.logger")
 public class BreweryController {
 
     private final BreweryService service;
@@ -27,7 +30,9 @@ public class BreweryController {
 
     @GetMapping
     public ResponseEntity<Page<Brewery>> getAllBrewery(Pageable pageable) throws NoContentException {
+        log.debug("Endpoint address: 'brewery' with GET method, request parameter - pageable: {}", pageable);
         Page<Brewery> listOfBeers = service.getAllBrewery(pageable);
+        log.debug("List of returned Id: {}", listOfBeers.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.OK).body(listOfBeers);
     }
 
@@ -46,7 +51,7 @@ public class BreweryController {
 
     @PutMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @RequestBody BreweryDTO breweryDTO) throws NoContentException {
-        Brewery result = service.updateBreweryById(breweryId,mapper.map(breweryDTO, Brewery.class));
+        Brewery result = service.updateBreweryById(breweryId, mapper.map(breweryDTO, Brewery.class));
         return ResponseEntity.ok().body(mapper.map(result, BreweryDTO.class));
     }
 
