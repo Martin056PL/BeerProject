@@ -22,7 +22,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> notFoundHandler(){
         exceptionFormat.setMessage("Your content haven't been found! Check request params!");
         exceptionFormat.setStatus(HttpStatus.NOT_FOUND);
-        log.debug("Feign Client throws this exception: {}", exceptionFormat);
+        log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
@@ -32,7 +32,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
                 + e.getCause().toString() + ",\n EXCEPTION MESSAGE: " + e.getMessage()
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
                 + "\n REQUEST ADDRESS: " + request.getRequestURL());
-        exceptionFormat.setMessage("Ups.... Something goes wrong...");
+        exceptionFormat.setMessage("Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL");
         exceptionFormat.setStatus(HttpStatus.I_AM_A_TEAPOT);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
