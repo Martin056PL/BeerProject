@@ -39,7 +39,7 @@ public class BeerController {
 
     @GetMapping("brewery/{breweryId}/beer")
     public ResponseEntity<Page<Beer>> findAllBeersByBreweryId(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with GET method, request parameter - breweryId: {}", breweryId);
+        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with GET method, request parameter - breweryId: {}; Pageable: {}", breweryId, pageable);
         Page<Beer> resultListOfBeers = service.findAllBeersByBreweryId(breweryId, pageable);
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
         return ResponseEntity.ok().body(resultListOfBeers);
@@ -63,7 +63,7 @@ public class BeerController {
 
     @PostMapping("beer")
     public ResponseEntity<BeerDTO> addNewBeer(@RequestBody BeerDTO beerDTO) throws URISyntaxException {
-        log.debug("Endpoint address: 'beer' with POST method, request parameter -  beerData: Name: {}; Style: {}; Alkohol: {}; Extract: {}"
+        log.debug("Endpoint address: 'beer' with POST method, request parameter -  beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , beerDTO.getName()
                 , beerDTO.getStyle()
                 , beerDTO.getAlcohol()
@@ -76,7 +76,7 @@ public class BeerController {
 
     @PostMapping("brewery/{breweryId}/beer")
     public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody BeerDTO beerDTO) throws NoContentException, URISyntaxException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with POST method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alkohol: {}; Extract: {}"
+        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with POST method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , breweryId
                 , beerDTO.getName()
                 , beerDTO.getStyle()

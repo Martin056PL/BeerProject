@@ -60,7 +60,6 @@ public class BeerServiceImpl implements BeerService {
                 log.debug("The beer base on id: {} has not been found", beerId);
                 throw new NoContentException();
             }
-
         } else {
             log.debug("The brewery base on id: {} has not been found", breweryId);
             throw new NoContentException();
@@ -81,7 +80,6 @@ public class BeerServiceImpl implements BeerService {
                     beer.setBrewery(brewery);
                     return beerRepository.save(beer);
                 }).orElseThrow(NoContentException::new);
-
     }
 
     //put beers

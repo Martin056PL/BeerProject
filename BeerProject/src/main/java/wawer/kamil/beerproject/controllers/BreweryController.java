@@ -58,7 +58,7 @@ public class BreweryController {
 
     @PutMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @RequestBody BreweryDTO breweryDTO) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter -brewery id: {};  brewery data: {}; {}; {}; {}"
+        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}"
                 ,breweryId
                 ,breweryDTO.getName()
                 ,breweryDTO.getWebsite()
