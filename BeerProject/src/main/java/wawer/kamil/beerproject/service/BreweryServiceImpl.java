@@ -16,6 +16,8 @@ public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository repository;
 
+    private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
+
     @Override
     public Page<Brewery> getAllBrewery(Pageable pageable) {
          return repository.findAll(pageable);
@@ -26,7 +28,7 @@ public class BreweryServiceImpl implements BreweryService {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             return repository.findByBreweryId(breweryId);
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
@@ -42,7 +44,7 @@ public class BreweryServiceImpl implements BreweryService {
             brewery.setBreweryId(breweryId);
             return repository.save(brewery);
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
@@ -52,7 +54,7 @@ public class BreweryServiceImpl implements BreweryService {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             repository.deleteById(breweryId);
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
