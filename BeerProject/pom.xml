@@ -21,6 +21,7 @@
         <sonar.jdbc.password>admin</sonar.jdbc.password>
         <sonar.exclusions>
             **/domain/*.java,
+            **/exceptions/*,
             **/configuration/*.java,
             **/dto/*.java,
             **/exceptions/NoContentException.java,

@@ -17,8 +17,12 @@ import wawer.kamil.beerproject.repositories.BreweryRepository;
 @Slf4j(topic = "application.logger")
 public class BeerServiceImpl implements BeerService {
 
+
     private final BeerRepository beerRepository;
     private final BreweryRepository breweryRepository;
+
+    private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
+    private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
 
     //get beers
 
@@ -32,7 +36,7 @@ public class BeerServiceImpl implements BeerService {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             return beerRepository.findBeerByBeerId(beerId);
         } else {
-            log.debug("The beer base on id: {} has not been found", beerId);
+            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
             throw new NoContentException();
         }
     }
@@ -45,7 +49,7 @@ public class BeerServiceImpl implements BeerService {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
             return beerRepository.findAllByBrewery(brewery, pageable);
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
@@ -57,11 +61,11 @@ public class BeerServiceImpl implements BeerService {
                 Brewery brewery = breweryRepository.findByBreweryId(breweryId);
                 return beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
             } else {
-                log.debug("The beer base on id: {} has not been found", beerId);
+                log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
                 throw new NoContentException();
             }
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
@@ -90,7 +94,7 @@ public class BeerServiceImpl implements BeerService {
             beer.setBeerId(beerId);
             return beerRepository.save(beer);
         } else {
-            log.debug("The beer base on id: {} has not been found", beerId);
+            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
             throw new NoContentException();
         }
     }
@@ -105,11 +109,11 @@ public class BeerServiceImpl implements BeerService {
                 beer.setExtract(updatedBeer.getExtract());
                 return beerRepository.save(beer);
             } else {
-                log.debug("The beer base on id: {} has not been found", beerId);
+                log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
                 throw new NoContentException();
             }
         } else {
-            log.debug("The brewery base on id: {} has not been found", breweryId);
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
         }
     }
@@ -121,7 +125,7 @@ public class BeerServiceImpl implements BeerService {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
         } else {
-            log.debug("The beer base on id: {} has not been found", beerId);
+            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
             throw new NoContentException();
         }
     }
