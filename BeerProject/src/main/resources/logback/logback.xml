@@ -1,0 +1,63 @@
+<configuration>
+    <appender name="DEBUG_LOG" class="ch.qos.logback.core.FileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>logs/current-logs/debug.log</file>
+        <encoder>
+            <pattern>[DEBUG_LOG] %d %-4relative %-5level %caller{1} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_LOG" class="ch.qos.logback.core.FileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>logs/current-logs/error.log</file>
+        <encoder>
+            <pattern>[ERROR_LOG] %d %-4relative %-5level %caller{1} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d %green([%thread]) %highlight(%level) %yellow(%logger{50}) - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="ROLLING_FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/last-7-days-logs/debug_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="application.logger" level="DEBUG" additivity="false">
+        <appender-ref ref="DEBUG_LOG"/>
+    </logger>
+
+    <logger name="application.logger" level="ERROR" additivity="false">
+        <appender-ref ref="ERROR_LOG"/>
+    </logger>
+
+    <logger name="application.logger" level="DEBUG" additivity="false">
+        <appender-ref ref="ROLLING_FILE_DEBUG"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
