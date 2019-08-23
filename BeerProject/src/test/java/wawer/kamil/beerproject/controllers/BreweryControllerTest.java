@@ -17,6 +17,7 @@ import wawer.kamil.beerproject.service.BreweryServiceImpl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,9 @@ public class BreweryControllerTest {
 
     @Mock
     Page<Brewery> page;
+
+    @Mock
+    List<Brewery> list;
 
     @Mock
     Pageable pageable;
@@ -48,21 +52,39 @@ public class BreweryControllerTest {
     private final static Long ID = 1L;
 
     @Test
-    public void should_return_response_entity_which_equals_to_controller_response_entity() throws NoContentException {
+    public void should_return_response_entity_which_equals_to_controller_response_entity_brewery_page() throws NoContentException {
         when(service.getAllBreweryPage(pageable)).thenReturn(page);
         assertEquals(ResponseEntity.ok().body(page), controller.getAllBreweryPage(pageable));
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code() throws NoContentException {
+    public void should_return_status_code_which_equals_to_controller_status_code_brewery_page() throws NoContentException {
         when(service.getAllBreweryPage(pageable)).thenReturn(page);
         assertEquals(HttpStatus.OK, controller.getAllBreweryPage(pageable).getStatusCode());
     }
 
     @Test
-    public void should_return_body_response_which_equals_to_controller_body_response() throws NoContentException {
+    public void should_return_body_response_which_equals_to_controller_body_response_brewery_page() throws NoContentException {
         when(service.getAllBreweryPage(pageable)).thenReturn(page);
         assertEquals(ResponseEntity.ok().body(page).getBody(), controller.getAllBreweryPage(pageable).getBody());
+    }
+
+    @Test
+    public void should_return_response_entity_which_equals_to_controller_response_entity_brewery_list(){
+        when(service.getAllBreweryList()).thenReturn(list);
+        assertEquals(ResponseEntity.status(HttpStatus.OK).body(list), controller.getAllBreweryList());
+    }
+
+    @Test
+    public void hould_return_status_code_which_equals_to_controller_status_code_brewery_list(){
+        when(service.getAllBreweryList()).thenReturn(list);
+        assertEquals(ResponseEntity.status(HttpStatus.OK).body(list), controller.getAllBreweryList());
+    }
+
+    @Test
+    public void should_return_body_response_which_equals_to_controller_body_response_brewery_list(){
+        when(service.getAllBreweryList()).thenReturn(list);
+        assertEquals(ResponseEntity.status(HttpStatus.OK).body(list), controller.getAllBreweryList());
     }
 
     @Test

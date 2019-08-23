@@ -34,7 +34,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<Beer> findAllBeersList(){
+    public List<Beer> findAllBeersList() {
         return beerRepository.findAll();
     }
 

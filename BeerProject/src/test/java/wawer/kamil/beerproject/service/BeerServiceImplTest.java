@@ -48,6 +48,12 @@ public class BeerServiceImplTest {
     }
 
     @Test
+    public void verify_find_all_beers_list(){
+        service.findAllBeersList();
+        verify(beerRepository).findAll();
+    }
+
+    @Test
     public void verify_find_beer_by_beer_id_when_id_exists() throws NoContentException {
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         service.findBeerByBeerId(beerID);
@@ -73,6 +79,20 @@ public class BeerServiceImplTest {
     public void verify_find_all_beers_by_brewery_id_when_id_do_not_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
         service.findAllBeersByBreweryIdPage(breweryID, pageable);
+    }
+
+    @Test
+    public void verify_find_all_beers_by_brewery_id_list_when_id_exists() throws NoContentException {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
+        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
+        service.findAllBeersByBreweryIdList(breweryID);
+        verify(beerRepository).findAllByBreweryList(brewery);
+    }
+
+    @Test(expected = NoContentException.class)
+    public void verify_find_all_beers_by_brewery_id_list_when_id_do_not_exists() throws NoContentException {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
+        service.findAllBeersByBreweryIdList(breweryID);
     }
 
     @Test

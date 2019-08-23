@@ -31,9 +31,15 @@ public class BreweryServiceImplTest {
     private final static Long ID = 1L;
 
     @Test
-    public void verify_get_all_brewery(){
+    public void verify_get_all_breweryPage(){
         service.getAllBreweryPage(pageable);
         verify(repository).findAll(pageable);
+    }
+
+    @Test
+    public void verify_get_all_breweryList(){
+        service.getAllBreweryList();
+        verify(repository).findAll();
     }
 
     @Test
@@ -42,6 +48,8 @@ public class BreweryServiceImplTest {
         service.getBreweryByBreweryId(ID);
         verify(repository).findByBreweryId(ID);
     }
+
+
 
     @Test(expected = NoContentException.class)
     public void verify_get_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {

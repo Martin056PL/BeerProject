@@ -39,11 +39,11 @@ public class BeerController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<BeerDTO>> findAllBeersList() {
+    public ResponseEntity<List<Beer>> findAllBeersList() {
         log.debug("Endpoint address: 'beer/list' with GET method");
         List<Beer> resultListOfBeers = service.findAllBeersList();
         log.debug("List of returned Id: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
-        return ResponseEntity.ok().body(resultListOfBeers.stream().map(beer -> mapper.map(beer, BeerDTO.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(resultListOfBeers);
     }
 
     @GetMapping("brewery/{breweryId}/beer")

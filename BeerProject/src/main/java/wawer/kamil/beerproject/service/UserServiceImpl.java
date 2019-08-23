@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         if (repository.existsByUserId(userId)) {
             repository.deleteById(userId);
         } else {
-            log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND,userId);
+            log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);
             throw new NoContentException();
         }
     }
