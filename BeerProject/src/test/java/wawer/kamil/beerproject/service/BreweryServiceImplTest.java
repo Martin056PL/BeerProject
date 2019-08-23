@@ -89,5 +89,4 @@ public class BreweryServiceImplTest {
         service.deleteBreweryByBreweryId(ID);
         verify(repository).deleteById(ID);
     }
-
 }

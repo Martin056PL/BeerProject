@@ -76,7 +76,7 @@ public class BreweryControllerTest {
     }
 
     @Test
-    public void hould_return_status_code_which_equals_to_controller_status_code_brewery_list(){
+    public void should_return_status_code_which_equals_to_controller_status_code_brewery_list(){
         when(service.getAllBreweryList()).thenReturn(list);
         assertEquals(ResponseEntity.status(HttpStatus.OK).body(list), controller.getAllBreweryList());
     }
@@ -128,7 +128,7 @@ public class BreweryControllerTest {
     }
 
     @Test
-    public void should_status_be_ok_and_be_equal_to_status_retured_by_controller() throws NoContentException {
+    public void should_status_be_ok_and_be_equal_to_status_returned_by_controller() throws NoContentException {
         when(mapper.map(breweryDTO, Brewery.class)).thenReturn(brewery);
         when(service.updateBreweryById(ID, brewery)).thenReturn(brewery);
         assertEquals(HttpStatus.OK, controller.updateBrewery(ID, breweryDTO).getStatusCode());
