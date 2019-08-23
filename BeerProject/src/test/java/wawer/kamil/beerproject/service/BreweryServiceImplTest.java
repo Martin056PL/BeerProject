@@ -49,8 +49,6 @@ public class BreweryServiceImplTest {
         verify(repository).findByBreweryId(ID);
     }
 
-
-
     @Test(expected = NoContentException.class)
     public void verify_get_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(false);

@@ -36,12 +36,11 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDTO>> findAllUsersList() {
+    public ResponseEntity<List<User>> findAllUsersList() {
         log.debug("Endpoint address: 'users/list' with GET method");
         List<User> resultList = service.findAllUsersList();
         log.debug("List of returned Id: {}", resultList.stream().map(User::getUserId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(resultList.stream()
-                .map(user -> mapper.map(user, UserDTO.class)).collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(resultList);
     }
 
     @GetMapping("/{userId}")
