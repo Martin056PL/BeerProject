@@ -1,0 +1,6 @@
+brewery_id,name,email,address,phone_number,website
+1,Browar Zakładowy,kontakt@browarzakladowy.pl,"Przemysłowa 43, 24-320 Poniatowa",123123123,http://browarzakladowy.pl
+2,Deer Bear,browar@deerbear.pl,"Kościuszki 81 lok. 22, 87-100 Toruń",731533688,http://deerbear.pl/
+3,Kormoran,biuro@browarkormoran.pl,Al. Gen. Wł. Sikorskiego 2 10-057 Olsztyn,600305620,https://browarkormoran.pl/
+4,Dziki wschod,kontakt@browardzikiwschod.pl,Smoluchowskiego 7 20-474 Lublin,506448234,https://browardzikiwschod.pl
+5,Pinta,pinta@browarpinta.pl,"Na Oklu 22, 34-300 Żywiec ",514295723,http://www.browarpinta.pl/

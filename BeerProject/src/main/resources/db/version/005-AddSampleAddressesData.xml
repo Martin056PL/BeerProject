@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Kamil Wawer" id="10">
+        <loadUpdateData primaryKey="address_id"
+                        file="classpath:/db/samples/001-addressSamples.csv"
+                        tableName="address">
+            <column name="address_id" type="numeric" header="address_id"/>
+            <column name="street" type="string" header="street"/>
+            <column name="parcel_number" type="numeric" header="parcel_number"/>
+            <column name="local_number" type="numeric" header="local_number"/>
+            <column name="zip_code" type="string" header="zip_code"/>
+            <column name="city" type="string" header="city"/>
+        </loadUpdateData>
+    </changeSet>
+
+    <changeSet author="Kamil Wawer" id="11">
+        <loadUpdateData primaryKey="brewery_id"
+                        file="classpath:/db/samples/002-brewerySamples.csv"
+                        tableName="brewery">
+            <column name="brewery_id" type="numeric" header="brewery_id"/>
+            <column name="name" type="string" header="name"/>
+            <column name="email" type="string" header="email"/>
+            <column name="address_id" type="numeric" header="address_id"/>
+            <column name="phone_number" type="numeric" header="phone_number"/>
+            <column name="website" type="string" header="website"/>
+        </loadUpdateData>
+
+    </changeSet>
+</databaseChangeLog>
