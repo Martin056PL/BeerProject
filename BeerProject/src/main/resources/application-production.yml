@@ -5,8 +5,6 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  liquibase:
-    change-log: classpath:db/master.xml
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
@@ -15,6 +13,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+  liquibase:
+    change-log: classpath:db/master.xml
 
   h2:
     console:
