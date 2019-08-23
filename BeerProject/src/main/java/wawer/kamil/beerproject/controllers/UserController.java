@@ -76,7 +76,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) throws NoContentException {
+    public ResponseEntity deleteUser(@PathVariable Long userId) throws NoContentException {
         log.debug("Endpoint address: 'user/{userId}' with DELETE method, request parameter - id: {}", userId);
         service.deleteUser(userId);
         log.debug("Deleted user with Id: {}", userId);

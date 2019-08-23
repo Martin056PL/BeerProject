@@ -52,25 +52,25 @@ public class BeerControllerTest {
     @Test
     public void should_return_response_body_equal_to_controller_response_with_some_beer_list() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeers(pageable).getBody());
+        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersPage(pageable).getBody());
     }
 
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_list() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, beerController.findAllBeers(pageable).getStatusCode());
+        assertEquals(HttpStatus.OK, beerController.findAllBeersPage(pageable).getStatusCode());
     }
 
     @Test
     public void should_return_response_body_equal_to_controller_response_with_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryId(breweryID, pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersByBreweryId(breweryID, pageable).getBody());
+        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
+        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getBody());
     }
 
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryId(breweryID, pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryId(breweryID, pageable).getStatusCode());
+        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
+        assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getStatusCode());
     }
 
     //get by id
@@ -114,7 +114,7 @@ public class BeerControllerTest {
     //post
 
     @Test
-    public void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer() throws URISyntaxException, URISyntaxException {
+    public void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer()throws URISyntaxException {
         when(service.addNewBeerToRepository(mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
         assertEquals(beerDTO, beerController.addNewBeer(beerDTO).getBody());
