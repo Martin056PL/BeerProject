@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.utils;
+package wawer.kamil.beerproject.generators;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
