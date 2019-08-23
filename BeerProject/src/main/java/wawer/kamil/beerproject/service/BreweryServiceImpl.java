@@ -9,6 +9,8 @@ import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j(topic = "application.logger")
@@ -19,8 +21,13 @@ public class BreweryServiceImpl implements BreweryService {
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
 
     @Override
-    public Page<Brewery> getAllBrewery(Pageable pageable) {
-         return repository.findAll(pageable);
+    public Page<Brewery> getAllBreweryPage(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public List<Brewery> getAllBreweryList() {
+        return repository.findAll();
     }
 
     @Override

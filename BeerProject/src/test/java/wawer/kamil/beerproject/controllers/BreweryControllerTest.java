@@ -49,20 +49,20 @@ public class BreweryControllerTest {
 
     @Test
     public void should_return_response_entity_which_equals_to_controller_response_entity() throws NoContentException {
-        when(service.getAllBrewery(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page), controller.getAllBrewery(pageable));
+        when(service.getAllBreweryPage(pageable)).thenReturn(page);
+        assertEquals(ResponseEntity.ok().body(page), controller.getAllBreweryPage(pageable));
     }
 
     @Test
     public void should_return_status_code_which_equals_to_controller_status_code() throws NoContentException {
-        when(service.getAllBrewery(pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, controller.getAllBrewery(pageable).getStatusCode());
+        when(service.getAllBreweryPage(pageable)).thenReturn(page);
+        assertEquals(HttpStatus.OK, controller.getAllBreweryPage(pageable).getStatusCode());
     }
 
     @Test
     public void should_return_body_response_which_equals_to_controller_body_response() throws NoContentException {
-        when(service.getAllBrewery(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), controller.getAllBrewery(pageable).getBody());
+        when(service.getAllBreweryPage(pageable)).thenReturn(page);
+        assertEquals(ResponseEntity.ok().body(page).getBody(), controller.getAllBreweryPage(pageable).getBody());
     }
 
     @Test

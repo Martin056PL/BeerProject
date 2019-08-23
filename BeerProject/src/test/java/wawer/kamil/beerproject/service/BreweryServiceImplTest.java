@@ -32,7 +32,7 @@ public class BreweryServiceImplTest {
 
     @Test
     public void verify_get_all_brewery(){
-        service.getAllBrewery(pageable);
+        service.getAllBreweryPage(pageable);
         verify(repository).findAll(pageable);
     }
 

@@ -16,6 +16,7 @@ import wawer.kamil.beerproject.service.BreweryService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,11 +30,20 @@ public class BreweryController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<Brewery>> getAllBrewery(Pageable pageable) throws NoContentException {
+    public ResponseEntity<Page<Brewery>> getAllBreweryPage(Pageable pageable) throws NoContentException {
         log.debug("Endpoint address: 'brewery' with GET method, request parameter - pageable: {}", pageable);
-        Page<Brewery> listOfBrewery = service.getAllBrewery(pageable);
+        Page<Brewery> listOfBrewery = service.getAllBreweryPage(pageable);
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.OK).body(listOfBrewery);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<BreweryDTO>> getAllBreweryList(){
+        log.debug("Endpoint address: 'brewery/list' with GET method");
+        List<Brewery>listOfBrewery = service.getAllBreweryList();
+        log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(listOfBrewery.stream()
+        .map(brewery -> mapper.map(brewery, BreweryDTO.class)).collect(Collectors.toList()));
     }
 
     @GetMapping("{breweryId}")

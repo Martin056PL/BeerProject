@@ -5,9 +5,13 @@ import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 
+import java.util.List;
+
 public interface BreweryService {
 
-    Page<Brewery> getAllBrewery(Pageable pageable) throws NoContentException;
+    Page<Brewery> getAllBreweryPage(Pageable pageable) throws NoContentException;
+
+    List<Brewery> getAllBreweryList();
 
     Brewery getBreweryByBreweryId(Long breweryId) throws NoContentException;
 
