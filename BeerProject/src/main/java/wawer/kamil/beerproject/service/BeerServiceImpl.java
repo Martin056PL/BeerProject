@@ -54,7 +54,7 @@ public class BeerServiceImpl implements BeerService {
     public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-            return beerRepository.findAllByBreweryPage(brewery, pageable);
+            return beerRepository.findAllByBrewery(brewery, pageable);
         } else {
             log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();
@@ -65,7 +65,7 @@ public class BeerServiceImpl implements BeerService {
     public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-            return beerRepository.findAllByBreweryList(brewery);
+            return beerRepository.findAllByBrewery(brewery);
         } else {
             log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();

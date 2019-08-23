@@ -28,4 +28,7 @@ public class User {
 
     @Column(name = "phone_number")
     private Long phoneNumber;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 }

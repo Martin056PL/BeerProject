@@ -72,7 +72,7 @@ public class BeerServiceImplTest {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
         service.findAllBeersByBreweryIdPage(breweryID, pageable);
-        verify(beerRepository).findAllByBreweryPage(brewery, pageable);
+        verify(beerRepository).findAllByBrewery(brewery, pageable);
     }
 
     @Test(expected = NoContentException.class)
@@ -86,7 +86,7 @@ public class BeerServiceImplTest {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
         service.findAllBeersByBreweryIdList(breweryID);
-        verify(beerRepository).findAllByBreweryList(brewery);
+        verify(beerRepository).findAllByBrewery(brewery);
     }
 
     @Test(expected = NoContentException.class)

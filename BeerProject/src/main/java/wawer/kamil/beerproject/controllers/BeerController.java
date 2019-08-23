@@ -38,7 +38,7 @@ public class BeerController {
         return ResponseEntity.ok().body(resultListOfBeers);
     }
 
-    @GetMapping("/list")
+    @GetMapping("beer/list")
     public ResponseEntity<List<Beer>> findAllBeersList() {
         log.debug("Endpoint address: 'beer/list' with GET method");
         List<Beer> resultListOfBeers = service.findAllBeersList();
