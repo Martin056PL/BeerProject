@@ -16,6 +16,7 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerServiceImpl;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -31,6 +32,9 @@ public class BeerControllerTest {
 
     @Mock
     Page<Beer> page;
+
+    @Mock
+    List<Beer> list;
 
     @Mock
     Beer beer;
@@ -50,27 +54,53 @@ public class BeerControllerTest {
     //get all
 
     @Test
-    public void should_return_response_body_equal_to_controller_response_with_some_beer_list() {
+    public void should_return_response_body_equal_to_controller_response_with_some_beer_page() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeers(pageable).getBody());
+        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersPage(pageable).getBody());
     }
 
     @Test
-    public void should_return_status_ok_when_controller_returns_some_beer_list() {
+    public void should_return_status_ok_when_controller_returns_some_beer_page() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, beerController.findAllBeers(pageable).getStatusCode());
+        assertEquals(HttpStatus.OK, beerController.findAllBeersPage(pageable).getStatusCode());
     }
+
+    @Test
+    public void should_return_response_body_equal_to_controller_response_with_some_beer_list(){
+        when(service.findAllBeersList()).thenReturn(list);
+        assertEquals(ResponseEntity.ok().body(list).getBody(),beerController.findAllBeersList().getBody());
+    }
+
+    @Test
+    public void  should_return_status_ok_when_controller_returns_some_beer_list() {
+        when(service.findAllBeersList()).thenReturn(list);
+        assertEquals(HttpStatus.OK,beerController.findAllBeersList().getStatusCode());
+    }
+
+
 
     @Test
     public void should_return_response_body_equal_to_controller_response_with_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryId(breweryID, pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersByBreweryId(breweryID, pageable).getBody());
+        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
+        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getBody());
+    }
+
+    @Test
+    public void should_return_status_ok_when_controller_returns_some_beer_page_base_on_brewery_id() throws NoContentException {
+        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
+        assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getStatusCode());
+    }
+
+    @Test
+    public void should_return_response_basdody_equal_to_controller_response_with_some_beer_list_base_on_brewery_id() throws NoContentException {
+        when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(list);
+        assertEquals(ResponseEntity.ok().body(list).getBody(), beerController.findAllBeersByBreweryIdList(breweryID).getBody());
     }
 
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryId(breweryID, pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryId(breweryID, pageable).getStatusCode());
+        when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(list);
+        assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryIdList(breweryID).getStatusCode());
     }
 
     //get by id
@@ -96,25 +126,25 @@ public class BeerControllerTest {
     @Test
     public void should_return_response_body_equal_to_controller_response_with_some_beer_base_on_brewery_id_and_beer_id() throws NoContentException {
         when(mapper.map(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID), BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(), beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID,beerID).getBody());
+        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(), beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID, beerID).getBody());
     }
 
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_base_on_brewery_id_and_beer_id() throws NoContentException {
         when(mapper.map(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID), BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(HttpStatus.OK, beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID,beerID).getStatusCode());
+        assertEquals(HttpStatus.OK, beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID, beerID).getStatusCode());
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_controller_did_not_found_beer_base_on_brewery_id_or_beer_id() throws NoContentException {
-        when(service.findProperBeerByBreweryIdAndBeerId(breweryID,beerID)).thenThrow(NoContentException.class);
-        beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID,beerID);
+        when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenThrow(NoContentException.class);
+        beerController.findProperBeerBaseOnBreweryIdAndBeerId(breweryID, beerID);
     }
 
     //post
 
     @Test
-    public void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer() throws URISyntaxException, URISyntaxException {
+    public void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer() throws URISyntaxException {
         when(service.addNewBeerToRepository(mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
         assertEquals(beerDTO, beerController.addNewBeer(beerDTO).getBody());
@@ -132,7 +162,7 @@ public class BeerControllerTest {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(),beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beerDTO).getBody());
+        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(), beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerDTO).getBody());
     }
 
     @Test
@@ -140,14 +170,14 @@ public class BeerControllerTest {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(HttpStatus.CREATED,beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beerDTO).getStatusCode());
+        assertEquals(HttpStatus.CREATED, beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerDTO).getStatusCode());
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_controller_did_not_found_brewery_base_on_brewery_id_during_add_new_beer() throws NoContentException, URISyntaxException {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, mapper.map(beerDTO, Beer.class))).thenThrow(NoContentException.class);
-        beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID,beerDTO);
+        beerController.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerDTO);
     }
 
     //put
@@ -180,7 +210,7 @@ public class BeerControllerTest {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(),beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID,beerID,beerDTO).getBody());
+        assertEquals(ResponseEntity.ok().body(beerDTO).getBody(), beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID, beerID, beerDTO).getBody());
     }
 
     @Test
@@ -188,14 +218,14 @@ public class BeerControllerTest {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, mapper.map(beerDTO, Beer.class))).thenReturn(beer);
         when(mapper.map(beer, BeerDTO.class)).thenReturn(beerDTO);
-        assertEquals(HttpStatus.OK,beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID,beerID,beerDTO).getStatusCode());
+        assertEquals(HttpStatus.OK, beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID, beerID, beerDTO).getStatusCode());
     }
 
     @Test(expected = NoContentException.class)
     public void should_throw_exception_when_there_is_no_beer_base_on_beer_id_or_brewery_id_during_updating_beer() throws NoContentException {
         when(mapper.map(beerDTO, Beer.class)).thenReturn(beer);
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, mapper.map(beerDTO, Beer.class))).thenThrow(NoContentException.class);
-        beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID,beerID,beerDTO);
+        beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID, beerID, beerDTO);
     }
 
     //delete
@@ -207,6 +237,6 @@ public class BeerControllerTest {
 
     @Test
     public void should_return_status_no_content_when_controller_successfully_delete_beer_base_on_beer_id_and_brewery_id() throws NoContentException {
-        assertEquals(ResponseEntity.status(HttpStatus.NO_CONTENT).build(),beerController.deleteBeerByBreweryIdAndBeerId(breweryID,beerID));
+        assertEquals(ResponseEntity.status(HttpStatus.NO_CONTENT).build(), beerController.deleteBeerByBreweryIdAndBeerId(breweryID, beerID));
     }
 }

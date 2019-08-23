@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
 
+import java.util.List;
+
 @Repository
 public interface BeerRepository extends JpaRepository<Beer, Long> {
 
@@ -14,7 +16,9 @@ public interface BeerRepository extends JpaRepository<Beer, Long> {
 
     Page<Beer> findAllByBrewery(Brewery brewery, Pageable pageable);
 
-    Beer findBeerByBreweryAndBeerId(Brewery brewery ,Long beerId);
+    List<Beer> findAllByBrewery(Brewery brewery);
+
+    Beer findBeerByBreweryAndBeerId(Brewery brewery, Long beerId);
 
     Beer findBeerByBeerId(Long beerId);
 

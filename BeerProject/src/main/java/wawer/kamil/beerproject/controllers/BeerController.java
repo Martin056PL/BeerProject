@@ -15,6 +15,7 @@ import wawer.kamil.beerproject.service.BeerService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -30,17 +31,33 @@ public class BeerController {
     //get methods
 
     @GetMapping("beer")
-    public ResponseEntity<Page<Beer>> findAllBeers(Pageable pageable) {
+    public ResponseEntity<Page<Beer>> findAllBeersPage(Pageable pageable) {
         log.debug("Endpoint address: 'beer' with GET method, request parameter - pageable: {}", pageable);
         Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
         log.debug("List of returned Id: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
         return ResponseEntity.ok().body(resultListOfBeers);
     }
 
+    @GetMapping("beer/list")
+    public ResponseEntity<List<Beer>> findAllBeersList() {
+        log.debug("Endpoint address: 'beer/list' with GET method");
+        List<Beer> resultListOfBeers = service.findAllBeersList();
+        log.debug("List of returned Id: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(resultListOfBeers);
+    }
+
     @GetMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<Page<Beer>> findAllBeersByBreweryId(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
+    public ResponseEntity<Page<Beer>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer' with GET method, request parameter - breweryId: {}; Pageable: {}", breweryId, pageable);
-        Page<Beer> resultListOfBeers = service.findAllBeersByBreweryId(breweryId, pageable);
+        Page<Beer> resultListOfBeers = service.findAllBeersByBreweryIdPage(breweryId, pageable);
+        log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(resultListOfBeers);
+    }
+
+    @GetMapping("brewery/{breweryId}/beer/list")
+    public ResponseEntity<List<Beer>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws NoContentException {
+        log.debug("Endpoint address: 'brewery/{breweryId}/beer/list' with GET method, request parameter - breweryId: {}", breweryId);
+        List<Beer> resultListOfBeers = service.findAllBeersByBreweryIdList(breweryId);
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
         return ResponseEntity.ok().body(resultListOfBeers);
     }

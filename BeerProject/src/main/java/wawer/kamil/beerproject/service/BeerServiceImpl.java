@@ -11,6 +11,8 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -32,6 +34,11 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    public List<Beer> findAllBeersList() {
+        return beerRepository.findAll();
+    }
+
+    @Override
     public Beer findBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             return beerRepository.findBeerByBeerId(beerId);
@@ -44,10 +51,21 @@ public class BeerServiceImpl implements BeerService {
     //get beers by breweryID
 
     @Override
-    public Page<Beer> findAllBeersByBreweryId(Long breweryId, Pageable pageable) throws NoContentException {
+    public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
             return beerRepository.findAllByBrewery(brewery, pageable);
+        } else {
+            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
+            throw new NoContentException();
+        }
+    }
+
+    @Override
+    public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException {
+        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
+            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
+            return beerRepository.findAllByBrewery(brewery);
         } else {
             log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
             throw new NoContentException();

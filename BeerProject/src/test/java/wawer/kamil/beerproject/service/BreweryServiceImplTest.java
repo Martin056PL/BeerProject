@@ -31,9 +31,15 @@ public class BreweryServiceImplTest {
     private final static Long ID = 1L;
 
     @Test
-    public void verify_get_all_brewery(){
-        service.getAllBrewery(pageable);
+    public void verify_get_all_breweryPage(){
+        service.getAllBreweryPage(pageable);
         verify(repository).findAll(pageable);
+    }
+
+    @Test
+    public void verify_get_all_breweryList(){
+        service.getAllBreweryList();
+        verify(repository).findAll();
     }
 
     @Test
@@ -83,5 +89,4 @@ public class BreweryServiceImplTest {
         service.deleteBreweryByBreweryId(ID);
         verify(repository).deleteById(ID);
     }
-
 }
