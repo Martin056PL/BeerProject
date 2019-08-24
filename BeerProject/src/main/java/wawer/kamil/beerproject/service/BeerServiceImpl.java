@@ -180,7 +180,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
-        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
+        Beer beer = beerRepository.findBeerByBeerId(beerId);
         Byte[] byteObject = new Byte[file.getBytes().length];
         int i = 0;
         for (byte b : file.getBytes()) {
