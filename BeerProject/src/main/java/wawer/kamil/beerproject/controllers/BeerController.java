@@ -5,14 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -150,5 +154,16 @@ public class BeerController {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with DELETE method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         service.deleteBeerByBreweryIdAndBeerId(breweryId, beerId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId
+                                             ,@PathVariable Long beerId
+                                             ,@RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
+
+       // BeerDTO resultBeerDTO = mapper.map(service.findProperBeerByBreweryIdAndBeerId(breweryId, beerId), BeerDTO.class);
+        service.uploadBeerImage(file);
+
+        return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
     }
 }

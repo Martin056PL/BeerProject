@@ -33,3 +33,4 @@ build/
 .idea/*
 
 logs/*
+/src/main/resources/images/*
