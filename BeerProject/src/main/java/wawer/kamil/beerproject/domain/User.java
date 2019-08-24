@@ -3,13 +3,16 @@ package wawer.kamil.beerproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -2398213833013356134L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

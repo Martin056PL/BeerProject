@@ -34,4 +34,8 @@ public class Beer implements Serializable {
     @JoinColumn(name = "brewery_id")
     @JsonIgnore
     private Brewery brewery;
+
+    @Lob
+    @Column(name = "image", columnDefinition = "mediumblob")
+    private Byte [] image;
 }

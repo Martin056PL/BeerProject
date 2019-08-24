@@ -14,6 +14,7 @@
             <column name="style" type="varchar(255)"/>
             <column name="extract" type="double"/>
             <column name="alcohol" type="double"/>
+            <column name="image" type="MEDIUMBLOB"/>
 
         </createTable>
     </changeSet>
