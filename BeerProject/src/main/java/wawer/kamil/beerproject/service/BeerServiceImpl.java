@@ -14,6 +14,7 @@ import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -168,16 +169,18 @@ public class BeerServiceImpl implements BeerService {
     public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
         String path = "src/main/resources/images/.";
         File createdFile = new File(path.substring(0, path.length()-1) + file.getOriginalFilename());
-        createdFile.createNewFile();
-        FileOutputStream outputStream = new FileOutputStream(createdFile);
-        outputStream.write(file.getBytes());
-        outputStream.close();
+        try(FileOutputStream outputStream = new FileOutputStream(createdFile)) {
+            outputStream.write(file.getBytes());
+        } catch (FileNotFoundException e) {
+            log.debug(e.getMessage());
+        }
+
     }
 
     @Override
     @Transactional
-    public void setBeerImageToProperBeerBaseOnBeerId(Long beerId, MultipartFile file) throws IOException {
-        Beer beer = beerRepository.findBeerByBeerId(beerId);
+    public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
+        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         Byte[] byteObject = new Byte[file.getBytes().length];
         int i = 0;
         for (byte b : file.getBytes()) {

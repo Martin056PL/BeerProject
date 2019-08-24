@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
@@ -37,5 +38,6 @@ public interface BeerService {
 
     void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException;
 
-    void setBeerImageToProperBeerBaseOnBeerId(Long beerId, MultipartFile file) throws IOException;
+    @Transactional
+    void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException;
 }
