@@ -42,5 +42,5 @@ public interface BeerService {
     @Transactional
     void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException;
 
-    byte [] downloadImageFromDb(Long beerId) throws IOException;
+    byte[] downloadImageFromDb(Long breweryID, Long beerId) throws NoContentException;
 }

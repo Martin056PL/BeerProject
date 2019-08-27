@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 
 
@@ -169,8 +170,8 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
         String path = "src/main/resources/images/.";
-        File createdFile = new File(path.substring(0, path.length()-1) + file.getOriginalFilename());
-        try(FileOutputStream outputStream = new FileOutputStream(createdFile)) {
+        File createdFile = new File(path.substring(0, path.length() - 1) + file.getOriginalFilename());
+        try (FileOutputStream outputStream = new FileOutputStream(createdFile)) {
             outputStream.write(file.getBytes());
         } catch (FileNotFoundException e) {
             log.debug(e.getMessage());
@@ -181,20 +182,37 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
-        Beer beer = beerRepository.findBeerByBeerId(beerId);
-        byte[] byteObject = new byte[file.getBytes().length];
-        int i = 0;
-        for (byte b : file.getBytes()) {
-            byteObject[i++] = b;
+        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
+            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
+            if (beerRepository.existsBeerByBeerId(beerId)) {
+                Beer beer = beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
+                byte[] byteObject = new byte[file.getBytes().length];
+                int i = 0;
+                for (byte b : file.getBytes()) {
+                    byteObject[i++] = b;
+                }
+                beer.setImage(byteObject);
+                beerRepository.save(beer);
+            } else {
+                throw new NoContentException();
+            }
+        } else {
+            throw new NoContentException();
         }
-        beer.setImage(byteObject);
-        beerRepository.save(beer);
     }
 
     @Override
-    public byte [] downloadImageFromDb(Long beerId) throws IOException {
-        Beer beer = beerRepository.findBeerByBeerId(beerId);
-        byte [] imageInBytes = beer.getImage();
-        return imageInBytes;
+    public byte[] downloadImageFromDb(Long breweryId, Long beerId) throws NoContentException {
+        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
+            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
+            if (beerRepository.existsBeerByBeerId(beerId)) {
+                Beer beer = beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
+                return beer.getImage();
+            } else {
+                throw new NoContentException();
+            }
+        } else {
+            throw new NoContentException();
+        }
     }
 }
