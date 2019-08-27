@@ -168,9 +168,13 @@ public class BeerServiceImpl implements BeerService {
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
-        byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
-        beer.setBeerImage(imageAsByteArray);
-        beerRepository.save(beer);
+        if (imageUpload.validateSizeAndTypeOfFile(file)) {
+            byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
+            beer.setBeerImage(imageAsByteArray);
+            beerRepository.save(beer);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override

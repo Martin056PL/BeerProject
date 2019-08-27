@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
@@ -76,9 +75,13 @@ public class BreweryServiceImpl implements BreweryService {
     @Transactional
     public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId,  MultipartFile file) throws IOException, NoContentException {
         Brewery brewery = getBreweryByBreweryId(breweryId);
-        byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
-        brewery.setBreweryImage(imageAsByteArray);
-        repository.save(brewery);
+        if(imageUpload.validateSizeAndTypeOfFile(file)) {
+            byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
+            brewery.setBreweryImage(imageAsByteArray);
+            repository.save(brewery);
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
