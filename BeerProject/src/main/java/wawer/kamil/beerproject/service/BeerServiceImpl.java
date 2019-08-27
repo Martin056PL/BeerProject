@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -182,37 +183,19 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
-        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
-            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-            if (beerRepository.existsBeerByBeerId(beerId)) {
-                Beer beer = beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
-                byte[] byteObject = new byte[file.getBytes().length];
-                int i = 0;
-                for (byte b : file.getBytes()) {
-                    byteObject[i++] = b;
-                }
-                beer.setImage(byteObject);
-                beerRepository.save(beer);
-            } else {
-                throw new NoContentException();
-            }
-        } else {
-            throw new NoContentException();
+        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
+        byte[] byteObject = new byte[file.getBytes().length];
+        int i = 0;
+        for (byte b : file.getBytes()) {
+            byteObject[i++] = b;
         }
+        beer.setImage(byteObject);
+        beerRepository.save(beer);
     }
 
     @Override
     public byte[] downloadImageFromDb(Long breweryId, Long beerId) throws NoContentException {
-        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
-            Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-            if (beerRepository.existsBeerByBeerId(beerId)) {
-                Beer beer = beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
-                return beer.getImage();
-            } else {
-                throw new NoContentException();
-            }
-        } else {
-            throw new NoContentException();
-        }
+        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
+        return beer.getImage();
     }
 }
