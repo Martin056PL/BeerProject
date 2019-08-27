@@ -11,6 +11,7 @@ import wawer.kamil.beerproject.repositories.BreweryRepository;
 
 import org.springframework.data.domain.Pageable;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -90,5 +91,10 @@ public class BreweryServiceImplTest {
         verify(repository).deleteById(ID);
     }
 
-
+    @Test
+    public void verify_get_brewery_image_from_db_base_on_brewery_id() throws NoContentException {
+        when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
+        when(service.getBreweryByBreweryId(ID)).thenReturn(brewery);
+        assertEquals(brewery.getBreweryImage(), service.getBreweryImageFromDbBaseOnBreweryId(ID));
+    }
 }
