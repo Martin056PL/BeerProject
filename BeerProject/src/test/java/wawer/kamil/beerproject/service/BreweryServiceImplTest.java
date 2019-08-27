@@ -10,8 +10,8 @@ import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
 import org.springframework.data.domain.Pageable;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BreweryServiceImplTest {
@@ -89,4 +89,6 @@ public class BreweryServiceImplTest {
         service.deleteBreweryByBreweryId(ID);
         verify(repository).deleteById(ID);
     }
+
+
 }

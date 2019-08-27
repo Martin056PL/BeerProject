@@ -14,8 +14,8 @@ import java.io.IOException;
 public class ImageUpload {
 
     private static final String PATH = "src/main/resources/images/.";
-    private static final String standardType = "image/jpeg";
-    private static final long maxSizeOfFile = 10000000L;
+    private static final String STANDARD_TYPE = "image/jpeg";
+    private static final long MAX_SIZE_OF_FILE = 10000000L;
 
     public byte[] convertFileToByteArray(MultipartFile file) throws IOException {
         byte[] byteObject = new byte[file.getBytes().length];
@@ -40,7 +40,7 @@ public class ImageUpload {
     public boolean validateSizeAndTypeOfFile(MultipartFile file) {
         String type = file.getContentType();
         long size = file.getSize();
-        boolean result = type.equals(standardType) && size <= maxSizeOfFile;
+        boolean result = type.equals(STANDARD_TYPE) && size <= MAX_SIZE_OF_FILE;
         return result;
     }
 }

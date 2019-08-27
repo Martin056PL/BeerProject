@@ -164,10 +164,10 @@ public class BeerController {
     }
 
     @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
         byte [] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
-        final HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity (image, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(image);
     }
 }

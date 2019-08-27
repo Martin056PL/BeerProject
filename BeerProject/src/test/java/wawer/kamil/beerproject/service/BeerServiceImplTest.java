@@ -6,14 +6,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
+import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +37,12 @@ public class BeerServiceImplTest {
 
     @Mock
     BreweryRepository breweryRepository;
+
+    @Mock
+    ImageUpload upload;
+
+    @Mock
+    MultipartFile file;
 
     @InjectMocks
     BeerServiceImpl service;
@@ -208,5 +217,13 @@ public class BeerServiceImplTest {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
         service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
+    }
+
+    @Test
+    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id() throws NoContentException {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
+        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
+        when(service.findProperBeerByBreweryIdAndBeerId(breweryID,beerID)).thenReturn(beer);
+        assertEquals(beer.getBeerImage(), service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID,beerID));
     }
 }

@@ -99,7 +99,7 @@ public class BreweryController {
     @GetMapping(value = "{breweryId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId) throws NoContentException {
         byte [] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
-        final HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return new ResponseEntity (image, headers, HttpStatus.OK);
     }
