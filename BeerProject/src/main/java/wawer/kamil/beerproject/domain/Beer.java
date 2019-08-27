@@ -37,5 +37,5 @@ public class Beer implements Serializable {
 
     @Lob
     @Column(name = "image", columnDefinition = "mediumblob")
-    private Byte [] image;
+    private byte [] image;
 }

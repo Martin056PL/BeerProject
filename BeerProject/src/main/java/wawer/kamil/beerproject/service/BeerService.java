@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,4 +41,6 @@ public interface BeerService {
 
     @Transactional
     void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException;
+
+    byte [] downloadImageFromDb(Long beerId) throws IOException;
 }

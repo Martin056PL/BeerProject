@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 
 
 @Service
@@ -181,12 +182,19 @@ public class BeerServiceImpl implements BeerService {
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
         Beer beer = beerRepository.findBeerByBeerId(beerId);
-        Byte[] byteObject = new Byte[file.getBytes().length];
+        byte[] byteObject = new byte[file.getBytes().length];
         int i = 0;
         for (byte b : file.getBytes()) {
             byteObject[i++] = b;
         }
         beer.setImage(byteObject);
         beerRepository.save(beer);
+    }
+
+    @Override
+    public byte [] downloadImageFromDb(Long beerId) throws IOException {
+        Beer beer = beerRepository.findBeerByBeerId(beerId);
+        byte [] imageInBytes = beer.getImage();
+        return imageInBytes;
     }
 }

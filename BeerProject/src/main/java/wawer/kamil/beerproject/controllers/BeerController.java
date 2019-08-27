@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -161,5 +163,15 @@ public class BeerController {
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
         service.uploadBeerImageToImagesDirectory(file);
         return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws IOException {
+        byte [] image = service.downloadImageFromDb(beerId);
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity (image, headers, HttpStatus.OK);
     }
 }
