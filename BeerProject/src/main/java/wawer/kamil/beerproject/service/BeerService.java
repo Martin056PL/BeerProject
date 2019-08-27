@@ -37,10 +37,8 @@ public interface BeerService {
 
     void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException;
 
-    void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException;
-
     @Transactional
     void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException;
 
-    byte[] downloadImageFromDb(Long breweryID, Long beerId) throws NoContentException;
+    byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryID, Long beerId) throws NoContentException;
 }

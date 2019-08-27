@@ -36,6 +36,6 @@ public class Beer implements Serializable {
     private Brewery brewery;
 
     @Lob
-    @Column(name = "image", columnDefinition = "mediumblob")
-    private byte [] image;
+    @Column(name = "beer_image", columnDefinition = "mediumblob")
+    private byte [] beerImage;
 }

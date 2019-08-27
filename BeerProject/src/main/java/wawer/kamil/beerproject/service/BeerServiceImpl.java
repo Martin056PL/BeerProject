@@ -2,7 +2,6 @@ package wawer.kamil.beerproject.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,14 +12,10 @@ import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
+import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-
-import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 
 
 @Service
@@ -31,6 +26,7 @@ public class BeerServiceImpl implements BeerService {
 
     private final BeerRepository beerRepository;
     private final BreweryRepository breweryRepository;
+    private final ImageUpload imageUpload;
 
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
     private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
@@ -134,7 +130,7 @@ public class BeerServiceImpl implements BeerService {
                 beer.setAlcohol(updatedBeer.getAlcohol());
                 beer.setStyle(updatedBeer.getStyle());
                 beer.setExtract(updatedBeer.getExtract());
-                beer.setImage(updatedBeer.getImage());
+                beer.setBeerImage(updatedBeer.getBeerImage());
                 return beerRepository.save(beer);
             } else {
                 log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
@@ -169,33 +165,17 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
-        String path = "src/main/resources/images/.";
-        File createdFile = new File(path.substring(0, path.length() - 1) + file.getOriginalFilename());
-        try (FileOutputStream outputStream = new FileOutputStream(createdFile)) {
-            outputStream.write(file.getBytes());
-        } catch (FileNotFoundException e) {
-            log.debug(e.getMessage());
-        }
-
-    }
-
-    @Override
     @Transactional
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
-        byte[] byteObject = new byte[file.getBytes().length];
-        int i = 0;
-        for (byte b : file.getBytes()) {
-            byteObject[i++] = b;
-        }
-        beer.setImage(byteObject);
+        byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
+        beer.setBeerImage(imageAsByteArray);
         beerRepository.save(beer);
     }
 
     @Override
-    public byte[] downloadImageFromDb(Long breweryId, Long beerId) throws NoContentException {
+    public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
-        return beer.getImage();
+        return beer.getBeerImage();
     }
 }

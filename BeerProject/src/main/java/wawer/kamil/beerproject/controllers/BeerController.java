@@ -17,7 +17,6 @@ import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -161,13 +160,12 @@ public class BeerController {
     @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
-        service.uploadBeerImageToImagesDirectory(file);
         return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
     }
 
     @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
-        byte [] image = service.downloadImageFromDb(breweryId, beerId);
+        byte [] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return new ResponseEntity (image, headers, HttpStatus.OK);

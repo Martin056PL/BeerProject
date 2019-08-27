@@ -5,15 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.dto.BreweryDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -84,5 +88,19 @@ public class BreweryController {
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(value = "{breweryId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
+        service.setBreweryImageToProperBreweryBaseOnBreweryId(breweryId, file);
+        return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{breweryId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId) throws NoContentException {
+        byte [] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity (image, headers, HttpStatus.OK);
     }
 }
