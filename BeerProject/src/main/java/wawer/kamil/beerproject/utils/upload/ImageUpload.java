@@ -40,8 +40,8 @@ public class ImageUpload {
     public boolean validateSizeAndTypeOfFile(MultipartFile file) {
         String type = file.getContentType();
         long size = file.getSize();
-        boolean result = type.equals(STANDARD_TYPE);
-        return result && size <= MAX_SIZE_OF_FILE;
-
+        boolean fileTypeResult = type.equals(STANDARD_TYPE);
+        boolean fileSizeResult = size <= MAX_SIZE_OF_FILE;
+        return fileTypeResult && fileSizeResult;
     }
 }

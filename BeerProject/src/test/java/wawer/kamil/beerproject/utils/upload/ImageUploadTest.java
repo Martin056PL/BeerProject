@@ -10,7 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,9 +23,10 @@ public class ImageUploadTest {
     @InjectMocks
     ImageUpload upload;
 
-    private static final String TYPE = "TYPE";
-    private static final long SIZE = 1L;
-    private static final int Result = 0;
+    private static final String STANDARD_TYPE = "image/jpeg";;
+    private static final long ACCEPTSIZE = 10L;
+    private static final long WRONGSIZE = 1000000000L;
+    private static final String BAD_TYPE = "CONTEXT";
 
     @Test
     public void asd() throws IOException {
@@ -37,19 +39,32 @@ public class ImageUploadTest {
         assertEquals(bytes.length,upload.convertFileToByteArray(file).length);
     }
 
-   /* @Test
-    public void fed(){
-        when(file.getContentType()).thenReturn(string());
-        String asd =file.getContentType();
-        when(file.getSize()).thenReturn(SIZE);
-        int result = asd.compareTo(TYPE);
-        when(file.getSize() <= SIZE).thenReturn(true);
-        boolean aqwe = result == 0 && file.getSize() == SIZE;
-        assertEquals(aqwe, upload.validateSizeAndTypeOfFile(file));
-    }*/
+    @Test
+    public void good_good(){
+        when(file.getSize()).thenReturn(ACCEPTSIZE);
+        when(file.getContentType()).thenReturn(STANDARD_TYPE);
+        assertTrue(upload.validateSizeAndTypeOfFile(file));
+    }
 
-    public String string(){
-        return "asd";
+    @Test
+    public void good_bad(){
+        when(file.getSize()).thenReturn(ACCEPTSIZE);
+        when(file.getContentType()).thenReturn(BAD_TYPE);
+        assertFalse(upload.validateSizeAndTypeOfFile(file));
+    }
+
+    @Test
+    public void bad_good(){
+        when(file.getSize()).thenReturn(WRONGSIZE);
+        when(file.getContentType()).thenReturn(STANDARD_TYPE);
+        assertFalse(upload.validateSizeAndTypeOfFile(file));
+    }
+
+    @Test
+    public void bad_bad(){
+        when(file.getSize()).thenReturn(WRONGSIZE);
+        when(file.getContentType()).thenReturn(BAD_TYPE);
+        assertFalse(upload.validateSizeAndTypeOfFile(file));
     }
 
     private byte [] newArray(){
