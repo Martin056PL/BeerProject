@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.dto.BreweryDTO;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryService;
 
@@ -91,7 +92,7 @@ public class BreweryController {
     }
 
     @PostMapping(value = "{breweryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(breweryId, file);
         return ResponseEntity.ok().body("File is uploaded successfully");
     }

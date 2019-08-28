@@ -5,13 +5,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
-
-import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
@@ -110,7 +109,7 @@ public class BreweryServiceImplTest {
     }
 
     @Test
-    public void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws NoContentException, IOException {
+    public void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws NoContentException, IOException, InvalidImageParameters {
         when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
         when(service.getBreweryByBreweryId(ID)).thenReturn(brewery);
         when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(true);

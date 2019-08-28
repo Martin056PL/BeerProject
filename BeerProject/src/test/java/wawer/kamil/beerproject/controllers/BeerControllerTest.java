@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.dto.BeerDTO;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerServiceImpl;
 
@@ -249,7 +250,7 @@ public class BeerControllerTest {
     }
 
     @Test
-    public void should_return_status_ok_when_controller_successfully_add_image_for_brewery() throws IOException, NoContentException {
+    public void should_return_status_ok_when_controller_successfully_add_image_for_brewery() throws IOException, NoContentException, InvalidImageParameters {
         assertEquals(ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully"),beerController.uploadImage(breweryID,beerID,file));
     }
 

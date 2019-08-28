@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
@@ -73,14 +74,14 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     @Transactional
-    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, NoContentException {
+    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
         Brewery brewery = getBreweryByBreweryId(breweryId);
         if (imageUpload.validateSizeAndTypeOfFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
             brewery.setBreweryImage(imageAsByteArray);
             repository.save(brewery);
         } else {
-            throw new IllegalArgumentException();
+            throw new InvalidImageParameters();
         }
     }
 

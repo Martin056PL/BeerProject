@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
@@ -228,7 +229,7 @@ public class BeerServiceImplTest {
     }
 
     @Test
-    public void verify_set_beer_image_to_proper_beer_base_on_brewery_id_and_beer_id() throws NoContentException, IOException {
+    public void verify_set_beer_image_to_proper_beer_base_on_brewery_id_and_beer_id() throws NoContentException, IOException, InvalidImageParameters {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);

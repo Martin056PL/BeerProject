@@ -26,6 +26,14 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
+    @ExceptionHandler(InvalidImageParameters.class)
+    public ResponseEntity<Object> badImageParameters(){
+        exceptionFormat.setMessage("Your image has bad type or is over 10MB. Check again your image!");
+        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request){
         log.error("APPLICATION THROWS EXCEPTION: " + e.getClass() + ",\n CAUSE OF EXCEPTION: "

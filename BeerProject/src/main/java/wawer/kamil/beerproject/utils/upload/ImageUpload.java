@@ -34,7 +34,6 @@ public class ImageUpload {
         } catch (FileNotFoundException e) {
             log.debug(e.getMessage());
         }
-
     }
 
     public boolean validateSizeAndTypeOfFile(MultipartFile file) {

@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,6 +37,8 @@ public class ImageUploadTest {
         }
         assertEquals(bytes.length,upload.convertFileToByteArray(file).length);
     }
+
+
 
     @Test
     public void should_return_true_if_size_and_type_are_correct(){

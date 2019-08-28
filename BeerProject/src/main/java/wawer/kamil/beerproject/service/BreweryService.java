@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public interface BreweryService {
     void deleteBreweryByBreweryId(Long breweryId) throws NoContentException;
 
     @Transactional
-    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, NoContentException;
+    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, NoContentException, InvalidImageParameters;
 
     byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws NoContentException;
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
@@ -166,14 +167,14 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     @Transactional
-    public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException {
+    public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         if (imageUpload.validateSizeAndTypeOfFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
             beer.setBeerImage(imageAsByteArray);
             beerRepository.save(beer);
         } else {
-            throw new IllegalArgumentException();
+            throw new InvalidImageParameters();
         }
     }
 
