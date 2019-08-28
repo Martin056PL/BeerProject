@@ -90,17 +90,17 @@ public class BreweryController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping(value = "{breweryId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "{breweryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(breweryId, file);
-        return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
+        return ResponseEntity.ok().body("File is uploaded successfully");
     }
 
-    @GetMapping(value = "{breweryId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping(value = "{breweryId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId) throws NoContentException {
         byte [] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity (image, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(image);
     }
 }

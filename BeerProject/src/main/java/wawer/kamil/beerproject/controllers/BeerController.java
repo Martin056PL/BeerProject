@@ -160,7 +160,7 @@ public class BeerController {
     @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException {
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
-        return new ResponseEntity<>("File is uploaded successfully", HttpStatus.OK);
+        return ResponseEntity.ok().body("File is uploaded successfully");
     }
 
     @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
