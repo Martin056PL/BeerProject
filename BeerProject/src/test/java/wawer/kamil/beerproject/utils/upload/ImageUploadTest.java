@@ -68,12 +68,10 @@ public class ImageUploadTest {
     }
 
     private byte [] newArray(){
-        byte [] ds = new byte [10];
-        return ds;
+        return new byte [10];
     }
 
     private byte [] newArrayWithLength(int length){
-        byte [] ds = new byte [length];
-        return ds;
+        return new byte [length];
     }
 }
