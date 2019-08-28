@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
@@ -21,6 +22,7 @@ public class Beer implements Serializable {
     @Column(name = "beer_id")
     private Long beerId;
 
+    @NotEmpty
     private String name;
 
     private String style;

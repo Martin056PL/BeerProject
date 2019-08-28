@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,13 @@ public class Brewery implements Serializable {
     @Column(name = "brewery_id")
     private Long breweryId;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private String email;
 
+    @NotEmpty
     @Column(name = "phone_number")
     private Long phoneNumber;
 
@@ -36,6 +40,7 @@ public class Brewery implements Serializable {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @NotEmpty
     private String website;
 
     @ElementCollection(fetch = FetchType.LAZY)

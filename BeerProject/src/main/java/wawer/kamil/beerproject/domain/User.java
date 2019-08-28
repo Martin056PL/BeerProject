@@ -3,6 +3,7 @@ package wawer.kamil.beerproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
@@ -19,14 +20,18 @@ public class User implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
+    @NotEmpty
     @Column(name = "first_name")
     private String firstName;
 
+    @NotEmpty
     @Column(name = "last_name")
     private String lastName;
 
+    @NotEmpty
     private String email;
 
+    @NotEmpty
     private String password;
 
     @Column(name = "phone_number")
