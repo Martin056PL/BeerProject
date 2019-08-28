@@ -73,13 +73,13 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     @Transactional
-    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId,  MultipartFile file) throws IOException, NoContentException {
+    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, NoContentException {
         Brewery brewery = getBreweryByBreweryId(breweryId);
-        if(imageUpload.validateSizeAndTypeOfFile(file)) {
+        if (imageUpload.validateSizeAndTypeOfFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertFileToByteArray(file);
             brewery.setBreweryImage(imageAsByteArray);
             repository.save(brewery);
-        }else{
+        } else {
             throw new IllegalArgumentException();
         }
     }

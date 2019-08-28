@@ -14,11 +14,11 @@ import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BeerServiceImplTest {
@@ -39,7 +39,7 @@ public class BeerServiceImplTest {
     BreweryRepository breweryRepository;
 
     @Mock
-    ImageUpload upload;
+    ImageUpload imageUpload;
 
     @Mock
     MultipartFile file;
@@ -57,7 +57,7 @@ public class BeerServiceImplTest {
     }
 
     @Test
-    public void verify_find_all_beers_list(){
+    public void verify_find_all_beers_list() {
         service.findAllBeersList();
         verify(beerRepository).findAll();
     }
@@ -223,7 +223,24 @@ public class BeerServiceImplTest {
     public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(service.findProperBeerByBreweryIdAndBeerId(breweryID,beerID)).thenReturn(beer);
-        assertEquals(beer.getBeerImage(), service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID,beerID));
+        when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenReturn(beer);
+        assertEquals(beer.getBeerImage(), service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID));
+    }
+
+    @Test
+    public void verify_set_beer_image_to_proper_beer_base_on_brewery_id_and_beer_id() throws NoContentException, IOException {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
+        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
+        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
+        when(beerRepository.findBeerByBreweryAndBeerId(brewery, beerID)).thenReturn(beer);
+        when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(true);
+        when(imageUpload.convertFileToByteArray(file)).thenReturn(newArray());
+        doNothing().when(beer).setBeerImage(newArray());
+        service.setBeerImageToProperBeerBaseOnBeerId(breweryID, beerID, file);
+        verify(beerRepository).save(beer);
+    }
+
+    private byte[] newArray() {
+        return new byte[10];
     }
 }
