@@ -221,11 +221,21 @@ public class BeerServiceImplTest {
     }
 
     @Test
-    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id() throws NoContentException {
+    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id_and_image_exists() throws NoContentException {
         when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
         when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
         when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenReturn(beer);
+        when(beer.getBeerImage()).thenReturn(newArray());
         assertEquals(beer.getBeerImage(), service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID));
+    }
+
+    @Test(expected = NoContentException.class)
+    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id_and_image_do_not_exists() throws NoContentException {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
+        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
+        when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenReturn(beer);
+        when(beer.getBeerImage()).thenReturn(null);
+        service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID);
     }
 
     @Test

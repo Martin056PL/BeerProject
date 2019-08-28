@@ -41,6 +41,8 @@ public class ImageUpload {
         long size = file.getSize();
         boolean fileTypeResult = type.equals(STANDARD_TYPE);
         boolean fileSizeResult = size <= MAX_SIZE_OF_FILE;
-        return fileTypeResult && fileSizeResult;
+        boolean result = fileTypeResult && fileSizeResult;
+        log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", fileTypeResult, fileSizeResult, result);
+        return result;
     }
 }

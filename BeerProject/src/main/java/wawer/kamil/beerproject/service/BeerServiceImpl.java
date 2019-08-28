@@ -181,6 +181,10 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
-        return beer.getBeerImage();
+        if (beer.getBeerImage() == null) {
+            throw new NoContentException();
+        } else {
+            return beer.getBeerImage();
+        }
     }
 }

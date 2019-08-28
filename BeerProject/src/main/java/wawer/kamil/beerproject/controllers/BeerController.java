@@ -157,14 +157,16 @@ public class BeerController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
+        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}/image' with POST method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
         return ResponseEntity.ok().body("File is uploaded successfully");
     }
 
-    @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}/image' with GET method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         byte [] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
