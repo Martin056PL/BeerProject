@@ -241,6 +241,17 @@ public class BeerServiceImplTest {
         verify(beerRepository).save(beer);
     }
 
+    @Test(expected = InvalidImageParameters.class)
+    public void should_throw_exception_when_image_has_invalid_parameters_for_beer_image() throws NoContentException, IOException, InvalidImageParameters {
+        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
+        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
+        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
+        when(beerRepository.findBeerByBreweryAndBeerId(brewery, beerID)).thenReturn(beer);
+        when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(false);
+        service.setBeerImageToProperBeerBaseOnBeerId(breweryID, beerID, file);
+    }
+
+
     private byte[] newArray() {
         return new byte[10];
     }

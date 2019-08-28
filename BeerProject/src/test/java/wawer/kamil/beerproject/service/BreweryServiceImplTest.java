@@ -119,6 +119,14 @@ public class BreweryServiceImplTest {
         verify(repository).save(brewery);
     }
 
+    @Test(expected = InvalidImageParameters.class)
+    public void should_throw_exception_when_image_has_invalid_parameters_for_brewery_image() throws NoContentException, IOException, InvalidImageParameters {
+        when(repository.existsBreweryByBreweryId(ID)).thenReturn(true);
+        when(service.getBreweryByBreweryId(ID)).thenReturn(brewery);
+        when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(false);
+        service.setBreweryImageToProperBreweryBaseOnBreweryId(ID, file);
+    }
+
     private byte[] newArray() {
         return new byte[10];
     }
