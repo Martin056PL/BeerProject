@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:32768/beerProjectDevelop?serverTimezone=Europe/Warsaw
+    url: jdbc:mysql://localhost:32768/beerProjectDevelop?serverTimezone=Europe/Warsaw&createDatabaseIfNotExist=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -45,6 +45,10 @@ public class Brewery implements Serializable {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<Beer> beerList;
 
+    @Lob
+    @Column(name = "brewery_image", columnDefinition = "mediumblob")
+    private byte [] breweryImage;
+
 
     public void addBeer(Beer beer) {
         if (beerList == null) {

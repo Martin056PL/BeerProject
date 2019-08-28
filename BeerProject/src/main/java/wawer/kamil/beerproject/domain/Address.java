@@ -3,6 +3,7 @@ package wawer.kamil.beerproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Builder
@@ -10,7 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter @Setter
 @Table(name = "address")
-public class Address {
+public class Address implements Serializable {
+
+    private static final long serialVersionUID = 5341237096226780217L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

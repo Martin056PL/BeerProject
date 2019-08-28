@@ -1,5 +1,6 @@
 package wawer.kamil.beerproject.controllers;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -8,13 +9,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.dto.BeerDTO;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerServiceImpl;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -44,6 +50,9 @@ public class BeerControllerTest {
 
     @Mock
     ModelMapper mapper;
+
+    @Mock
+    MultipartFile file;
 
     @InjectMocks
     BeerController beerController;
@@ -238,5 +247,23 @@ public class BeerControllerTest {
     @Test
     public void should_return_status_no_content_when_controller_successfully_delete_beer_base_on_beer_id_and_brewery_id() throws NoContentException {
         assertEquals(ResponseEntity.status(HttpStatus.NO_CONTENT).build(), beerController.deleteBeerByBreweryIdAndBeerId(breweryID, beerID));
+    }
+
+    @Test
+    public void should_return_status_ok_when_controller_successfully_add_image_for_brewery() throws IOException, NoContentException, InvalidImageParameters {
+        assertEquals(ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully"),beerController.uploadImage(breweryID,beerID,file));
+    }
+
+    @Test
+    public void should_return_status_ok_when_controller_successfully_download_image_for_brewery() throws NoContentException {
+        when(service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID)).thenReturn(newArray());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        assertEquals(ResponseEntity.ok().headers(headers).body(newArray()), beerController.downloadImage(breweryID,beerID));
+    }
+
+    private byte [] newArray(){
+        byte [] ds = new byte [10];
+        return ds;
     }
 }

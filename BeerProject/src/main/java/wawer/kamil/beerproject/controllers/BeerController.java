@@ -5,14 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.dto.BeerDTO;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -150,5 +155,19 @@ public class BeerController {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with DELETE method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         service.deleteBeerByBreweryIdAndBeerId(breweryId, beerId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
+        service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
+        return ResponseEntity.ok().body("File is uploaded successfully");
+    }
+
+    @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+        byte [] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return ResponseEntity.ok().headers(headers).body(image);
     }
 }

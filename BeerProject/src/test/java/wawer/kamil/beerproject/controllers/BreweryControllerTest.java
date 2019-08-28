@@ -8,13 +8,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.dto.BreweryDTO;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryServiceImpl;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -45,6 +50,9 @@ public class BreweryControllerTest {
 
     @Mock
     ModelMapper mapper;
+
+    @Mock
+    MultipartFile file;
 
     @InjectMocks
     BreweryController controller;
@@ -143,5 +151,23 @@ public class BreweryControllerTest {
     @Test
     public void should_status_be_no_content_when_controller_deleted_brewery_by_brewery_id() throws NoContentException {
         assertEquals(HttpStatus.NO_CONTENT, controller.deleteBrewery(ID).getStatusCode());
+    }
+
+    @Test
+    public void should_return_status_ok_when_controller_successfully_add_image_for_beer() throws IOException, NoContentException, InvalidImageParameters {
+        assertEquals(ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully"),controller.uploadImage(ID,file));
+    }
+
+    @Test
+    public void should_return_status_ok_when_controller_successfully_download_image_for_beer() throws NoContentException {
+        when(service.getBreweryImageFromDbBaseOnBreweryId(ID)).thenReturn(newArray());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        assertEquals(ResponseEntity.ok().headers(headers).body(newArray()), controller.downloadImage(ID));
+    }
+
+    private byte [] newArray(){
+        byte [] ds = new byte [10];
+        return ds;
     }
 }

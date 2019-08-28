@@ -14,7 +14,7 @@
             <column name="style" type="varchar(255)"/>
             <column name="extract" type="double"/>
             <column name="alcohol" type="double"/>
-
+            <column name="beer_image" type="MEDIUMBLOB"/>
         </createTable>
     </changeSet>
 
@@ -28,6 +28,7 @@
             <column name="address" type="varchar(255)"/>
             <column name="phone_number" type="bigint"/>
             <column name="website" type="varchar(255)"/>
+            <column name="brewery_image" type="MEDIUMBLOB"/>
         </createTable>
     </changeSet>
 
