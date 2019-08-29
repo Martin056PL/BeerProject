@@ -2,14 +2,21 @@ package wawer.kamil.beerproject.exceptions;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.RollbackException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 @RequiredArgsConstructor
@@ -17,6 +24,21 @@ import java.util.Arrays;
 public class AdviceHandler extends ResponseEntityExceptionHandler {
 
     private final ExceptionFormat exceptionFormat;
+
+    @Override
+    protected ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException e,
+                                                          HttpHeaders headers, HttpStatus status,
+                                                          WebRequest request) {
+
+        Map<String, String> validationMap = new HashMap<>();
+
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            validationMap.put(error.getField(), error.getDefaultMessage());
+        }
+
+        return ResponseEntity.badRequest().body(validationMap);
+
+    }
 
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<Object> notFoundHandler(){
@@ -29,6 +51,14 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidImageParameters.class)
     public ResponseEntity<Object> badImageParameters(){
         exceptionFormat.setMessage("Your image has bad type or is over 10MB. Check again your image!");
+        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(RollbackException.class)
+    public ResponseEntity<Object> asd(RollbackException e){
+        exceptionFormat.setMessage(e.getLocalizedMessage());
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

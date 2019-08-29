@@ -17,6 +17,7 @@ import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BeerService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -97,7 +98,7 @@ public class BeerController {
     }
 
     @PostMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody BeerDTO beerDTO) throws NoContentException, URISyntaxException {
+    public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException, URISyntaxException {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer' with POST method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , breweryId
                 , beerDTO.getName()
@@ -113,7 +114,7 @@ public class BeerController {
     //put methods
 
     @PutMapping("beer/{beerId}")
-    public ResponseEntity<BeerDTO> updateBeer(@PathVariable Long beerId, @RequestBody BeerDTO beerDTO) throws NoContentException {
+    public ResponseEntity<BeerDTO> updateBeer(@PathVariable Long beerId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
         log.debug("Endpoint address: 'beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , beerId
                 , beerDTO.getName()
@@ -128,7 +129,7 @@ public class BeerController {
     @PutMapping("brewery/{breweryId}/beer/{beerId}")
     public ResponseEntity<BeerDTO> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                       @PathVariable Long beerId,
-                                                                      @RequestBody BeerDTO beerDTO) throws NoContentException {
+                                                                      @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerId: {} beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , breweryId
                 , beerId

@@ -18,6 +18,7 @@ import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.BreweryService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -58,7 +59,7 @@ public class BreweryController {
     }
 
     @PostMapping
-    public ResponseEntity<BreweryDTO> addNewBrewery(@RequestBody BreweryDTO breweryDTO) throws URISyntaxException {
+    public ResponseEntity<BreweryDTO> addNewBrewery(@Valid @RequestBody BreweryDTO breweryDTO) throws URISyntaxException {
         log.debug("Endpoint address: 'brewery' with POST method, request parameter - brewery data: {}; {}; {}; {}"
                 , breweryDTO.getName()
                 , breweryDTO.getWebsite()
@@ -71,7 +72,7 @@ public class BreweryController {
     }
 
     @PutMapping("{breweryId}")
-    public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @RequestBody BreweryDTO breweryDTO) throws NoContentException {
+    public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @Valid @RequestBody BreweryDTO breweryDTO) throws NoContentException {
         log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}"
                 , breweryId
                 , breweryDTO.getName()
@@ -98,8 +99,8 @@ public class BreweryController {
     }
 
     @GetMapping(value = "{breweryId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <Object> downloadImage(@PathVariable Long breweryId) throws NoContentException {
-        byte [] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
+    public ResponseEntity<Object> downloadImage(@PathVariable Long breweryId) throws NoContentException {
+        byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return ResponseEntity.ok().headers(headers).body(image);

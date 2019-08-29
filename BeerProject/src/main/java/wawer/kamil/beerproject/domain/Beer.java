@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
@@ -27,8 +28,10 @@ public class Beer implements Serializable {
 
     private String style;
 
+    @Min(value = 0, message = "Extract must be equal or grater than 0!")
     private Double extract;
 
+    @Min(0)
     private Double alcohol;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
