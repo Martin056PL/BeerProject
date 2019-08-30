@@ -27,9 +27,11 @@ public class Brewery implements Serializable {
     private Long breweryId;
 
     @NotEmpty
+    @Column(name = "name")
     private String name;
 
     @NotEmpty
+    @Column(name = "email")
     private String email;
 
     @NotEmpty
@@ -41,6 +43,7 @@ public class Brewery implements Serializable {
     private Address address;
 
     @NotEmpty
+    @Column(name = "website")
     private String website;
 
     @ElementCollection(fetch = FetchType.LAZY)

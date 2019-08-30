@@ -28,7 +28,7 @@ public class Beer implements Serializable {
 
     private String style;
 
-    @Min(value = 0, message = "Extract must be equal or grater than 0!")
+    @Min(value = 0)
     private Double extract;
 
     @Min(0)

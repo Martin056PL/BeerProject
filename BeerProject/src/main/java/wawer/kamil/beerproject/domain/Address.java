@@ -18,16 +18,17 @@ public class Address implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
     private Long addressId;
 
     @NotEmpty
+    @Column(name = "street")
     private String street;
 
     @NotEmpty
     @Column(name = "parcel_number")
     private Integer parcelNumber;
 
-    @NotEmpty
     @Column(name = "local_number")
     private Integer localNumber;
 
@@ -36,5 +37,6 @@ public class Address implements Serializable {
     private String zipCode;
 
     @NotEmpty
+    @Column(name = "city")
     private String city;
 }
