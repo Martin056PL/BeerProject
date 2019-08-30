@@ -19,13 +19,16 @@ public class BeerDTO {
     @NotBlank
     private String style;
 
-    @Min(0L)
+    @Min(0)
     private Double extract;
 
-    @Min(0L)
+    @Min(0)
     private Double alcohol;
 
     @ToString.Exclude
     @JsonIgnore
     private Brewery brewery;
+
+    @JsonIgnore
+    private byte [] beerImage;
 }

@@ -3,6 +3,8 @@ package wawer.kamil.beerproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
@@ -17,18 +19,27 @@ public class Address implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
     private Long addressId;
 
+    @NotEmpty
+    @Column(name = "street")
     private String street;
 
+    @NotEmpty
+    @Min(value = 1)
     @Column(name = "parcel_number")
     private Integer parcelNumber;
 
+    @Min(value = 1)
     @Column(name = "local_number")
     private Integer localNumber;
 
+    @NotEmpty
     @Column(name = "zip_code")
     private String zipCode;
 
+    @NotEmpty
+    @Column(name = "city")
     private String city;
 }
