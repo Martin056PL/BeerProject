@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.ResponseEntity.*;
+
 @RequiredArgsConstructor
 @Controller
 @CrossOrigin
@@ -36,11 +37,12 @@ public class BreweryController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<Brewery>> getAllBreweryPage(Pageable pageable) throws NoContentException {
+    public ResponseEntity<Page<BreweryDTO>> getAllBreweryPage(Pageable pageable) throws NoContentException {
         log.debug("Endpoint address: 'brewery' with GET method, request parameter - pageable: {}", pageable);
         Page<Brewery> listOfBrewery = service.getAllBreweryPage(pageable);
+        Page<BreweryDTO> listOfBreweryDTO = listOfBrewery.map(brewery -> mapper.map(brewery, BreweryDTO.class));
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(listOfBrewery);
+        return ok().body(listOfBreweryDTO);
     }
 
     @GetMapping("/list")
@@ -48,14 +50,14 @@ public class BreweryController {
         log.debug("Endpoint address: 'brewery/list' with GET method");
         List<Brewery> listOfBrewery = service.getAllBreweryList();
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(listOfBrewery);
+        return ok().body(listOfBrewery);
     }
 
     @GetMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
         log.debug("Endpoint address: 'brewery/{breweryId}' with GET method, request parameter - id: {}", breweryId);
         BreweryDTO brewery = mapper.map(service.getBreweryByBreweryId(breweryId), BreweryDTO.class);
-        return ResponseEntity.ok().body(brewery);
+        return ok().body(brewery);
     }
 
     @PostMapping
@@ -67,8 +69,7 @@ public class BreweryController {
                 , breweryDTO.getPhoneNumber());
         Brewery result = service.createNewBrewery(mapper.map(breweryDTO, Brewery.class));
         log.debug("Add new brewery with Id: {}", result.getBreweryId());
-        return ResponseEntity.created(new URI("add-beer" + result.getBreweryId()))
-                .body(mapper.map(result, BreweryDTO.class));
+        return  created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
     }
 
     @PutMapping("{breweryId}")
@@ -81,7 +82,7 @@ public class BreweryController {
                 , breweryDTO.getPhoneNumber());
         Brewery result = service.updateBreweryById(breweryId, mapper.map(breweryDTO, Brewery.class));
         log.debug("Updated brewery with Id: {}", result.getBreweryId());
-        return ResponseEntity.ok().body(mapper.map(result, BreweryDTO.class));
+        return ok().body(mapper.map(result, BreweryDTO.class));
     }
 
     @DeleteMapping("{breweryId}")
@@ -89,13 +90,13 @@ public class BreweryController {
         log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return noContent().build();
     }
 
     @PostMapping(value = "{breweryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "image") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(breweryId, file);
-        return ResponseEntity.ok().body("File is uploaded successfully");
+        return ok().body("File is uploaded successfully");
     }
 
     @GetMapping(value = "{breweryId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -103,6 +104,6 @@ public class BreweryController {
         byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(breweryId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        return ResponseEntity.ok().headers(headers).body(image);
+        return ok().headers(headers).body(image);
     }
 }

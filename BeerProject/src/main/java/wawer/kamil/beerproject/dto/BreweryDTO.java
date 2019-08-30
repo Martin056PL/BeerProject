@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import wawer.kamil.beerproject.domain.Address;
 import wawer.kamil.beerproject.domain.Beer;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class BreweryDTO {
 
     private Long phoneNumber;
 
-    private String address;
+    private Address address;
 
     private String website;
 

@@ -34,7 +34,7 @@ public class BreweryControllerTest {
     BreweryServiceImpl service;
 
     @Mock
-    Page<Brewery> page;
+    Page<Brewery> pageBrewery;
 
     @Mock
     List<Brewery> list;
@@ -59,22 +59,11 @@ public class BreweryControllerTest {
 
     private final static Long ID = 1L;
 
-    @Test
-    public void should_return_response_entity_which_equals_to_controller_response_entity_brewery_page() throws NoContentException {
-        when(service.getAllBreweryPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page), controller.getAllBreweryPage(pageable));
-    }
 
     @Test
     public void should_return_status_code_which_equals_to_controller_status_code_brewery_page() throws NoContentException {
-        when(service.getAllBreweryPage(pageable)).thenReturn(page);
+        when(service.getAllBreweryPage(pageable)).thenReturn(pageBrewery);
         assertEquals(HttpStatus.OK, controller.getAllBreweryPage(pageable).getStatusCode());
-    }
-
-    @Test
-    public void should_return_body_response_which_equals_to_controller_body_response_brewery_page() throws NoContentException {
-        when(service.getAllBreweryPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), controller.getAllBreweryPage(pageable).getBody());
     }
 
     @Test
