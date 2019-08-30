@@ -93,7 +93,7 @@ public class BreweryController {
     }
 
     @PostMapping(value = "{breweryId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "file") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @RequestParam(name = "image") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(breweryId, file);
         return ResponseEntity.ok().body("File is uploaded successfully");
     }

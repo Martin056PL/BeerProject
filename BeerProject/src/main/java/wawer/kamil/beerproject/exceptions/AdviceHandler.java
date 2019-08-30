@@ -26,22 +26,22 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     private final ExceptionFormat exceptionFormat;
 
     @Override
-    protected ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException e,
-                                                          HttpHeaders headers, HttpStatus status,
-                                                          WebRequest request) {
-
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
         Map<String, String> validationMap = new HashMap<>();
-
         for (FieldError error : e.getBindingResult().getFieldErrors()) {
             validationMap.put(error.getField(), error.getDefaultMessage());
         }
 
-        return ResponseEntity.badRequest().body(validationMap);
-
+        String mapToString = convertMapToEditedString(validationMap);
+        exceptionFormat.setStatus(HttpStatus.OK);
+        exceptionFormat.setMessage(mapToString);
+        return ResponseEntity.badRequest().body(exceptionFormat);
     }
 
     @ExceptionHandler(NoContentException.class)
-    public ResponseEntity<Object> notFoundHandler(){
+    public ResponseEntity<Object> notFoundHandler() {
         exceptionFormat.setMessage("Your content haven't been found! Check request params!");
         exceptionFormat.setStatus(HttpStatus.NOT_FOUND);
         log.debug("Method throws this exception: {}", exceptionFormat);
@@ -49,7 +49,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidImageParameters.class)
-    public ResponseEntity<Object> badImageParameters(){
+    public ResponseEntity<Object> badImageParameters() {
         exceptionFormat.setMessage("Your image has bad type or is over 10MB. Check again your image!");
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
@@ -57,7 +57,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RollbackException.class)
-    public ResponseEntity<Object> asd(RollbackException e){
+    public ResponseEntity<Object> asd(RollbackException e) {
         exceptionFormat.setMessage(e.getLocalizedMessage());
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
@@ -65,7 +65,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request){
+    public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request) {
         log.error("APPLICATION THROWS EXCEPTION: " + e.getClass() + ",\n CAUSE OF EXCEPTION: "
                 + e.getCause().toString() + ",\n EXCEPTION MESSAGE: " + e.getMessage()
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
@@ -73,5 +73,11 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         exceptionFormat.setMessage("Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL");
         exceptionFormat.setStatus(HttpStatus.I_AM_A_TEAPOT);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    private String convertMapToEditedString(Map<String, String> map) {
+        String string1 = map.toString().replace(", ", ",");
+        String string2 = string1.replace(",", "\n");
+        return string2.substring(1, string2.length() - 1);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationResponse extends ExceptionFormat{
+public class ValidationResponse{
 
     private Map<String,String> invalidFields;
 
