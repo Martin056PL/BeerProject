@@ -26,4 +26,7 @@ public class BreweryDTO {
     @JsonIgnore
     private List<Beer> beerList;
 
+    @JsonIgnore
+    private byte [] breweryImage;
+
 }

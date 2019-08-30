@@ -28,4 +28,7 @@ public class BeerDTO {
     @ToString.Exclude
     @JsonIgnore
     private Brewery brewery;
+
+    @JsonIgnore
+    private byte [] beerImage;
 }
