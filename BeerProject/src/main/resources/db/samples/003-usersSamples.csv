@@ -1,0 +1,2 @@
+user_id,first_name,last_name,email,password,phone_number,is_active
+1,Krzysztof,Kowalski,krzysztof.kowalski@gmail.com,root,512947056,true
