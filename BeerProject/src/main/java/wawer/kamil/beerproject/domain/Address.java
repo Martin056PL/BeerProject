@@ -3,6 +3,7 @@ package wawer.kamil.beerproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
@@ -26,9 +27,11 @@ public class Address implements Serializable {
     private String street;
 
     @NotEmpty
+    @Min(value = 1)
     @Column(name = "parcel_number")
     private Integer parcelNumber;
 
+    @Min(value = 1)
     @Column(name = "local_number")
     private Integer localNumber;
 

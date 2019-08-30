@@ -63,21 +63,9 @@ public class BeerControllerTest {
     //get all
 
     @Test
-    public void should_return_response_body_equal_to_controller_response_with_some_beer_page() {
-        when(service.findAllBeersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersPage(pageable).getBody());
-    }
-
-    @Test
     public void should_return_status_ok_when_controller_returns_some_beer_page() {
         when(service.findAllBeersPage(pageable)).thenReturn(page);
         assertEquals(HttpStatus.OK, beerController.findAllBeersPage(pageable).getStatusCode());
-    }
-
-    @Test
-    public void should_return_response_body_equal_to_controller_response_with_some_beer_list(){
-        when(service.findAllBeersList()).thenReturn(list);
-        assertEquals(ResponseEntity.ok().body(list).getBody(),beerController.findAllBeersList().getBody());
     }
 
     @Test
@@ -86,24 +74,10 @@ public class BeerControllerTest {
         assertEquals(HttpStatus.OK,beerController.findAllBeersList().getStatusCode());
     }
 
-
-
-    @Test
-    public void should_return_response_body_equal_to_controller_response_with_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page).getBody(), beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getBody());
-    }
-
     @Test
     public void should_return_status_ok_when_controller_returns_some_beer_page_base_on_brewery_id() throws NoContentException {
         when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(page);
         assertEquals(HttpStatus.OK, beerController.findAllBeersByBreweryIdPage(breweryID, pageable).getStatusCode());
-    }
-
-    @Test
-    public void should_return_response_basdody_equal_to_controller_response_with_some_beer_list_base_on_brewery_id() throws NoContentException {
-        when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(list);
-        assertEquals(ResponseEntity.ok().body(list).getBody(), beerController.findAllBeersByBreweryIdList(breweryID).getBody());
     }
 
     @Test

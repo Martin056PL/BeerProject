@@ -6,13 +6,15 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Table(name = "beer")
 public class Beer implements Serializable {
 
@@ -24,14 +26,18 @@ public class Beer implements Serializable {
     private Long beerId;
 
     @NotEmpty
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "style")
     private String style;
 
     @Min(value = 0)
+    @Column(name = "extract")
     private Double extract;
 
-    @Min(0)
+    @Size(min = 0, max = 100)
+    @Column(name = "alcohol")
     private Double alcohol;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -42,5 +48,5 @@ public class Beer implements Serializable {
 
     @Lob
     @Column(name = "beer_image", columnDefinition = "mediumblob")
-    private byte [] beerImage;
+    private byte[] beerImage;
 }
