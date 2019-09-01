@@ -3,10 +3,12 @@ import thunk from 'redux-thunk'
 
 import drawer from './state/drawer'
 import fullScreenCircuralProgress from './state/fullScreenCircuralProgress'
+import snackbars from './state/snackbars'
 
 const reducer = combineReducers({
   drawer,
-  fullScreenCircuralProgress
+  fullScreenCircuralProgress,
+  snackbars
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
