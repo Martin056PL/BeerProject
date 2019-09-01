@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    hostname: db
+    image: mysql
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: beerProjectDevelop
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 3306:3306
+    restart: always
+  api:
+    build: .
+    hostname: beerApp
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      WAIT_HOSTS: db:3306
+      WAIT_BEFORE_HOSTS: 15
+    links:
+      - db:db
