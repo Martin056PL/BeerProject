@@ -5,7 +5,10 @@ import { ListItemText } from '@material-ui/core';
 
 const ListItem = props => {
   return (
-    <MuiListItem alignItems="flex-start">
+    <MuiListItem
+      alignItems="flex-start"
+      onClick={props.click}
+    >
       <ListItemText
         primary={props.title}
         primaryTypographyProps={{

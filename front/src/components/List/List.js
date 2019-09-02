@@ -1,6 +1,7 @@
 import React from 'react'
 
 import ListItem from './ListItem'
+import { withRouter } from 'react-router-dom'
 
 import MuiList from '@material-ui/core/List';
 import { Divider } from '@material-ui/core';
@@ -12,7 +13,10 @@ const List = props => {
     <MuiList>
       {breweries.map(brewery => (
         <div key={brewery}>
-          <ListItem title={brewery} />
+          <ListItem
+            title={brewery}
+            click={() => props.history.push('/brewerie/' + brewery.toLowerCase())}
+          />
           <Divider />
         </div>
       ))}
@@ -20,4 +24,4 @@ const List = props => {
   )
 }
 
-export default List
+export default withRouter(List)
