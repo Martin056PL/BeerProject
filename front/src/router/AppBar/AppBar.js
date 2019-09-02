@@ -11,10 +11,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 function AppBar(props) {
   return (
-    <div style={{ marginBottom: 56 }}>
-      <MuiAppBar
-        position="fixed"
-      >
+    <div style={{ marginBottom: 56 }} >
+      <MuiAppBar >
         <Toolbar>
           <IconButton
             edge="start"
