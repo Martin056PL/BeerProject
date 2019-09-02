@@ -15,7 +15,7 @@ const List = props => {
         <div key={brewery}>
           <ListItem
             title={brewery}
-            click={() => props.history.push('/brewerie/' + brewery.toLowerCase())}
+            click={() => props.history.push('/brewery/' + brewery.toLowerCase())}
           />
           <Divider />
         </div>
