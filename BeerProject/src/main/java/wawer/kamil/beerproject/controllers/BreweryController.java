@@ -28,7 +28,7 @@ import static org.springframework.http.ResponseEntity.*;
 
 @RequiredArgsConstructor
 @Controller
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("brewery")
 @Slf4j(topic = "application.logger")
 public class BreweryController {

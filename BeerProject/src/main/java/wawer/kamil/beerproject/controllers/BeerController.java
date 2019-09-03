@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.ResponseEntity.*;
 
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @Controller
 @RestControllerAdvice
 @Slf4j(topic = "application.logger")
