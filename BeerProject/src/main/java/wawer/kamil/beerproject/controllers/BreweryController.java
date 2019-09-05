@@ -60,24 +60,13 @@ public class BreweryController {
 
     @PostMapping
     public ResponseEntity<BreweryDTO> addNewBrewery(@Valid @RequestBody BreweryDTO breweryDTO) throws URISyntaxException {
-        log.debug("Endpoint address: 'brewery' with POST method, request parameter - brewery data: {}; {}; {}; {}"
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
         Brewery result = service.createNewBrewery(mapper.map(breweryDTO, Brewery.class));
         log.debug("Add new brewery with Id: {}", result.getBreweryId());
-        return  created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
+        return created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
     }
 
     @PutMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @Valid @RequestBody BreweryDTO breweryDTO) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}"
-                , breweryId
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
         Brewery result = service.updateBreweryById(breweryId, mapper.map(breweryDTO, Brewery.class));
         log.debug("Updated brewery with Id: {}", result.getBreweryId());
         return ok().body(mapper.map(result, BreweryDTO.class));
@@ -85,7 +74,6 @@ public class BreweryController {
 
     @DeleteMapping("{breweryId}")
     public ResponseEntity deleteBrewery(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
         return noContent().build();
