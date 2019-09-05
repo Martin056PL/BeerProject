@@ -1,11 +1,16 @@
 const ADD_FS_CIRCURAL = "fullScreenCircuralProgress/ADD"
 const REMOVE_FS_CIRCURAL = "fullScreenCircuralProgress/REMOVE"
 
-export const addProgressActionCreator = () => ({
+const addProgressActionCreator = () => ({
   type: ADD_FS_CIRCURAL,
   time: Date.now()
 })
-export const removeProgressActionCreator = () => ({ type: REMOVE_FS_CIRCURAL })
+const removeProgressActionCreator = () => ({ type: REMOVE_FS_CIRCURAL })
+
+export const fullScreenCircural = {
+  add: addProgressActionCreator,
+  remove: removeProgressActionCreator
+}
 
 const initialState = {
   fetchs: []

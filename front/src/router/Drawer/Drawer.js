@@ -30,7 +30,7 @@ const Drawer = props => {
       >
         <List style={styles.list}>
           <Link
-            to={'/breweries'}
+            to={'/breweries/1'}
             style={styles.link}
             onClick={props._close}
           >

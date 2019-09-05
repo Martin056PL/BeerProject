@@ -5,8 +5,8 @@ import theme from './theme'
 
 import AppBar from './router/AppBar'
 import Drawer from './router/Drawer'
-import List from './components/List';
 import SingleBrewery from './views/SingleBrewery'
+import Breweries from './views/Breweries/Breweries';
 
 
 
@@ -17,7 +17,7 @@ const App = props => {
         <Router>
           <AppBar />
           <Drawer />
-          <Route path="/breweries" component={List} />
+          <Route path="/breweries/:page" component={Breweries} />
           <Route path="/brewery/:breweryId" component={SingleBrewery} />
         </Router>
       </MuiThemeProvider>

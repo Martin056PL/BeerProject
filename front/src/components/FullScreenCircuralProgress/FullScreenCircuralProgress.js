@@ -13,7 +13,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1000,
+    zIndex: 10000,
     backgroundColor: 'grey',
     opacity: 0.8
   }
