@@ -38,7 +38,6 @@ public class BreweryController {
 
     @GetMapping
     public ResponseEntity<Page<BreweryDTO>> getAllBreweryPage(Pageable pageable) throws NoContentException {
-        log.debug("Endpoint address: 'brewery' with GET method, request parameter - pageable: {}", pageable);
         Page<Brewery> listOfBrewery = service.getAllBreweryPage(pageable);
         Page<BreweryDTO> listOfBreweryDTO = listOfBrewery.map(brewery -> mapper.map(brewery, BreweryDTO.class));
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
@@ -47,7 +46,6 @@ public class BreweryController {
 
     @GetMapping("/list")
     public ResponseEntity<List<BreweryDTO>> getAllBreweryList() {
-        log.debug("Endpoint address: 'brewery/list' with GET method");
         List<Brewery> listOfBrewery = service.getAllBreweryList();
         List<BreweryDTO> listOfBreweryDTO = listOfBrewery.stream().map(brewery -> mapper.map(brewery, BreweryDTO.class)).collect(Collectors.toList());
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
@@ -56,31 +54,19 @@ public class BreweryController {
 
     @GetMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with GET method, request parameter - id: {}", breweryId);
         BreweryDTO brewery = mapper.map(service.getBreweryByBreweryId(breweryId), BreweryDTO.class);
         return ok().body(brewery);
     }
 
     @PostMapping
     public ResponseEntity<BreweryDTO> addNewBrewery(@Valid @RequestBody BreweryDTO breweryDTO) throws URISyntaxException {
-        log.debug("Endpoint address: 'brewery' with POST method, request parameter - brewery data: {}; {}; {}; {}"
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
         Brewery result = service.createNewBrewery(mapper.map(breweryDTO, Brewery.class));
         log.debug("Add new brewery with Id: {}", result.getBreweryId());
-        return  created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
+        return created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
     }
 
     @PutMapping("{breweryId}")
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @Valid @RequestBody BreweryDTO breweryDTO) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}"
-                , breweryId
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
         Brewery result = service.updateBreweryById(breweryId, mapper.map(breweryDTO, Brewery.class));
         log.debug("Updated brewery with Id: {}", result.getBreweryId());
         return ok().body(mapper.map(result, BreweryDTO.class));
@@ -88,7 +74,6 @@ public class BreweryController {
 
     @DeleteMapping("{breweryId}")
     public ResponseEntity deleteBrewery(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
         return noContent().build();
