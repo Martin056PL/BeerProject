@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.ResponseEntity.*;
 
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @Controller
 @RestControllerAdvice
 @Slf4j(topic = "application.logger")
@@ -40,7 +40,6 @@ public class BeerController {
 
     @GetMapping("beer")
     public ResponseEntity<Page<BeerDTO>> findAllBeersPage(Pageable pageable) {
-        log.debug("Endpoint address: 'beer' with GET method, request parameter - pageable: {}", pageable);
         Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
         Page<BeerDTO> resultListOfBeersDTO = resultListOfBeers.map(beer -> mapper.map(beer, BeerDTO.class));
         log.debug("List of returned Id: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -49,7 +48,6 @@ public class BeerController {
 
     @GetMapping("beer/list")
     public ResponseEntity<List<BeerDTO>> findAllBeersList() {
-        log.debug("Endpoint address: 'beer/list' with GET method");
         List<Beer> resultListOfBeers = service.findAllBeersList();
         List<BeerDTO> resultListOfBeersDTO = resultListOfBeers.stream().map(beer -> mapper.map(beer, BeerDTO.class)).collect(Collectors.toList());
         log.debug("List of returned Id: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -58,7 +56,6 @@ public class BeerController {
 
     @GetMapping("brewery/{breweryId}/beer")
     public ResponseEntity<Page<BeerDTO>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with GET method, request parameter - breweryId: {}; Pageable: {}", breweryId, pageable);
         Page<Beer> resultListOfBeers = service.findAllBeersByBreweryIdPage(breweryId, pageable);
         Page<BeerDTO> resultListOfBeersDTO = resultListOfBeers.map(beer -> mapper.map(beer, BeerDTO.class));
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -67,7 +64,6 @@ public class BeerController {
 
     @GetMapping("brewery/{breweryId}/beer/list")
     public ResponseEntity<List<BeerDTO>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/list' with GET method, request parameter - breweryId: {}", breweryId);
         List<Beer> resultListOfBeers = service.findAllBeersByBreweryIdList(breweryId);
         List<BeerDTO> resultListOfBeersDTO = resultListOfBeers.stream().map(beer -> mapper.map(beer, BeerDTO.class)).collect(Collectors.toList());
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -76,14 +72,12 @@ public class BeerController {
 
     @GetMapping("beer/{beerId}")
     public ResponseEntity<BeerDTO> findProperBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
-        log.debug("Endpoint address: 'beer/{beerId}' with GET method, request parameter - beerId: {}", beerId);
         BeerDTO resultBeerDTO = mapper.map(service.findBeerByBeerId(beerId), BeerDTO.class);
         return ok().body(resultBeerDTO);
     }
 
     @GetMapping("brewery/{breweryId}/beer/{beerId}")
     public ResponseEntity<BeerDTO> findProperBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with GET method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         BeerDTO resultBeerDTO = mapper.map(service.findProperBeerByBreweryIdAndBeerId(breweryId, beerId), BeerDTO.class);
         return ok().body(resultBeerDTO);
     }
@@ -92,11 +86,6 @@ public class BeerController {
 
     @PostMapping("beer")
     public ResponseEntity<BeerDTO> addNewBeer(@RequestBody BeerDTO beerDTO) throws URISyntaxException {
-        log.debug("Endpoint address: 'beer' with POST method, request parameter -  beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
         Beer resultBeer = service.addNewBeerToRepository(mapper.map(beerDTO, Beer.class));
         log.debug("Add new beer with Id: {}", resultBeer.getBeerId());
         return created(new URI("add-beer" + resultBeer.getBeerId())).body(mapper.map(resultBeer, BeerDTO.class));
@@ -104,12 +93,6 @@ public class BeerController {
 
     @PostMapping("brewery/{breweryId}/beer")
     public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException, URISyntaxException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with POST method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , breweryId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
         Beer resultBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, mapper.map(beerDTO, Beer.class));
         log.debug("Add new beer with Id: {}", resultBeer.getBeerId());
         return created(new URI("add-beer" + resultBeer.getBeerId())).body(mapper.map(resultBeer, BeerDTO.class));
@@ -119,12 +102,6 @@ public class BeerController {
 
     @PutMapping("beer/{beerId}")
     public ResponseEntity<BeerDTO> updateBeer(@PathVariable Long beerId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
-        log.debug("Endpoint address: 'beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , beerId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
         Beer resultBeer = service.updateBeerByBeerId(beerId, mapper.map(beerDTO, Beer.class));
         log.debug("Updated beer with Id: {}", resultBeer.getBeerId());
         return ok().body(mapper.map(resultBeer, BeerDTO.class));
@@ -134,13 +111,6 @@ public class BeerController {
     public ResponseEntity<BeerDTO> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                       @PathVariable Long beerId,
                                                                       @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerId: {} beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , breweryId
-                , beerId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
         Beer resultBeer = service.updateBeerByBreweryIdAndBeerId(breweryId, beerId, mapper.map(beerDTO, Beer.class));
         log.debug("Updated beer with Id: {}", resultBeer.getBeerId());
         return ok().body(mapper.map(resultBeer, BeerDTO.class));
@@ -150,28 +120,24 @@ public class BeerController {
 
     @DeleteMapping("beer/{beerId}")
     public ResponseEntity deleteBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
-        log.debug("Endpoint address: 'beer/{beerId}' with DELETE method, request parameter - beerId: {}", beerId);
         service.deleteBeerByBeerId(beerId);
         return noContent().build();
     }
 
     @DeleteMapping("brewery/{breweryId}/beer/{beerId}")
     public ResponseEntity deleteBeerByBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with DELETE method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         service.deleteBeerByBreweryIdAndBeerId(breweryId, beerId);
         return noContent().build();
     }
 
     @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}/image' with POST method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
         return ok().body("File is uploaded successfully");
     }
 
     @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}/image' with GET method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
         byte[] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
