@@ -20,6 +20,7 @@
         <sonar.jdbc.username>admin</sonar.jdbc.username>
         <sonar.jdbc.password>admin</sonar.jdbc.password>
         <sonar.exclusions>
+            **/aspect/*.java,
             **/domain/*.java,
             **/exceptions/*,
             **/configuration/*.java,
@@ -105,6 +106,15 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
     </dependencies>
 
