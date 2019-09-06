@@ -46,7 +46,7 @@ public class BreweryAspects {
                 , breweryDTO.getPhoneNumber());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.getBreweryByBreweryId(..)) && args(breweryId)")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.deleteBrewery(..)) && args(breweryId)")
     public void logDeleteBrewery(Long breweryId) {
         log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
     }

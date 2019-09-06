@@ -17,12 +17,12 @@ public class BeerAspects {
         log.debug("Endpoint address: 'beer' with GET method, request parameter - pageable: {}", pageable);
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersPage(..))")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersList(..))")
     public void logFindAllBeersList() {
         log.debug("Endpoint address: 'beer/list' with GET method");
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersPage(..)) && args(breweryId, pageable)", argNames = "breweryId,pageable")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersByBreweryIdPage(..)) && args(breweryId, pageable)", argNames = "breweryId,pageable")
     public void logFindAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer' with GET method, request parameter - breweryId: {}; Pageable: {}", breweryId, pageable);
     }
