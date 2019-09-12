@@ -17,9 +17,9 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Table(name = "user")
+@EqualsAndHashCode(callSuper = true)
 public class User extends DateAudit {
 
     private static final long serialVersionUID = -2398213833013356134L;
