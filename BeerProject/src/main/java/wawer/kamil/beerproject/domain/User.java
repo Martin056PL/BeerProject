@@ -1,17 +1,26 @@
 package wawer.kamil.beerproject.domain;
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
+import wawer.kamil.beerproject.domain.audit.DateAudit;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
-public class User implements Serializable {
+@Getter
+@Setter
+@Table(name = "user")
+public class User extends DateAudit {
 
     private static final long serialVersionUID = -2398213833013356134L;
 
@@ -28,8 +37,10 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @NaturalId
     @NotEmpty
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
+    @Email
     private String email;
 
     @NotEmpty
@@ -41,4 +52,10 @@ public class User implements Serializable {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @ManyToMany(fetch = LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }

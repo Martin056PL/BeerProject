@@ -11,10 +11,14 @@
             </column>
             <column name="first_name" type="varchar(255)"/>
             <column name="last_name" type="varchar(255)"/>
-            <column name="email" type="varchar(255)"/>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
             <column name="password" type="varchar(255)"/>
             <column name="phone_number" type="bigint"/>
             <column name="is_active" type="boolean"/>
+            <column name="create_at" type="date"/>
+            <column name="updated_at" type="date"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

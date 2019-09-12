@@ -10,6 +10,11 @@ spring:
   liquibase:
     change-log: classpath:db/test.xml
 
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS : false
+    time-zone : UTC
+
 server:
   port: 8086
 

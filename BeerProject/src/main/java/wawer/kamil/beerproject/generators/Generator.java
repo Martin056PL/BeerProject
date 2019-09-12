@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.domain.Address;
 import wawer.kamil.beerproject.domain.Beer;
 import wawer.kamil.beerproject.domain.Brewery;
-import wawer.kamil.beerproject.domain.StyleBeer;
+import wawer.kamil.beerproject.domain.enums.StyleBeer;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
 @Component
