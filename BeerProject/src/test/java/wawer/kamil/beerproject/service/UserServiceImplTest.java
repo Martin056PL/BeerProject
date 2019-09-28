@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.domain.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.UserRepository;
+import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

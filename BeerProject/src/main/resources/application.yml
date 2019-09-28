@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: develop
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8085
+
+logging:
+  config: classpath:logback/logback.xml
+
+image:
+  path: src/main/resources/images/.
+  requirements:
+    standard-type: image/jpeg

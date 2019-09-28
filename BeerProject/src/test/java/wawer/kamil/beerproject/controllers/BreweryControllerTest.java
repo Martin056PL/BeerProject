@@ -17,7 +17,7 @@ import wawer.kamil.beerproject.domain.Brewery;
 import wawer.kamil.beerproject.dto.BreweryDTO;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
-import wawer.kamil.beerproject.service.BreweryServiceImpl;
+import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
 
 import java.io.IOException;
 import java.net.URI;

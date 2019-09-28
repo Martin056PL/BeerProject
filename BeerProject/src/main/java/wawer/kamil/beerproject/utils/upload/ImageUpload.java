@@ -1,6 +1,7 @@
 package wawer.kamil.beerproject.utils.upload;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,8 +14,12 @@ import java.io.IOException;
 @Slf4j(topic = "application.logger")
 public class ImageUpload {
 
-    private static final String PATH = "src/main/resources/images/.";
-    private static final String STANDARD_TYPE = "image/jpeg";
+    @Value("${image.path}")
+    private String PATH;
+
+    @Value("${image.requirements.standard-type}")
+    private String STANDARD_TYPE;
+
     private static final long MAX_SIZE_OF_FILE = 10000000L;
 
     public byte[] convertFileToByteArray(MultipartFile file) throws IOException {

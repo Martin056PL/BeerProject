@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.service;
+package wawer.kamil.beerproject.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
+import wawer.kamil.beerproject.service.BeerService;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;

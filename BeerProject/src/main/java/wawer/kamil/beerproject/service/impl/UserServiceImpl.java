@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.service;
+package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import wawer.kamil.beerproject.domain.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.UserRepository;
+import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
 
