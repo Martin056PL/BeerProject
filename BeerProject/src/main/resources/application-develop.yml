@@ -21,6 +21,11 @@ spring:
     console:
       enabled: false
 
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
 server:
   port: 8085
 
