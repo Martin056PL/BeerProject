@@ -14,7 +14,6 @@
             <column name="email" type="string" header="email"/>
             <column name="password" type="string" header="password"/>
             <column name="phone_number" type="numeric" header="phone_number"/>
-            <column name="is_active" type="boolean" header="is_active"/>
             <column name="create_at" type="DATETIME" header="create_at"/>
             <column name="updated_at" type="DATETIME" header="updated_at"/>
         </loadUpdateData>
