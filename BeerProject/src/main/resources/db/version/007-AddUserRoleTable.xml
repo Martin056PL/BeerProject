@@ -26,4 +26,10 @@
             <column name="role_id"/>
         </createIndex>
     </changeSet>
+
+    <changeSet author="wawerk" id="insert-user-role">
+        <insert tableName="role">
+            <column name="role_name" value="ROLE_USER"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
