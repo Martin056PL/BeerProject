@@ -29,6 +29,7 @@ public class User extends DateAudit implements Serializable {
     @Column(name = "id")
     private Long id;
 
+
     @OneToOne(mappedBy = "user",
             cascade = PERSIST)
     private UserInfo userInfo;

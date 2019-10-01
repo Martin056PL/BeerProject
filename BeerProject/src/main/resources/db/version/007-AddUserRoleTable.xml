@@ -22,17 +22,8 @@
     </changeSet>
 
     <changeSet id="15" author="Kamil Wawer">
-        <addForeignKeyConstraint
-                baseColumnNames="user_id"
-                baseTableName="user_role"
-                constraintName="FKo40lc9yirox8um5poaxhw6ak0"
-                referencedTableName="user"
-                referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint
-                baseColumnNames="role_id"
-                baseTableName="user_role"
-                constraintName="FKlexe564x1fi4ssje5wcuii3v2"
-                referencedTableName="role"
-                referencedColumnNames="role_id"/>
+        <createIndex indexName="FKa68196081fvovjhkek5m97n3y" tableName="user_role">
+            <column name="role_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
