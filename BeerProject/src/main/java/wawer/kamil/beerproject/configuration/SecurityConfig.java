@@ -3,7 +3,6 @@ package wawer.kamil.beerproject.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -59,26 +58,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
 
-                .csrf()
-                .disable()
                 .cors()
                 .and()
+                .csrf()
+                .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .headers()
-                .frameOptions()
-                .disable()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/h2-console/**")
-                .permitAll()
-                .antMatchers("/user/checkUsernameAvailability", "/user/checkEmailAvailability")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/polls/**", "/users/**")
+                .antMatchers("/auth/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
