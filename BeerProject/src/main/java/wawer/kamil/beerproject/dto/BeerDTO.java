@@ -2,7 +2,7 @@ package wawer.kamil.beerproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.service;
+package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.security.UserPrincipal;
 

@@ -1,13 +1,14 @@
-package wawer.kamil.beerproject.service;
+package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.UserRepository;
+import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(Long userId) throws NoContentException {
-        if (repository.existsByUserId(userId)) {
-            return repository.findByUserId(userId);
+        if (repository.existsById(userId)) {
+            return repository.findById(userId).get();
         } else {
             log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);
             throw new NoContentException();
@@ -47,8 +48,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long userId, User user) throws NoContentException {
-        if (repository.existsByUserId(userId)) {
-            user.setUserId(userId);
+        if (repository.existsById(userId)) {
+            user.setId(userId);
             return repository.save(user);
         } else {
             log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) throws NoContentException {
-        if (repository.existsByUserId(userId)) {
+        if (repository.existsById(userId)) {
             repository.deleteById(userId);
         } else {
             log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);

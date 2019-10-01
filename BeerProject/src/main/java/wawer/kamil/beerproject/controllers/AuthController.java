@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import wawer.kamil.beerproject.domain.Role;
-import wawer.kamil.beerproject.domain.User;
-import wawer.kamil.beerproject.domain.enums.RoleName;
+import wawer.kamil.beerproject.model.Role;
+import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.enums.RoleName;
 import wawer.kamil.beerproject.exceptions.AppException;
 import wawer.kamil.beerproject.payloads.ApiResponse;
 import wawer.kamil.beerproject.payloads.JwtAuthenticationResponse;
@@ -69,8 +69,8 @@ public class AuthController {
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getPhoneNumber());
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(), signUpRequest.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

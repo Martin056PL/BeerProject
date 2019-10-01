@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import wawer.kamil.beerproject.domain.Beer;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Beer;
+import wawer.kamil.beerproject.model.Brewery;
 
 import java.util.List;
 

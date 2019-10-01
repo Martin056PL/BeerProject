@@ -9,15 +9,16 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="username" type="varchar(255)"/>
-            <column name="email" type="varchar(255)">
-                <constraints unique="true"/>
-            </column>
-            <column name="password" type="varchar(255)"/>
-            <column name="activated" type="boolean"/>
-            <column name="locked" type="boolean"/>
-            <column name="create_at" type="datetime"/>
-            <column name="updated_at" type="datetime"/>
+            <column name="user_id" type="bigint"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="phone_number" type="bigint"/>
         </createTable>
+
+
+            <createIndex indexName="FKr1b96ca4asuvrhwoqkdmbo7nj" tableName="user_info">
+                <column name="user_id"/>
+            </createIndex>
+
     </changeSet>
 </databaseChangeLog>

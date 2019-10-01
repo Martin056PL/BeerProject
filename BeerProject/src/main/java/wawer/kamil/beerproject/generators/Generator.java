@@ -2,10 +2,10 @@ package wawer.kamil.beerproject.generators;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import wawer.kamil.beerproject.domain.Address;
-import wawer.kamil.beerproject.domain.Beer;
-import wawer.kamil.beerproject.domain.Brewery;
-import wawer.kamil.beerproject.domain.enums.StyleBeer;
+import wawer.kamil.beerproject.model.Address;
+import wawer.kamil.beerproject.model.Beer;
+import wawer.kamil.beerproject.model.Brewery;
+import wawer.kamil.beerproject.model.enums.StyleBeer;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 
 @Component

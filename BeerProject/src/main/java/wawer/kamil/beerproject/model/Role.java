@@ -1,9 +1,9 @@
-package wawer.kamil.beerproject.domain;
+package wawer.kamil.beerproject.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
-import wawer.kamil.beerproject.domain.enums.RoleName;
+import wawer.kamil.beerproject.model.enums.RoleName;
 
 import javax.persistence.*;
 

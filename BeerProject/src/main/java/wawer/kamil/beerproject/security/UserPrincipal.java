@@ -7,7 +7,8 @@ import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.UserInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,12 +20,11 @@ import java.util.stream.Collectors;
 public class UserPrincipal implements UserDetails {
 
     private Long id;
-
-    private String firstName;
-
-    private String lastName;
-
+    private UserInfo userInfo;
     private String username;
+    private Boolean locked;
+    private Boolean activated;
+    private Collection<? extends GrantedAuthority> authorities;
 
     @JsonIgnore
     private String email;
@@ -32,30 +32,24 @@ public class UserPrincipal implements UserDetails {
     @JsonIgnore
     private String password;
 
-    @JsonIgnore
-    private Long phoneNumber;
-
-    private Collection<? extends GrantedAuthority> authorities;
-
 
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
 
-        return new
-                UserPrincipal(
-                user.getUserId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getPhoneNumber(),
-                authorities
-        );
-    }
+        return UserPrincipal.builder().
+                id(user.getId())
+                .userInfo(user.getUserInfo())
+                .username(user.getUsername())
+                .locked(user.getLocked())
+                .activated(user.getActivated())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .build();
 
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

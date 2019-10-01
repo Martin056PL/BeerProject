@@ -6,9 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Pageable;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.UserRepository;
+import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,16 +45,16 @@ public class UserServiceImplTest {
 
     @Test
     public void verify_get_user_by_user_id_when_user_id_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(true);
+        when(repository.existsById(ID)).thenReturn(true);
         service.findUserByUserId(ID);
-        verify(repository).findByUserId(ID);
+        verify(repository).findById(ID);
     }
 
     @Test(expected = NoContentException.class)
     public void verify_get_brewery_by_user_id_when_user_id_do_not_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(false);
+        when(repository.existsById(ID)).thenReturn(false);
         service.findUserByUserId(ID);
-        verify(repository).findByUserId(ID);
+        verify(repository).findById(ID);
     }
 
     @Test
@@ -64,28 +65,28 @@ public class UserServiceImplTest {
 
     @Test
     public void verify_update_user_by_user_id_when_user_id_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(true);
+        when(repository.existsById(ID)).thenReturn(true);
         service.updateUser(ID,user);
         verify(repository).save(user);
     }
 
     @Test(expected = NoContentException.class)
     public void verify_update_brewery_by_brewery_id_when_brewery_id_do_not_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(false);
+        when(repository.existsById(ID)).thenReturn(false);
         service.updateUser(ID,user);
         verify(repository).save(user);
     }
 
     @Test
     public void verify_delete_user_by_user_id_when_user_id_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(true);
+        when(repository.existsById(ID)).thenReturn(true);
         service.deleteUser(ID);
         verify(repository).deleteById(ID);
     }
 
     @Test(expected = NoContentException.class)
     public void verify_delete_user_by_user_id_when_user_id_do_not_exists() throws NoContentException {
-        when(repository.existsByUserId(ID)).thenReturn(false);
+        when(repository.existsById(ID)).thenReturn(false);
         service.deleteUser(ID);
         verify(repository).deleteById(ID);
     }

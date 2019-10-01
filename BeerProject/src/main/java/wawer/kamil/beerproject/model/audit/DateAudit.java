@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.domain.audit;
+package wawer.kamil.beerproject.model.audit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

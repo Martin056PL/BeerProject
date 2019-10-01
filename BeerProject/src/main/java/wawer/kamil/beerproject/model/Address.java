@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.domain;
+package wawer.kamil.beerproject.model;
 
 import lombok.*;
 

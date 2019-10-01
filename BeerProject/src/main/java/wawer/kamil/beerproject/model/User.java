@@ -1,16 +1,18 @@
-package wawer.kamil.beerproject.domain;
+package wawer.kamil.beerproject.model;
 
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
-import wawer.kamil.beerproject.domain.audit.DateAudit;
+import wawer.kamil.beerproject.model.audit.DateAudit;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -18,39 +20,45 @@ import static javax.persistence.FetchType.LAZY;
 @Getter @Setter
 @Table(name = "user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends DateAudit {
+public class User extends DateAudit implements Serializable {
 
     private static final long serialVersionUID = -2398213833013356134L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "id")
+    private Long id;
+
+    @OneToOne(mappedBy = "user",
+            cascade = PERSIST)
+    private UserInfo userInfo;
 
     @NotEmpty
-    @Column(name = "first_name")
-    private String firstName;
-
-    @NotEmpty
-    @Column(name = "last_name")
-    private String lastName;
-
-    @NotEmpty
-    @Column(name = "username")
+    @Column(name = "username",
+            unique = true,
+            nullable = false)
     private String username;
 
     @NaturalId
     @NotEmpty
-    @Column(name = "email", unique = true)
     @Email
+    @Column(name = "email",
+            unique = true,
+            nullable = false)
     private String email;
 
     @NotEmpty
-    @Column(name = "password")
+    @Column(name = "password",
+            nullable = false)
     private String password;
 
-    @Column(name = "phone_number")
-    private Long phoneNumber;
+    @Column(name = "activated",
+            nullable = false)
+    private Boolean activated;
+
+    @Column(name = "locked",
+            nullable = false)
+    private Boolean locked;
 
     @ManyToMany(fetch = LAZY)
     @JoinTable(name = "user_role",
@@ -58,12 +66,11 @@ public class User extends DateAudit {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(@NotEmpty String firstName, @NotEmpty String lastName, @NotEmpty String username, @NotEmpty @Email String email, @NotEmpty String password, Long phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(@NotEmpty String username, @NotEmpty @Email String email, @NotEmpty String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.activated = false;
+        this.locked = false;
     }
 }
