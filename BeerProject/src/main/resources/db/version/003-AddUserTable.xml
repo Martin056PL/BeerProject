@@ -14,9 +14,9 @@
             <column name="email" type="varchar(255)">
                 <constraints unique="true"/>
             </column>
+            <column name="username" type="varchar(255)"/>
             <column name="password" type="varchar(255)"/>
             <column name="phone_number" type="bigint"/>
-            <column name="is_active" type="boolean"/>
             <column name="create_at" type="datetime"/>
             <column name="updated_at" type="datetime"/>
         </createTable>

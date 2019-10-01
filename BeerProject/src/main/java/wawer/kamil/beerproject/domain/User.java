@@ -14,8 +14,6 @@ import java.util.Set;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
 @Table(name = "user")
@@ -37,6 +35,10 @@ public class User extends DateAudit {
     @Column(name = "last_name")
     private String lastName;
 
+    @NotEmpty
+    @Column(name = "username")
+    private String username;
+
     @NaturalId
     @NotEmpty
     @Column(name = "email", unique = true)
@@ -50,12 +52,18 @@ public class User extends DateAudit {
     @Column(name = "phone_number")
     private Long phoneNumber;
 
-    @Column(name = "is_active")
-    private boolean isActive;
-
     @ManyToMany(fetch = LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User(@NotEmpty String firstName, @NotEmpty String lastName, @NotEmpty String username, @NotEmpty @Email String email, @NotEmpty String password, Long phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
 }
