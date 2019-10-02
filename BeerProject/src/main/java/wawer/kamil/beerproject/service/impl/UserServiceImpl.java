@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(Long userId) throws NoContentException {
-        if (repository.existsById(userId)) {
+        if (repository.findById(userId).isPresent()) {
             return repository.findById(userId).get();
         } else {
             log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);
