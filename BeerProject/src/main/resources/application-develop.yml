@@ -31,7 +31,3 @@ server:
 
 logging:
   config: classpath:logback/logback.xml
-
-app:
-  jwtSecret: JWTSuperSecretKey
-  jwtExpirationInMs: 604800000
