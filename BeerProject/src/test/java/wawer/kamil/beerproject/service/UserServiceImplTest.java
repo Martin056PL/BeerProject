@@ -11,6 +11,8 @@ import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,17 +45,15 @@ public class UserServiceImplTest {
         verify(repository).findAll();
     }
 
-//    @Test
-//    public void verify_get_user_by_user_id_when_user_id_exists() throws NoContentException {
-//        when(repository.findById(ID)).thenReturn(Optional.of(user));
-//        when(repository.findById(ID).isPresent()).thenReturn(true);
-//        service.findUserByUserId(ID);
-//        verify(repository).findById(ID);
-//    }
+    @Test
+    public void verify_get_user_by_user_id_when_user_id_exists() throws NoContentException {
+        when(repository.findById(ID)).thenReturn(Optional.of(user));
+        service.findUserByUserId(ID);
+        verify(repository).findById(ID);
+    }
 
     @Test(expected = NoContentException.class)
     public void verify_get_brewery_by_user_id_when_user_id_do_not_exists() throws NoContentException {
-//        when(repository.existsById(ID)).thenReturn(false);
         service.findUserByUserId(ID);
         verify(repository).findById(ID);
     }

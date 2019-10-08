@@ -33,12 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(Long userId) throws NoContentException {
-        if (repository.findById(userId).isPresent()) {
-            return repository.findById(userId).get();
-        } else {
-            log.debug(THE_USER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, userId);
-            throw new NoContentException();
-        }
+        return repository.findById(userId).orElseThrow(NoContentException::new);
     }
 
     @Override
@@ -48,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long userId, User user) throws NoContentException {
+
         if (repository.existsById(userId)) {
             user.setId(userId);
             return repository.save(user);
