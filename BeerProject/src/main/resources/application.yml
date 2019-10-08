@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: develop
+    active: production
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
@@ -19,3 +19,7 @@ image:
   path: src/main/resources/images/.
   requirements:
     standard-type: image/jpeg
+
+app:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 604800000
