@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.dto.BreweryDTO;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
@@ -22,6 +22,7 @@ import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -34,6 +35,9 @@ public class BreweryControllerTest {
 
     @Mock
     Page<Brewery> pageBrewery;
+
+    @Mock
+    List<Brewery> breweryList;
 
     @Mock
     Pageable pageable;
@@ -60,6 +64,12 @@ public class BreweryControllerTest {
     public void should_return_status_code_which_equals_to_controller_status_code_brewery_page() throws NoContentException {
         when(service.getAllBreweryPage(pageable)).thenReturn(pageBrewery);
         assertEquals(HttpStatus.OK, controller.getAllBreweryPage(pageable).getStatusCode());
+    }
+
+    @Test
+    public void should_return_status_code_which_equals_to_controller_status_code_brewery_list(){
+        when(service.getAllBreweryList()).thenReturn(breweryList);
+        assertEquals(HttpStatus.OK, controller.getAllBreweryList().getStatusCode());
     }
 
     @Test

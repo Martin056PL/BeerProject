@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;

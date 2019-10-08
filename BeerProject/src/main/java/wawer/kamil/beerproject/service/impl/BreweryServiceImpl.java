@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;

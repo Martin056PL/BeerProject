@@ -1,7 +1,7 @@
 spring:
 
   datasource:
-    url: jdbc:mysql://localhost:32768/beerProjectDevelop?serverTimezone=Europe/Warsaw&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:32768/beerProjectDevelop?serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,8 +21,17 @@ spring:
     console:
       enabled: false
 
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
 server:
   port: 8085
 
 logging:
   config: classpath:logback/logback.xml
+
+app:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 604800000
