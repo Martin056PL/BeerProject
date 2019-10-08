@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.service;
+package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,10 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
+import wawer.kamil.beerproject.service.BreweryService;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;

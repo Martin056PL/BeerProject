@@ -3,7 +3,7 @@ package wawer.kamil.beerproject.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import wawer.kamil.beerproject.domain.Brewery;
+import wawer.kamil.beerproject.model.Brewery;
 
 public interface BreweryRepository extends JpaRepository<Brewery, Long> {
 

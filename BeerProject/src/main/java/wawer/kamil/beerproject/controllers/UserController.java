@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.dto.UserDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.UserService;
@@ -31,7 +31,7 @@ public class UserController {
     public ResponseEntity<Page<User>> findAllUsersPage(Pageable pageable) {
         log.debug("Endpoint address: 'users' with GET method, request parameter - pageable: {}", pageable);
         Page<User> resultListUsers = service.findAllUsersPage(pageable);
-        log.debug("List of returned Id: {}", resultListUsers.stream().map(User::getUserId).collect(Collectors.toList()));
+        log.debug("List of returned Id: {}", resultListUsers.stream().map(User::getId).collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.OK).body(resultListUsers);
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<List<User>> findAllUsersList() {
         log.debug("Endpoint address: 'users/list' with GET method");
         List<User> resultList = service.findAllUsersList();
-        log.debug("List of returned Id: {}", resultList.stream().map(User::getUserId).collect(Collectors.toList()));
+        log.debug("List of returned Id: {}", resultList.stream().map(User::getId).collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.OK).body(resultList);
     }
 
@@ -57,7 +57,7 @@ public class UserController {
                 , userDTO.getEmail()
                 , userDTO.getPhoneNumber());
         User result = service.createNewUser(mapper.map(userDTO, User.class));
-        log.debug("Add new user with Id: {}", result.getUserId());
+        log.debug("Add new user with Id: {}", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(service.createNewUser(result), UserDTO.class));
     }
 
@@ -70,7 +70,7 @@ public class UserController {
                 , userDTO.getEmail()
                 , userDTO.getPhoneNumber());
         User result = service.updateUser(userId, mapper.map(userDTO, User.class));
-        log.debug("Updated brewery with Id: {}", result.getUserId());
+        log.debug("Updated brewery with Id: {}", result.getId());
         return ResponseEntity.status(HttpStatus.OK).body(mapper.map(result, UserDTO.class));
     }
 

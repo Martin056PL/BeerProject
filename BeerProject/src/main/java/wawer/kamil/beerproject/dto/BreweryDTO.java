@@ -2,8 +2,8 @@ package wawer.kamil.beerproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import wawer.kamil.beerproject.domain.Address;
-import wawer.kamil.beerproject.domain.Beer;
+import wawer.kamil.beerproject.model.Address;
+import wawer.kamil.beerproject.model.Beer;
 
 import java.util.List;
 

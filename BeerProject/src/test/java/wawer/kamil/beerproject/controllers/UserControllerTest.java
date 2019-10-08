@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.dto.UserDTO;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.service.UserService;
@@ -106,7 +106,7 @@ public class UserControllerTest {
         when(mapper.map(userDTO, User.class)).thenReturn(user);
         when(service.updateUser(ID, user)).thenReturn(user);
         when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
-        when(user.getUserId()).thenReturn(ID);
+        when(user.getId()).thenReturn(ID);
         assertEquals(ResponseEntity.status(HttpStatus.OK).body(userDTO),controller.updateUser(ID, userDTO));
     }
 

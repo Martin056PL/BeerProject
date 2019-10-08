@@ -1,5 +1,5 @@
 spring:
-  datasource.url: jdbc:h2:mem:testdb
+  datasource.url: jdbc:h2:mem:beer
   datasource:
       driverClassName: org.h2.Driver
       username: sa
@@ -10,8 +10,17 @@ spring:
   liquibase:
     change-log: classpath:db/test.xml
 
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS : false
+    time-zone : UTC
+
 server:
   port: 8086
 
 logging:
   config: classpath:logback/logback.xml
+
+app:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 604800000

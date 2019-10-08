@@ -2,7 +2,7 @@ package wawer.kamil.beerproject.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import wawer.kamil.beerproject.domain.User;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 
 import java.util.List;
