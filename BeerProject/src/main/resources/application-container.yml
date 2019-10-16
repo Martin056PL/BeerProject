@@ -1,0 +1,30 @@
+spring:
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+
+  datasource:
+    url: jdbc:mysql://db:3306/beerProjectDevelop?useSSL=true&serverTimezone=UTC
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  liquibase:
+    change-log: classpath:db/master.xml
+
+  h2:
+    console:
+      enabled: false
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:logback/logback.xml

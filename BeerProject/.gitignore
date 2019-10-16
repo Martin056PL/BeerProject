@@ -1,4 +1,4 @@
-HELP.md
+HELP.mdLiquiBase
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -31,3 +31,6 @@ build/
 .vscode/
 
 .idea/*
+
+logs/*
+/src/main/resources/images/*
