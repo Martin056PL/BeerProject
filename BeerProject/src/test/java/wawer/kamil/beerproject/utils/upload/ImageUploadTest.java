@@ -30,32 +30,31 @@ public class ImageUploadTest {
     @Test
     public void should_return_true_when_controller_returns_the_same_length_of_byte_array_as_byte_array_from_file() throws IOException {
         when(file.getBytes()).thenReturn(newArray());
-        byte [] bytes = newArrayWithLength(file.getBytes().length);
+        byte[] bytes = newArrayWithLength(file.getBytes().length);
         int i = 0;
         for (byte b : file.getBytes()) {
             bytes[i++] = b;
         }
-        assertEquals(bytes.length,upload.convertFileToByteArray(file).length);
+        assertEquals(bytes.length, upload.convertFileToByteArray(file).length);
     }
 
 
-
-//    @Test
-//    public void should_return_true_if_size_and_type_are_correct(){
-//        when(file.getSize()).thenReturn(ACCEPT_SIZE);
-//        when(file.getContentType()).thenReturn(STANDARD_TYPE);
-//        assertTrue(upload.validateSizeAndTypeOfFile(file));
-//    }
+    @Test
+    public void should_return_true_if_size_and_type_are_correct() {
+        when(file.getSize()).thenReturn(ACCEPT_SIZE);
+        when(file.getContentType()).thenReturn(STANDARD_TYPE);
+        assertTrue(upload.validateSizeAndTypeOfFile(file));
+    }
 
     @Test
-    public void should_return_false_if_size_are_correct_and_type_are_incorrect(){
+    public void should_return_false_if_size_are_correct_and_type_are_incorrect() {
         when(file.getSize()).thenReturn(ACCEPT_SIZE);
         when(file.getContentType()).thenReturn(BAD_TYPE);
         assertFalse(upload.validateSizeAndTypeOfFile(file));
     }
 
     @Test
-    public void should_return_false_if_size_are_incorrect_and_type_is_correct(){
+    public void should_return_false_if_size_are_incorrect_and_type_is_correct() {
         when(file.getSize()).thenReturn(WRONG_SIZE);
         when(file.getContentType()).thenReturn(STANDARD_TYPE);
         assertFalse(upload.validateSizeAndTypeOfFile(file));
