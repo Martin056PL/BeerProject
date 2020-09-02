@@ -19,7 +19,3 @@ image:
   path: src/main/resources/images/.
   requirements:
     standard-type: image/jpeg
-
-app:
-  jwtSecret: JWTSuperSecretKey
-  jwtExpirationInMs: 604800000
