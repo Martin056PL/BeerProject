@@ -39,12 +39,12 @@ public class ImageUploadTest {
     }
 
 
-//    @Test
-//    public void should_return_true_if_size_and_type_are_correct() {
-//        when(file.getSize()).thenReturn(ACCEPT_SIZE);
-//        when(file.getContentType()).thenReturn(STANDARD_TYPE);
-//        assertTrue(upload.validateSizeAndTypeOfFile(file));
-//    }
+    @Test
+    public void should_return_true_if_size_and_type_are_correct() {
+        when(file.getSize()).thenReturn(ACCEPT_SIZE);
+        when(file.getContentType()).thenReturn(STANDARD_TYPE);
+        assertTrue(upload.validateSizeAndTypeOfFile(file));
+    }
 
     @Test
     public void should_return_false_if_size_are_correct_and_type_are_incorrect() {

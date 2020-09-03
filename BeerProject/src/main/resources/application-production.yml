@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:32768/beerProjectProduction?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
     username: ENC(BJfoeo1WOD1X841LiYcXdw==)
-    password: ENC(BJfoeo1WOD1X841LiYcXdw==)
+    password: ENC(KEjP4V7pO9UnASeicKKjVQ==)
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
