@@ -34,7 +34,6 @@ public class User extends DataAudit implements UserDetails {
 
 
     public User(LocalDateTime updateDateTime,
-                boolean isDeleted,
                 String username,
                 String password,
                 String email,
@@ -43,7 +42,7 @@ public class User extends DataAudit implements UserDetails {
                 boolean isAccountNonLocked,
                 boolean isCredentialsNonExpired,
                 boolean isEnabled) {
-        super(updateDateTime, isDeleted);
+        super(updateDateTime);
         this.username = username;
         this.password = password;
         this.email = email;

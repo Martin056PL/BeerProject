@@ -28,7 +28,6 @@ public class UserController {
     public void generateUser() {
         User user = new User(
                 LocalDateTime.now(),
-                false,
                 "user",
                 passwordEncoder.encode("user"),
                 "kamil.wawer@pollub.edu.pl",

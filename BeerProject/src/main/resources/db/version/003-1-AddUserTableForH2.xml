@@ -22,7 +22,7 @@
 
         <createTable tableName="user_granted_authorities">
             <column name="user_id" type="bigint"/>
-            <column name="granted_authorities" type="tinyblob"/>
+            <column name="granted_authorities" type="VARBINARY"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="user_id"

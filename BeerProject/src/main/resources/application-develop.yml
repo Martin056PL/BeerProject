@@ -6,13 +6,13 @@ spring:
     password: ENC(1XPGZzYSBKjVcBFUkLw3jw==)
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  #  liquibase:
-  #    change-log: classpath:db/master.xml
+  liquibase:
+    change-log: classpath:db/master.xml
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
