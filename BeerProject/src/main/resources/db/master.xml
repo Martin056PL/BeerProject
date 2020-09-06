@@ -3,9 +3,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="version/001-CreateBasicTableStructure.xml" relativeToChangelogFile="true"/>
+<!--    <include file="version/001-CreateBasicTableStructure.xml" relativeToChangelogFile="true"/>-->
     <!--    <include file="version/003-AddUserTable.xml" relativeToChangelogFile="true"/>-->
-    <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
+    <!--    <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>-->
     <!--    <include file="version/007-AddUserRoleTable.xml" relativeToChangelogFile="true"/>-->
     <!--    <include file="version/008-AddUserInfoTable.xml" relativeToChangelogFile="true"/>-->
 </databaseChangeLog>

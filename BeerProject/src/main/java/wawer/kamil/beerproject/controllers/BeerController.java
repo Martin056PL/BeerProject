@@ -8,13 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.service.BeerService;
 
 import javax.validation.Valid;
@@ -39,6 +40,7 @@ public class BeerController {
     //get methods
 
     @GetMapping("beer")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<Page<BeerDTO>> findAllBeersPage(Pageable pageable) {
         Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
         Page<BeerDTO> resultListOfBeersDTO = resultListOfBeers.map(beer -> mapper.map(beer, BeerDTO.class));
