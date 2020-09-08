@@ -7,4 +7,5 @@
     <include file="version/002-AddSampleData.xml" relativeToChangelogFile="true"/>
     <include file="version/003-1-AddUserTableForH2.xml" relativeToChangelogFile="true"/>
     <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
+    <include file="version/009-AddSamplesOfUsersData.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

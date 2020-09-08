@@ -11,7 +11,9 @@
             </column>
             <column name="created_at" type="datetime"/>
             <column name="update_date_time" type="datetime"/>
-            <column name="username" type="varchar(255)"/>
+            <column name="username" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
             <column name="password" type="varchar(255)"/>
             <column name="email" type="varchar(255)"/>
             <column name="is_account_non_expired" type="boolean"/>
@@ -22,7 +24,7 @@
 
         <createTable tableName="user_granted_authorities">
             <column name="user_id" type="bigint"/>
-            <column name="granted_authorities" type="tinyblob"/>
+            <column name="granted_authorities" type="varchar(255)"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="user_id"

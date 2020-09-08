@@ -2,7 +2,6 @@ package wawer.kamil.beerproject.configuration.security;
 
 import lombok.Getter;
 import lombok.ToString;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,13 +22,11 @@ public enum ApplicationUserRole {
         this.permissions = permissions;
     }
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthority() {
-        Set<SimpleGrantedAuthority> permissions = getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+    public Set<String> getGrantedAuthority() {
+        Set<String> permissionsSet = getPermissions().stream()
+                .map(ApplicationUserPermission::getPermission)
                 .collect(Collectors.toSet());
-        permissions.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return permissions;
+        permissionsSet.add("ROLE_" + this.name());
+        return permissionsSet;
     }
-
-
 }

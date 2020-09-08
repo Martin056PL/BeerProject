@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -21,12 +22,13 @@ public class User extends DataAudit implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String email;
 
-    @ElementCollection(targetClass = SimpleGrantedAuthority.class)
-    private Set<SimpleGrantedAuthority> grantedAuthorities;
+    @ElementCollection
+    private Set<String> grantedAuthorities;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -37,7 +39,7 @@ public class User extends DataAudit implements UserDetails {
                 String username,
                 String password,
                 String email,
-                Set<SimpleGrantedAuthority> grantedAuthorities,
+                Set<String> grantedAuthorities,
                 boolean isAccountNonExpired,
                 boolean isAccountNonLocked,
                 boolean isCredentialsNonExpired,
@@ -55,7 +57,9 @@ public class User extends DataAudit implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+        return grantedAuthorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
     @Override
