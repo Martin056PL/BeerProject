@@ -2,6 +2,8 @@ package wawer.kamil.beerproject.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ public class BeerServiceImpl implements BeerService {
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
     private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
 
+
+    private final Logger LOG = LoggerFactory.getLogger(BeerServiceImpl.class);
     //get beers
 
     @Override
@@ -181,6 +185,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
+        LOG.info("Evict cache entries...");
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         if (beer.getBeerImage() == null) {
             throw new NoContentException();
