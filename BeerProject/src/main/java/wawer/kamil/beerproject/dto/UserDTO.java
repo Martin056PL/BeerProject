@@ -1,8 +1,7 @@
 package wawer.kamil.beerproject.dto;
 
-import lombok.*;
-
 import javax.persistence.Column;
+import lombok.*;
 
 @Builder
 @NoArgsConstructor

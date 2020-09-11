@@ -1,16 +1,15 @@
 package wawer.kamil.beerproject.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.UserService;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
