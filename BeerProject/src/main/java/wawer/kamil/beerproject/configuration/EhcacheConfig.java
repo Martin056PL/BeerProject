@@ -22,7 +22,7 @@ public class EhcacheConfig extends CachingConfigurerSupport {
         beerCache.setTimeToLiveSeconds(10);
 
         CacheConfiguration breweryCache = new CacheConfiguration();
-        breweryCache.setName("brewerCache");
+        breweryCache.setName("breweryCache");
         breweryCache.setMemoryStoreEvictionPolicy("LRU");
         breweryCache.setMaxEntriesLocalHeap(1000);
         breweryCache.setTimeToLiveSeconds(20);
