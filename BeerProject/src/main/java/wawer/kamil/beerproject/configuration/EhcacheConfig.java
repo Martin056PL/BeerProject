@@ -13,17 +13,16 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class EhcacheConfig extends CachingConfigurerSupport {
 
-
     @Bean
     public CacheManager ehCacheManager() {
         CacheConfiguration beerCache = new CacheConfiguration();
-        beerCache.setName("ten-second-cache");
+        beerCache.setName("beerCache");
         beerCache.setMemoryStoreEvictionPolicy("LRU");
         beerCache.setMaxEntriesLocalHeap(1000);
         beerCache.setTimeToLiveSeconds(10);
 
         CacheConfiguration breweryCache = new CacheConfiguration();
-        breweryCache.setName("twenty-second-cache");
+        breweryCache.setName("brewerCache");
         breweryCache.setMemoryStoreEvictionPolicy("LRU");
         breweryCache.setMaxEntriesLocalHeap(1000);
         breweryCache.setTimeToLiveSeconds(20);
@@ -40,20 +39,3 @@ public class EhcacheConfig extends CachingConfigurerSupport {
         return new EhCacheCacheManager(ehCacheManager());
     }
 }
-
-
-//    @Bean
-//    public EhCacheCacheManager cacheManager(CacheManager cacheManager) {
-//        return new EhCacheCacheManager(cacheManager);
-//
-//    }
-//
-//    @Bean
-//    public EhCacheManagerFactoryBean ehcache() {
-//        EhCacheManagerFactoryBean ehcacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-//        ehcacheManagerFactoryBean.setConfigLocation(new ClassPathResource("src/main/resources/ehcache.xml"));
-//        return ehcacheManagerFactoryBean;
-//
-//    }
-
-

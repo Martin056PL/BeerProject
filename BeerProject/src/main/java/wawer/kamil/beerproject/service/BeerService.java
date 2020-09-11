@@ -16,18 +16,15 @@ import java.util.List;
 
 public interface BeerService {
 
-    @Cacheable(value = "beerCache")
+
     Page<Beer> findAllBeersPage(Pageable pageable);
 
-    @Cacheable(value = "beerCache")
     List<Beer> findAllBeersList();
 
-    @Cacheable(value = "beerCache")
     Beer findBeerByBeerId(Long beerId) throws NoContentException;
 
     Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException;
 
-    @CachePut(value = "beerCache", key = "#result.beerId")
     Beer addNewBeerToRepository(Beer beer);
 
     Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException;
@@ -36,7 +33,6 @@ public interface BeerService {
 
     Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException;
 
-    @CacheEvict(value = "beerCache", beforeInvocation = false)
     void deleteBeerByBeerId(Long beerId) throws NoContentException;
 
     List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException;

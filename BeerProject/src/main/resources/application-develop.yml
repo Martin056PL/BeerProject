@@ -26,12 +26,6 @@ spring:
       WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: UTC
 
-
-#  cache:
-#    jcache:
-#      config: classpath:ehcache.xml
-
-
 server:
   port: 8085
 

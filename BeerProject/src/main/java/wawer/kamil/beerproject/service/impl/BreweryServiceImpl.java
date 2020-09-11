@@ -2,6 +2,10 @@ package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,16 +32,19 @@ public class BreweryServiceImpl implements BreweryService {
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
 
     @Override
+    @Cacheable(value= "breweryCache")
     public Page<Brewery> getAllBreweryPage(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
+    @Cacheable(value= "breweryCache")
     public List<Brewery> getAllBreweryList() {
         return repository.findAll();
     }
 
     @Override
+    @Cacheable(value= "breweryCache")
     public Brewery getBreweryByBreweryId(Long breweryId) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             return repository.findByBreweryId(breweryId);
@@ -48,11 +55,13 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
+    @CachePut(value = "breweryCache", key = "#result.breweryId")
     public Brewery createNewBrewery(Brewery brewery) {
         return repository.save(brewery);
     }
 
     @Override
+    @CachePut(value = "breweryCache", key = "#result.breweryId")
     public Brewery updateBreweryById(Long breweryId, Brewery brewery) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             brewery.setBreweryId(breweryId);
@@ -64,6 +73,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
+    @CacheEvict(value = "breweryCache")
     public void deleteBreweryByBreweryId(Long breweryId) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             repository.deleteById(breweryId);
@@ -87,6 +97,9 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
+    @Caching( cacheable = {
+            @Cacheable(value = "beerCache", key="#result.beerId"),
+            @Cacheable(value = "breweryCache", key = "#result.breweriId")})
     public byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws NoContentException {
         Brewery brewery = getBreweryByBreweryId(breweryId);
         return brewery.getBreweryImage();
