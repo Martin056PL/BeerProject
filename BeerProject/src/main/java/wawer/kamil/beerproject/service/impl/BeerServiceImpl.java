@@ -1,9 +1,9 @@
 package wawer.kamil.beerproject.service.impl;
 
+import java.io.IOException;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,17 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.model.Beer;
-import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.model.Beer;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BeerService;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
-
-import java.io.IOException;
-import java.util.List;
 
 
 @Service
@@ -39,8 +36,6 @@ public class BeerServiceImpl implements BeerService {
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
     private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
 
-
-    private final Logger LOG = LoggerFactory.getLogger(BeerServiceImpl.class);
     //get beers
 
     @Override
@@ -180,8 +175,8 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     @Caching( evict = {
-            @CacheEvict(value = "beerCache", key="#result.beerId"),
-            @CacheEvict(value = "breweryCache", key = "#result.breweriId")})
+            @CacheEvict(value = "beerCache", key="#result.beerId", allEntries = true),
+            @CacheEvict(value = "breweryCache", key = "#result.breweriId", allEntries = true)})
     public void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
@@ -209,7 +204,6 @@ public class BeerServiceImpl implements BeerService {
             @Cacheable(value = "beerCache", key="#result.beerId"),
             @Cacheable(value = "breweryCache", key = "#result.breweriId")})
     public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
-        LOG.info("Evict cache entries...");
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         if (beer.getBeerImage() == null) {
             throw new NoContentException();
