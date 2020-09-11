@@ -22,12 +22,10 @@ import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BeerService;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-
 @Service
 @AllArgsConstructor
 @Slf4j(topic = "application.logger")
 public class BeerServiceImpl implements BeerService {
-
 
     private final BeerRepository beerRepository;
     private final BreweryRepository breweryRepository;
@@ -114,8 +112,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @CachePut(value = "beerCache", key = "#result.beerId")
-    @Cacheable(value = "breweryCache", key = "#result.breweryID")
+    @Caching(put= {@CachePut(value = "beerCache", key = "#result.beerId")},
+            cacheable = { @Cacheable(value = "breweryCache", key = "#result.breweryID")})
     public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
         return breweryRepository.findById(breweryID)
                 .map(brewery -> {
@@ -163,7 +161,7 @@ public class BeerServiceImpl implements BeerService {
     //delete beers
 
     @Override
-    @CacheEvict(value = "beerCache", beforeInvocation = false)
+    @CacheEvict(value = "beerCache", allEntries = true)
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
