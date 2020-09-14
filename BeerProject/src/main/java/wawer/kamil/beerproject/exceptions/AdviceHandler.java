@@ -64,6 +64,14 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException e) {
+        exceptionFormat.setMessage("Username is unavailable");
+        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request) {
         log.error("APPLICATION THROWS EXCEPTION: " + e.getClass() + ",\n CAUSE OF EXCEPTION: "

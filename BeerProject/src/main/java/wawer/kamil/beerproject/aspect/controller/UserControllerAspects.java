@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import wawer.kamil.beerproject.dto.request.UserRequest;
 
 @Aspect
 @Component
@@ -25,5 +26,13 @@ public class UserControllerAspects {
     public void logFindUserById(Long id) {
         log.debug("Endpoint address: 'users/{userId}' with GET method, request parameter - id: {}", id);
 
+    }
+
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.createNewUser(..)) && args(userRequest)")
+    public void logSaveNewUser(UserRequest userRequest) {
+        log.debug("Endpoint address: 'user' with POST method, request parameter - user data: {}; {}; {}"
+                , userRequest.getUsername()
+                , userRequest.getEmail()
+                , userRequest.getGrantedAuthorities());
     }
 }

@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     @Query("select distinct u from User u join fetch u.grantedAuthorities where u.id =?1")
     Optional<User> findById(Long id);
+
+    boolean existsUserByUsername(String username);
 }

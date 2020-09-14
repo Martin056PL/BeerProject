@@ -5,21 +5,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.generators.Generator;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.UserService;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.USER;
 
 @RestController
 @RequestMapping("users")
@@ -27,31 +23,19 @@ import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole
 public class UserController {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final Generator generator;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, UserService userService) {
+    public UserController(UserRepository userRepository, Generator generator, UserService userService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.generator = generator;
         this.userService = userService;
     }
 
     @GetMapping("/generate")
-    public void generateUser() {
-        User user = new User(
-                LocalDateTime.now(),
-                "user",
-                passwordEncoder.encode("user"),
-                "kamil.wawer@pollub.edu.pl",
-                USER.getGrantedAuthority(),
-                true,
-                true,
-                true,
-                true
-        );
-        userRepository.save(user);
+    public ResponseEntity<User> generateUser() {
+        return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(generator.createUser()));
     }
-
 
     @GetMapping
     public ResponseEntity<Page<UserResponse>> findAllUsersPage(Pageable pageable) {
@@ -67,19 +51,12 @@ public class UserController {
     public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws NoContentException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUserByUserId(userId));
     }
-/*
-    @PostMapping
-    public ResponseEntity<UserDTO> createNewUser(@RequestBody UserDTO userDTO) {
-        log.debug("Endpoint address: 'user' with POST method, request parameter - user data: {}; {}; {}; {}"
-                , userDTO.getFirstName()
-                , userDTO.getLastName()
-                , userDTO.getEmail()
-                , userDTO.getPhoneNumber());
-        User result = service.createNewUser(mapper.map(userDTO, User.class));
-        log.debug("Add new user with Id: {}", result.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(service.createNewUser(result), UserDTO.class));
-    }
 
+    @PostMapping
+    public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) throws UsernameAlreadyExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
+    }
+/*
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) throws NoContentException {
         log.debug("Endpoint address: 'user/{userId}' with PUT method, request parameter - userId: {};  user data: {}; {}; {}; {}"
