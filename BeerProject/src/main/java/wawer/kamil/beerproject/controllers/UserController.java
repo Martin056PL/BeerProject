@@ -9,7 +9,7 @@ import wawer.kamil.beerproject.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 
-import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.ADMIN;
+import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.USER;
 
 @RestController
 @RequestMapping("users")
@@ -24,14 +24,13 @@ public class UserController {
     }
 
     @GetMapping("/generate")
-
     public void generateUser() {
         User user = new User(
                 LocalDateTime.now(),
                 "user",
                 passwordEncoder.encode("user"),
                 "kamil.wawer@pollub.edu.pl",
-                ADMIN.getGrantedAuthority(),
+                USER.getGrantedAuthority(),
                 true,
                 true,
                 true,

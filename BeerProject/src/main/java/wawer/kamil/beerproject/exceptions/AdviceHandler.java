@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -62,14 +61,6 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         exceptionFormat.setMessage(e.getLocalizedMessage());
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
-        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> AccessDeniedException(AccessDeniedException e) {
-        exceptionFormat.setMessage(e.getMessage());
-        exceptionFormat.setStatus(HttpStatus.UNAUTHORIZED);
-        log.debug("Method throws this exception: {}, exceptionFormat", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
