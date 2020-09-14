@@ -57,7 +57,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RollbackException.class)
-    public ResponseEntity<Object> asd(RollbackException e) {
+    public ResponseEntity<Object> rollbackException(RollbackException e) {
         exceptionFormat.setMessage(e.getLocalizedMessage());
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);

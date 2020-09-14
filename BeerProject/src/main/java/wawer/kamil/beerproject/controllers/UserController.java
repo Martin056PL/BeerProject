@@ -57,20 +57,12 @@ public class UserController {
     public ResponseEntity<UserResponse> createNewUser(@RequestBody @Valid UserRequest userRequest) throws UsernameAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
     }
-/*
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) throws NoContentException {
-        log.debug("Endpoint address: 'user/{userId}' with PUT method, request parameter - userId: {};  user data: {}; {}; {}; {}"
-                , userId
-                , userDTO.getFirstName()
-                , userDTO.getLastName()
-                , userDTO.getEmail()
-                , userDTO.getPhoneNumber());
-        User result = service.updateUser(userId, mapper.map(userDTO, User.class));
-        log.debug("Updated brewery with Id: {}", result.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.map(result, UserDTO.class));
-    }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws NoContentException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
+    }
+/*
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteUser(@PathVariable Long userId) throws NoContentException {
         log.debug("Endpoint address: 'user/{userId}' with DELETE method, request parameter - id: {}", userId);

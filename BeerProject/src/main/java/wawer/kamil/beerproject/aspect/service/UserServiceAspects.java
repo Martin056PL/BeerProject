@@ -35,5 +35,10 @@ public class UserServiceAspects {
         log.debug("Add new user with Id: {}", user.getId());
     }
 
+    @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.updateUser(..))", returning = "user")
+    public void logUpdateUser(UserResponse user) {
+        log.debug("Updated brewery with Id: {}", user.getId());
+    }
+
 
 }

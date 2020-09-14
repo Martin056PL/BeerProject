@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
@@ -52,16 +53,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException {
         if (isUsernameExistInDatabase(userRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
-        User user = userMapper.mapUserRequestToUserEntity(userRequest);
+        User user = userMapper.mapUserRequestToUserEntityAsDefaultMethod(userRequest);
         User savedUser = userRepository.save(user);
         return userMapper.mapUserToUserResponse(savedUser);
     }
 
     private boolean isUsernameExistInDatabase(String username) {
         return userRepository.existsUserByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException {
+        User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
+        userMapper.mapUserRequestToUserEntityForUpdateMethod(userRequest, user);
+        return userMapper.mapUserToUserResponse(user);
     }
 }

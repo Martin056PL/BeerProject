@@ -18,4 +18,6 @@ public interface UserService {
     UserResponse findUserByUserId(Long userId) throws NoContentException;
 
     UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException;
+
+    UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException;
 }

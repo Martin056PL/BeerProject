@@ -1,7 +1,7 @@
 package wawer.kamil.beerproject.utils.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import wawer.kamil.beerproject.dto.request.UserRequest;
@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final ModelMapper modelMapper;
+    private final ModelMapper modelMapperForUserToUser;
 
-    @Autowired
-    public UserMapper(ModelMapper modelMapper) {
+    public UserMapper(@Qualifier(value = "defaultMapper") ModelMapper modelMapper,
+                      @Qualifier(value = "UserToUserMapper") ModelMapper modelMapperForUserToUser) {
         this.modelMapper = modelMapper;
+        this.modelMapperForUserToUser = modelMapperForUserToUser;
     }
 
     public UserResponse mapUserToUserResponse(User user) {
@@ -33,7 +35,13 @@ public class UserMapper {
         return userList.stream().map(user -> modelMapper.map(user, UserResponse.class)).collect(Collectors.toList());
     }
 
-    public User mapUserRequestToUserEntity(UserRequest userRequest) {
+    public User mapUserRequestToUserEntityAsDefaultMethod(UserRequest userRequest) {
         return modelMapper.map(userRequest, User.class);
     }
+
+    public void mapUserRequestToUserEntityForUpdateMethod(UserRequest userRequest, User userEntity) {
+        modelMapperForUserToUser.map(userRequest, userEntity);
+    }
+
+
 }
