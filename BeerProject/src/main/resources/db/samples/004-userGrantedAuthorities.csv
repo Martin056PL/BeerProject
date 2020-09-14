@@ -1,9 +1,8 @@
 user_id,granted_authorities
 1,user:read
 1,ROLE_USER
-2,admin:update
 2,admin:read
 2,admin:update
-2,ROLE_ADMIN
 2,admin:delete
 2,admin:create
+2,ROLE_ADMIN

@@ -29,7 +29,7 @@ public class UserController {
         User user = new User(
                 LocalDateTime.now(),
                 "user",
-                passwordEncoder.encode("admin"),
+                passwordEncoder.encode("user"),
                 "kamil.wawer@pollub.edu.pl",
                 ADMIN.getGrantedAuthority(),
                 true,
