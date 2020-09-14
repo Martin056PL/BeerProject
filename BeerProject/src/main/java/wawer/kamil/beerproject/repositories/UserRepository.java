@@ -5,10 +5,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import wawer.kamil.beerproject.model.User;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select distinct u from User u join fetch u.grantedAuthorities where u.username =?1")
     User findAllByUsername(String username);
 
+    @Override
+    @Query("select distinct u from User u join fetch u.grantedAuthorities")
+    List<User> findAll();
+
+    @Override
+    @Query("select distinct u from User u join fetch u.grantedAuthorities where u.id =?1")
+    Optional<User> findById(Long id);
 }
