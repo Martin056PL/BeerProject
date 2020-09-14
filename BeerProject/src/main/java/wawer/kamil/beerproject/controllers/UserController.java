@@ -15,6 +15,7 @@ import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) throws UsernameAlreadyExistsException {
+    public ResponseEntity<UserResponse> createNewUser(@RequestBody @Valid UserRequest userRequest) throws UsernameAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
     }
 /*
