@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,19 +36,19 @@ public class BeerServiceImpl implements BeerService {
     //get beers
 
     @Override
-    @Cacheable(value = "beerCache")
+    @Cacheable(cacheNames = "beerCache", key = "#pageable")
     public Page<Beer> findAllBeersPage(Pageable pageable) {
         return beerRepository.findAll(pageable);
     }
 
     @Override
-    @Cacheable(value = "beerCache")
+    @Cacheable(cacheNames = "beerCache")
     public List<Beer> findAllBeersList() {
         return beerRepository.findAll();
     }
 
     @Override
-    @Cacheable(value = "beerCache")
+    @Cacheable(cacheNames = "beerCache", key = "#beerId")
     public Beer findBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             return beerRepository.findBeerByBeerId(beerId);
@@ -62,6 +61,7 @@ public class BeerServiceImpl implements BeerService {
     //get beers by breweryID
 
     @Override
+    @Cacheable(cacheNames = "beerCache")
     public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -73,7 +73,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Cacheable(value = "breweryCache", key = "#result.breweriId")
+    @Cacheable(cacheNames = "breweryCache")
     public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -85,9 +85,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Caching( cacheable = {
-            @Cacheable(value = "beerCache", key="#result.beerId"),
-            @Cacheable(value = "breweryCache", key = "#result.breweriId")})
+//    @Cacheable(cacheNames = "beerCache", key = "#beerId")
+//nie działa NoContentException np beer id 1 , breweryid =3
     public Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             if (beerRepository.existsBeerByBeerId(beerId)) {
@@ -106,14 +105,13 @@ public class BeerServiceImpl implements BeerService {
     //post beers
 
     @Override
-    @CachePut(value = "beerCache", key = "#result.beerId")
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer addNewBeerToRepository(Beer beer) {
         return beerRepository.save(beer);
     }
 
     @Override
-    @Caching(put= {@CachePut(value = "beerCache", key = "#result.beerId")},
-            cacheable = { @Cacheable(value = "breweryCache", key = "#result.breweryID")})
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
         return breweryRepository.findById(breweryID)
                 .map(brewery -> {
@@ -123,9 +121,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     //put beers
-
     @Override
-    @CachePut(value = "beerCache", key = "#result.beerId")
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beer.setBeerId(beerId);
@@ -136,8 +133,8 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
-    @Caching(put = {@CachePut(value = "breweryCache", key = "#result.breweryId"),
-            @CachePut(value = "beerCache", key = "#result.beerId")})
+
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId") // aktalizujzuje ale nr breweryId nie jest brany ouwade w metodzie.
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             if (beerRepository.existsBeerByBeerId(beerId)) {
@@ -161,7 +158,7 @@ public class BeerServiceImpl implements BeerService {
     //delete beers
 
     @Override
-    @CacheEvict(value = "beerCache", allEntries = true)
+    @CacheEvict(cacheNames = "beerCache", allEntries = true)
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
@@ -172,9 +169,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Caching( evict = {
-            @CacheEvict(value = "beerCache", key="#result.beerId", allEntries = true),
-            @CacheEvict(value = "breweryCache", key = "#result.breweriId", allEntries = true)})
+    @CacheEvict(cacheNames = "beerCache", key = "#result.beerId", allEntries = true) // dziala, tylko
+    //usunie się bezwzględu na to jaki jest nr brewery. np beer id 13 z brewery 2 usnie się nawet gdy wpisze brewery 1
     public void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
@@ -198,9 +194,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Caching( cacheable = {
-            @Cacheable(value = "beerCache", key="#result.beerId"),
-            @Cacheable(value = "breweryCache", key = "#result.breweriId")})
+    //.NoContentException: null, org.springframework.web.HttpMediaTypeNotAcceptableException: Could not find acceptable representation
     public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         if (beer.getBeerImage() == null) {
