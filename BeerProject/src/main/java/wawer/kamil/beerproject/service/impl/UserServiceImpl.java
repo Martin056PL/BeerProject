@@ -37,19 +37,19 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public Page<UserResponse> findAllUsersPage(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
-        return userMapper.mapUserPageToUserResponsePage(userPage);
+        return userMapper.mapUserEntityPageToUserResponsePage(userPage);
     }
 
     @Override
     public List<UserResponse> findAllUsersList() {
         List<User> userList = userRepository.findAll();
-        return userMapper.mapUserListToUserResponseList(userList);
+        return userMapper.mapUserEntityListToUserResponseList(userList);
     }
 
     @Override
     public UserResponse findUserByUserId(Long userId) throws NoContentException {
         User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
-        return userMapper.mapUserToUserResponse(user);
+        return userMapper.mapUserEntityToUserResponse(user);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
         User user = userMapper.mapUserRequestToUserEntityAsDefaultMethod(userRequest);
         User savedUser = userRepository.save(user);
-        return userMapper.mapUserToUserResponse(savedUser);
+        return userMapper.mapUserEntityToUserResponse(savedUser);
     }
 
     private boolean isUsernameExistInDatabase(String username) {
@@ -72,6 +72,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException {
         User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
         userMapper.mapUserRequestToUserEntityForUpdateMethod(userRequest, user);
-        return userMapper.mapUserToUserResponse(user);
+        return userMapper.mapUserEntityToUserResponse(user);
     }
 }

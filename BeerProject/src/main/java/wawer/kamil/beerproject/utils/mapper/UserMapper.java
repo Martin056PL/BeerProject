@@ -23,15 +23,15 @@ public class UserMapper {
         this.modelMapperForUserToUser = modelMapperForUserToUser;
     }
 
-    public UserResponse mapUserToUserResponse(User user) {
+    public UserResponse mapUserEntityToUserResponse(User user) {
         return modelMapper.map(user, UserResponse.class);
     }
 
-    public Page<UserResponse> mapUserPageToUserResponsePage(Page<User> userPage) {
+    public Page<UserResponse> mapUserEntityPageToUserResponsePage(Page<User> userPage) {
         return userPage.map(user -> modelMapper.map(user, UserResponse.class));
     }
 
-    public List<UserResponse> mapUserListToUserResponseList(List<User> userList) {
+    public List<UserResponse> mapUserEntityListToUserResponseList(List<User> userList) {
         return userList.stream().map(user -> modelMapper.map(user, UserResponse.class)).collect(Collectors.toList());
     }
 
