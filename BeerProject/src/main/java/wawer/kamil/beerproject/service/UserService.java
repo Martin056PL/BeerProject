@@ -6,10 +6,13 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.model.User;
 
 import java.util.List;
 
 public interface UserService {
+
+    User generateDefaultUserToDatabase();
 
     Page<UserResponse> findAllUsersPage(Pageable pageable);
 

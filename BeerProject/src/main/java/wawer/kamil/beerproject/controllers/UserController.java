@@ -10,9 +10,7 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
-import wawer.kamil.beerproject.generators.Generator;
 import wawer.kamil.beerproject.model.User;
-import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.UserService;
 
 import javax.validation.Valid;
@@ -23,19 +21,15 @@ import java.util.List;
 @Slf4j(topic = "application.logger")
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final Generator generator;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, Generator generator, UserService userService) {
-        this.userRepository = userRepository;
-        this.generator = generator;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/generate")
     public ResponseEntity<User> generateUser() {
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(generator.createUser()));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.generateDefaultUserToDatabase());
     }
 
     @GetMapping

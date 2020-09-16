@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRequest;
@@ -18,6 +17,8 @@ import wawer.kamil.beerproject.utils.mapper.UserMapper;
 
 import java.util.List;
 
+import static wawer.kamil.beerproject.generators.Generator.createUser;
+
 @Service(value = "UserServiceImpl")
 public class UserServiceImpl implements UserDetailsService, UserService {
 
@@ -30,8 +31,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return userRepository.findAllByUsername(username);
+    }
+
+    @Override
+    public User generateDefaultUserToDatabase() {
+        return userRepository.save(createUser());
     }
 
     @Override
