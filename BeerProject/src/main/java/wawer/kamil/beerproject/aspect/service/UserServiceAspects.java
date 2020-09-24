@@ -1,6 +1,7 @@
 package wawer.kamil.beerproject.aspect.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.domain.Page;
@@ -40,5 +41,9 @@ public class UserServiceAspects {
         log.debug("Updated brewery with Id: {}", user.getId());
     }
 
+    @After(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.permanentDeleteUser(..)) && args(userId)")
+    public void logDeletedUser(long userId) {
+        log.debug("Deleted user with Id: {}", userId);
+    }
 
 }

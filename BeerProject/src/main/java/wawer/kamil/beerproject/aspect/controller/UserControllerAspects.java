@@ -25,7 +25,6 @@ public class UserControllerAspects {
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.findUserByUserId(..)) && args(id)")
     public void logFindUserById(Long id) {
         log.debug("Endpoint address: 'users/{userId}' with GET method, request parameter - id: {}", id);
-
     }
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.createNewUser(..)) && args(userRequest)")
@@ -43,5 +42,10 @@ public class UserControllerAspects {
                 , userRequest.getUsername()
                 , userRequest.getEmail()
                 , userRequest.getGrantedAuthorities());
+    }
+
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.deleteUser(..)) && args(id)")
+    public void logDeleteUserById(long id) {
+        log.debug("Endpoint address: 'user/{id}' with DELETE method, request parameter - id: {}", id);
     }
 }

@@ -80,4 +80,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userMapper.mapUserRequestToUserEntityForUpdateMethod(userRequest, user);
         return userMapper.mapUserEntityToUserResponse(user);
     }
+
+    @Override
+    public void permanentDeleteUser(Long userId) throws NoContentException {
+        User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
+        userRepository.delete(user);
+    }
 }

@@ -23,4 +23,6 @@ public interface UserService {
     UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException;
 
     UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException;
+
+    void permanentDeleteUser(Long userId) throws NoContentException;
 }

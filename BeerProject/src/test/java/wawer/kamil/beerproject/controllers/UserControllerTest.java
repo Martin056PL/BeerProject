@@ -16,6 +16,7 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
@@ -51,6 +52,18 @@ public class UserControllerTest {
         this.userResponseList = createListOfUsers();
         this.pageable = createPageable(PAGE_PAGE, PAGE_SIZE);
         this.userRequest = createUserRequest();
+    }
+
+    @Test
+    @DisplayName("Test - should return response entity with generated user")
+    public void should_return_response_entity_with_generated_user() {
+        //when
+        ResponseEntity<User> userResponseEntity = controller.generateUser();
+
+        //than
+        assertThat(userResponseEntity).isNotNull();
+        assertThat(userResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(userResponseEntity.getBody()).isNull();
     }
 
     @Test
@@ -93,6 +106,7 @@ public class UserControllerTest {
     public void should_return_response_entity_with_proper_user_base_on_id_body() throws NoContentException {
         //given
         when(userService.findUserByUserId(USER_ID)).thenReturn(userResponse);
+
         //when
         ResponseEntity<UserResponse> userByUserIdResponseEntity = controller.findUserByUserId(USER_ID);
 
@@ -113,12 +127,13 @@ public class UserControllerTest {
     public void should_throw_exception_when_user_not_found() throws NoContentException {
         //given
         when(userService.findUserByUserId(USER_ID)).thenThrow(NoContentException.class);
+
         //when
         assertThatThrownBy(() -> controller.findUserByUserId(USER_ID));
     }
 
     @Test
-    @DisplayName("Test - Should return response entity with saved user")
+    @DisplayName("Test - should return response entity with saved user")
     public void should_return_response_entity_with_saved_user() throws UsernameAlreadyExistsException {
         //given
         when(userService.addNewUser(userRequest)).thenAnswer(invocation -> {
@@ -158,12 +173,13 @@ public class UserControllerTest {
     public void should_throw_exception_when_username_is_unavailable_during_create() throws UsernameAlreadyExistsException {
         //given
         when(userService.addNewUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
+
         //when
         assertThatThrownBy(() -> controller.createNewUser(userRequest));
     }
 
     @Test
-    @DisplayName("Test - Should return response entity with updated user")
+    @DisplayName("Test - should return response entity with updated user")
     public void should_return_response_entity_with_updated_user() throws NoContentException {
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenAnswer(invocation -> {
@@ -203,7 +219,30 @@ public class UserControllerTest {
     public void should_throw_exception_when_user_not_found_during_update() throws NoContentException {
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenThrow(NoContentException.class);
+
         //when
         assertThatThrownBy(() -> controller.updateUser(USER_ID, userRequest));
+    }
+
+    @Test
+    @DisplayName("Test - should return response entity when deleting user permanently")
+    public void should_return_response_entity_when_deleting_user_permanently() throws NoContentException {
+        //when
+        ResponseEntity<?> responseEntity = controller.deleteUserPermanently(USER_ID);
+
+        //than
+        assertThat(responseEntity).isNotNull();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isNull();
+    }
+
+    @Test
+    @DisplayName("Test - should throw exception when user not found during deleting user permanently")
+    public void should_throw_exception_when_user_not_found_during_deleting_user_permanently() throws NoContentException {
+        //given
+        when(controller.deleteUserPermanently(USER_ID)).thenThrow(NoContentException.class);
+
+        //when
+        assertThatThrownBy(() -> controller.deleteUserPermanently(USER_ID));
     }
 }

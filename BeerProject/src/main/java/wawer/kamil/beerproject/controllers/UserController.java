@@ -56,12 +56,10 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws NoContentException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
     }
-/*
+
     @DeleteMapping("/{userId}")
-    public ResponseEntity deleteUser(@PathVariable Long userId) throws NoContentException {
-        log.debug("Endpoint address: 'user/{userId}' with DELETE method, request parameter - id: {}", userId);
-        service.deleteUser(userId);
-        log.debug("Deleted user with Id: {}", userId);
+    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws NoContentException {
+        userService.permanentDeleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
+    }
 }
