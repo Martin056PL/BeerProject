@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "image.cache.jcache.config",
+      "type": "java.lang.String",
+      "description": "Description for image.cache.jcache.config."
+  }
+] }

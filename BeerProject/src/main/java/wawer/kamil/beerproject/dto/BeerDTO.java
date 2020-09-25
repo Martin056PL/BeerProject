@@ -29,6 +29,6 @@ public class BeerDTO {
     @JsonIgnore
     private Brewery brewery;
 
-    @JsonIgnore
+//    @JsonIgnore
     private byte [] beerImage;
 }

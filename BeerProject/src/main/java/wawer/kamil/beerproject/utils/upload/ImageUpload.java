@@ -20,7 +20,7 @@ public class ImageUpload {
     @Value("${image.requirements.standard-type}")
     private String STANDARD_TYPE;
 
-    private static final long MAX_SIZE_OF_FILE = 10000000L;
+    private static final long MAX_SIZE_OF_FILE = 400_000_000L;
 
     public byte[] convertFileToByteArray(MultipartFile file) throws IOException {
         byte[] byteObject = new byte[file.getBytes().length];
