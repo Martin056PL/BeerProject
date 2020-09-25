@@ -1,0 +1,29 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Kamil Wawer" id="9">
+        <loadData file="classpath:/db/samples/003-usersSamples.csv"
+                  tableName="user">
+            <column name="id" type="numeric" header="id"/>
+            <column name="created_at" type="datetime" header="created_at"/>
+            <column name="update_date_time" type="datetime" header="update_date_time"/>
+            <column name="username" type="string" header="username"/>
+            <column name="password" type="string" header="password"/>
+            <column name="email" type="string" header="email"/>
+            <column name="is_account_non_expired" type="boolean" header="is_account_non_expired"/>
+            <column name="is_account_non_locked" type="boolean" header="is_account_non_locked"/>
+            <column name="is_credentials_non_expired" type="boolean" header="is_credentials_non_expired"/>
+            <column name="is_enabled" type="boolean" header="is_enabled"/>
+        </loadData>
+
+        <loadData file="classpath:/db/samples/004-userGrantedAuthorities.csv"
+                  tableName="user_granted_authorities">
+            <column name="user_id" type="numeric" header="user_id"/>
+            <column name="granted_authorities" type="string" header="granted_authorities"/>
+        </loadData>
+
+    </changeSet>
+</databaseChangeLog>

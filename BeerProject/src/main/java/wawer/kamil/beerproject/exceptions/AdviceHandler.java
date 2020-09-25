@@ -57,8 +57,16 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RollbackException.class)
-    public ResponseEntity<Object> asd(RollbackException e) {
+    public ResponseEntity<Object> rollbackException(RollbackException e) {
         exceptionFormat.setMessage(e.getLocalizedMessage());
+        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException e) {
+        exceptionFormat.setMessage("Username is unavailable");
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

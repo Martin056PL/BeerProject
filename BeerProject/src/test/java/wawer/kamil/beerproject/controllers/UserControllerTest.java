@@ -1,125 +1,247 @@
 package wawer.kamil.beerproject.controllers;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.modelmapper.ModelMapper;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import wawer.kamil.beerproject.model.User;
-import wawer.kamil.beerproject.dto.UserDTO;
+import wawer.kamil.beerproject.dto.request.UserRequest;
+import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
+import static wawer.kamil.beerproject.controllers.UserControllerTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
 
     @Mock
-    UserService service;
-
-    @Mock
-    Pageable pageable;
-
-    @Mock
-    Page<User> page;
-
-    @Mock
-    List<User> userList;
-
-    @Mock
-    ModelMapper mapper;
-
-    @Mock
-    User user;
-
-    @Mock
-    UserDTO userDTO;
+    private UserService userService;
 
     @InjectMocks
     UserController controller;
 
-    private final static Long ID = 1L;
+    private UserResponse userResponse;
+    private Page<UserResponse> userResponsePage;
+    private List<UserResponse> userResponseList;
+    private Pageable pageable;
+    private UserRequest userRequest;
 
-    @Test
-    public void should_return_response_entity_which_equals_to_controller_response_entity_user_page() {
-        when(service.findAllUsersPage(pageable)).thenReturn(page);
-        assertEquals(ResponseEntity.ok().body(page), controller.findAllUsersPage(pageable));
+    private final static Long USER_ID = 1L;
+    private final static int PAGE_SIZE = 1;
+    private final static int PAGE_PAGE = 1;
+
+    @BeforeEach
+    void setUp() {
+        this.userResponse = createUserResponse();
+        this.userResponsePage = createPage();
+        this.userResponseList = createListOfUsers();
+        this.pageable = createPageable(PAGE_PAGE, PAGE_SIZE);
+        this.userRequest = createUserRequest();
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_user_page() throws NoContentException {
-        when(service.findAllUsersPage(pageable)).thenReturn(page);
-        assertEquals(HttpStatus.OK, controller.findAllUsersPage(pageable).getStatusCode());
+    @DisplayName("Test - should return response entity with generated user")
+    public void should_return_response_entity_with_generated_user() {
+        //when
+        ResponseEntity<User> userResponseEntity = controller.generateUser();
+
+        //than
+        assertThat(userResponseEntity).isNotNull();
+        assertThat(userResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(userResponseEntity.getBody()).isNull();
     }
 
     @Test
-    public void should_return_response_entity_which_equals_to_controller_response_entity_user_list() {
-        when(service.findAllUsersList()).thenReturn(userList);
-        assertEquals(ResponseEntity.ok().body(userList), controller.findAllUsersList());
+    @DisplayName("Test - should return response entity with page body")
+    public void should_return_response_entity_with_page_body() {
+        //given
+        when(userService.findAllUsersPage(pageable)).thenReturn(userResponsePage);
+
+        //when
+        ResponseEntity<Page<UserResponse>> allUsersPageResponseEntity = controller.findAllUsersPage(pageable);
+
+        //than
+        assertThat(allUsersPageResponseEntity).isNotNull();
+        assertThat(allUsersPageResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(allUsersPageResponseEntity.getBody()).isEqualTo(userResponsePage);
+        assertThat(allUsersPageResponseEntity.getBody().getTotalElements()).isEqualTo(1L);
+        assertThat(allUsersPageResponseEntity.getBody().getTotalPages()).isEqualTo(1);
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_user_list() throws NoContentException {
-        when(service.findAllUsersList()).thenReturn(userList);
-        assertEquals(HttpStatus.OK, controller.findAllUsersList().getStatusCode());
+    @DisplayName("Test - should return response entity with list body")
+    public void should_return_response_entity_with_list_body() {
+        //given
+        when(userService.findAllUsersList()).thenReturn(userResponseList);
+
+        //when
+        ResponseEntity<List<UserResponse>> allUsersListResponseEntity = controller.findAllUsersList();
+
+        //than
+        assertThat(allUsersListResponseEntity).isNotNull();
+        assertThat(allUsersListResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(allUsersListResponseEntity.getBody()).isNotNull();
+        assertThat(allUsersListResponseEntity.getBody().size()).isEqualTo(1);
+    }
+
+
+    @Test
+    @DisplayName("Test - should return response entity with proper user base on id body")
+    public void should_return_response_entity_with_proper_user_base_on_id_body() throws NoContentException {
+        //given
+        when(userService.findUserByUserId(USER_ID)).thenReturn(userResponse);
+
+        //when
+        ResponseEntity<UserResponse> userByUserIdResponseEntity = controller.findUserByUserId(USER_ID);
+
+        //than
+        assertThat(userByUserIdResponseEntity).isNotNull();
+        assertThat(userByUserIdResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(userByUserIdResponseEntity.getBody()).isEqualTo(userResponse);
+        assertThat(userByUserIdResponseEntity.getBody()).isNotNull();
+        assertThat(userByUserIdResponseEntity.getBody().getId()).isEqualTo(1L);
+        assertThat(userByUserIdResponseEntity.getBody().getUsername()).isEqualTo("user");
+        assertThat(userByUserIdResponseEntity.getBody().getPassword()).isEqualTo("user");
+        assertThat(userByUserIdResponseEntity.getBody().getEmail()).isEqualTo("user@email.com");
+        assertThat(userByUserIdResponseEntity.getBody().getGrantedAuthorities().size()).isEqualTo(2);
     }
 
     @Test
-    public void should_return_response_entity_which_equals_to_controller_response_entity_base_on_user_id() throws NoContentException {
-        when(mapper.map(service.findUserByUserId(ID), UserDTO.class)).thenReturn(userDTO);
-        assertEquals(ResponseEntity.ok().body(userDTO), controller.findUserByUserId(ID));
+    @DisplayName("Test - should throw exception when user not found")
+    public void should_throw_exception_when_user_not_found() throws NoContentException {
+        //given
+        when(userService.findUserByUserId(USER_ID)).thenThrow(NoContentException.class);
+
+        //when
+        assertThatThrownBy(() -> controller.findUserByUserId(USER_ID));
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_base_on_user_id() throws NoContentException {
-        when(mapper.map(service.findUserByUserId(ID), UserDTO.class)).thenReturn(userDTO);
-        assertEquals(HttpStatus.OK, controller.findUserByUserId(ID).getStatusCode());
+    @DisplayName("Test - should return response entity with saved user")
+    public void should_return_response_entity_with_saved_user() throws UsernameAlreadyExistsException {
+        //given
+        when(userService.addNewUser(userRequest)).thenAnswer(invocation -> {
+            UserRequest argument = invocation.getArgument(0, UserRequest.class);
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(2L);
+            userResponse.setUsername(argument.getUsername());
+            userResponse.setPassword(argument.getPassword());
+            userResponse.setEmail(argument.getEmail());
+            userResponse.setGrantedAuthorities(argument.getGrantedAuthorities());
+            userResponse.setEnabled(true);
+            userResponse.setCredentialsNonExpired(true);
+            userResponse.setAccountNonLocked(true);
+            userResponse.setAccountNonExpired(true);
+            return userResponse;
+        });
+
+        //when
+        ResponseEntity<UserResponse> newUserResponseEntity = controller.createNewUser(userRequest);
+
+        //than
+        assertThat(newUserResponseEntity).isNotNull();
+        assertThat(newUserResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(newUserResponseEntity.getBody()).isNotNull();
+        assertThat(newUserResponseEntity.getBody().getId()).isEqualTo(2L);
+        assertThat(newUserResponseEntity.getBody().getUsername()).isEqualTo("user");
+        assertThat(newUserResponseEntity.getBody().getPassword()).isEqualTo("user");
+        assertThat(newUserResponseEntity.getBody().getEmail()).isEqualTo("test@email.com");
+        assertThat(newUserResponseEntity.getBody().isAccountNonExpired()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isAccountNonLocked()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isCredentialsNonExpired()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isEnabled()).isTrue();
     }
 
     @Test
-    public void should_return_saved_user_which_equals_to_user_saved_by_controller(){
-        when(mapper.map(userDTO, User.class)).thenReturn(user);
-        when(service.createNewUser(user)).thenReturn(user);
-        when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
-        assertEquals(ResponseEntity.status(HttpStatus.CREATED).body(userDTO),controller.createNewUser(userDTO));
+    @DisplayName("Test - should throw exception when username is unavailable during create")
+    public void should_throw_exception_when_username_is_unavailable_during_create() throws UsernameAlreadyExistsException {
+        //given
+        when(userService.addNewUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
+
+        //when
+        assertThatThrownBy(() -> controller.createNewUser(userRequest));
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_base_on_saved_user(){
-        when(mapper.map(userDTO, User.class)).thenReturn(user);
-        when(service.createNewUser(user)).thenReturn(user);
-        when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
-        assertEquals(HttpStatus.CREATED,controller.createNewUser(userDTO).getStatusCode());
+    @DisplayName("Test - should return response entity with updated user")
+    public void should_return_response_entity_with_updated_user() throws NoContentException {
+        //given
+        when(userService.updateUser(USER_ID, userRequest)).thenAnswer(invocation -> {
+            UserRequest argument = invocation.getArgument(1, UserRequest.class);
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(USER_ID);
+            userResponse.setUsername(argument.getUsername());
+            userResponse.setPassword(argument.getPassword());
+            userResponse.setEmail(argument.getEmail());
+            userResponse.setGrantedAuthorities(argument.getGrantedAuthorities());
+            userResponse.setEnabled(true);
+            userResponse.setCredentialsNonExpired(true);
+            userResponse.setAccountNonLocked(true);
+            userResponse.setAccountNonExpired(true);
+            return userResponse;
+        });
+
+        //when
+        ResponseEntity<UserResponse> newUserResponseEntity = controller.updateUser(USER_ID, userRequest);
+
+        //than
+        assertThat(newUserResponseEntity).isNotNull();
+        assertThat(newUserResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(newUserResponseEntity.getBody()).isNotNull();
+        assertThat(newUserResponseEntity.getBody().getId()).isEqualTo(1L);
+        assertThat(newUserResponseEntity.getBody().getUsername()).isEqualTo("user");
+        assertThat(newUserResponseEntity.getBody().getPassword()).isEqualTo("user");
+        assertThat(newUserResponseEntity.getBody().getEmail()).isEqualTo("test@email.com");
+        assertThat(newUserResponseEntity.getBody().isAccountNonExpired()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isAccountNonLocked()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isCredentialsNonExpired()).isTrue();
+        assertThat(newUserResponseEntity.getBody().isEnabled()).isTrue();
     }
 
     @Test
-    public void should_return_saved_user_which_equals_to_user_updated_by_controller() throws NoContentException {
-        when(mapper.map(userDTO, User.class)).thenReturn(user);
-        when(service.updateUser(ID, user)).thenReturn(user);
-        when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
-        when(user.getId()).thenReturn(ID);
-        assertEquals(ResponseEntity.status(HttpStatus.OK).body(userDTO),controller.updateUser(ID, userDTO));
+    @DisplayName("Test - should throw exception when user not found during update")
+    public void should_throw_exception_when_user_not_found_during_update() throws NoContentException {
+        //given
+        when(userService.updateUser(USER_ID, userRequest)).thenThrow(NoContentException.class);
+
+        //when
+        assertThatThrownBy(() -> controller.updateUser(USER_ID, userRequest));
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_base_on_update_user() throws NoContentException {
-        when(mapper.map(userDTO, User.class)).thenReturn(user);
-        when(service.updateUser(ID, user)).thenReturn(user);
-        when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
-        assertEquals(HttpStatus.OK,controller.updateUser(ID, userDTO).getStatusCode());
+    @DisplayName("Test - should return response entity when deleting user permanently")
+    public void should_return_response_entity_when_deleting_user_permanently() throws NoContentException {
+        //when
+        ResponseEntity<?> responseEntity = controller.deleteUserPermanently(USER_ID);
+
+        //than
+        assertThat(responseEntity).isNotNull();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isNull();
     }
 
     @Test
-    public void should_return_status_code_which_equals_to_controller_status_code_base_on_deleted_user() throws NoContentException {
-        assertEquals(HttpStatus.NO_CONTENT, controller.deleteUser(ID).getStatusCode());
+    @DisplayName("Test - should throw exception when user not found during deleting user permanently")
+    public void should_throw_exception_when_user_not_found_during_deleting_user_permanently() throws NoContentException {
+        //given
+        when(controller.deleteUserPermanently(USER_ID)).thenThrow(NoContentException.class);
+
+        //when
+        assertThatThrownBy(() -> controller.deleteUserPermanently(USER_ID));
     }
 }

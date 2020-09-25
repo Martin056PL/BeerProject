@@ -1,12 +1,19 @@
 package wawer.kamil.beerproject.generators;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.model.Brewery;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.model.enums.StyleBeer;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
+
+import java.time.LocalDateTime;
+
+import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.USER;
 
 @Component
 @RequiredArgsConstructor
@@ -14,9 +21,22 @@ public class Generator {
 
     private final BreweryRepository repository;
 
-    //@EventListener(ApplicationReadyEvent.class)
-    public void addData(){
+    public static User createUser() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return new User(
+                LocalDateTime.now(),
+                "user",
+                passwordEncoder.encode("user"),
+                "kamil.wawer@pollub.edu.pl",
+                USER.getGrantedAuthority(),
+                true,
+                true,
+                true,
+                true);
+    }
 
+    //@EventListener(ApplicationReadyEvent.class)
+    public void addData() {
         Beer beer1 = Beer.builder()
                 .alcohol(4.7)
                 .extract(12.0)

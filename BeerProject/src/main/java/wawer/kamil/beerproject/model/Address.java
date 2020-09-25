@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -26,7 +27,7 @@ public class Address implements Serializable {
     @Column(name = "street")
     private String street;
 
-    @NotEmpty
+    @NotNull
     @Min(value = 1)
     @Column(name = "parcel_number")
     private Integer parcelNumber;

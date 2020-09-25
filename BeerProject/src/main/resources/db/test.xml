@@ -5,10 +5,8 @@
 
     <include file="version/001-CreateBasicTableStructure.xml" relativeToChangelogFile="true"/>
     <include file="version/002-AddSampleData.xml" relativeToChangelogFile="true"/>
-    <include file="version/003-AddUserTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/003-1-AddUserTableForH2.xml" relativeToChangelogFile="true"/>
     <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
-<!--    <include file="version/005-AddSampleAddressesData.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="version/006-AddSampleUsersData.xml" relativeToChangelogFile="true"/>-->
-    <include file="version/007-AddUserRoleTable.xml" relativeToChangelogFile="true"/>
-    <include file="version/008-AddUserInfoTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/005-AddSamplesOfBreweryAddressesData.xml" relativeToChangelogFile="true"/>
+    <include file="version/006-AddSamplesOfUsersData.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
