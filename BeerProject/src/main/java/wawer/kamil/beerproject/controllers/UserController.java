@@ -1,84 +1,65 @@
 package wawer.kamil.beerproject.controllers;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wawer.kamil.beerproject.model.User;
-import wawer.kamil.beerproject.dto.UserDTO;
+import wawer.kamil.beerproject.dto.request.UserRequest;
+import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Controller
-@CrossOrigin(origins = "http://localhost:3000")
-@RequiredArgsConstructor
+@RestController
 @RequestMapping("users")
 @Slf4j(topic = "application.logger")
 public class UserController {
 
-    private final UserService service;
-    private final ModelMapper mapper;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/generate")
+    public ResponseEntity<User> generateUser() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.generateDefaultUserToDatabase());
+    }
 
     @GetMapping
-    public ResponseEntity<Page<User>> findAllUsersPage(Pageable pageable) {
-        log.debug("Endpoint address: 'users' with GET method, request parameter - pageable: {}", pageable);
-        Page<User> resultListUsers = service.findAllUsersPage(pageable);
-        log.debug("List of returned Id: {}", resultListUsers.stream().map(User::getId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(resultListUsers);
+    public ResponseEntity<Page<UserResponse>> findAllUsersPage(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsersPage(pageable));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<User>> findAllUsersList() {
-        log.debug("Endpoint address: 'users/list' with GET method");
-        List<User> resultList = service.findAllUsersList();
-        log.debug("List of returned Id: {}", resultList.stream().map(User::getId).collect(Collectors.toList()));
-        return ResponseEntity.status(HttpStatus.OK).body(resultList);
+    public ResponseEntity<List<UserResponse>> findAllUsersList() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsersList());
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> findUserByUserId(@PathVariable Long userId) throws NoContentException {
-        log.debug("Endpoint address: 'users/{userId}' with GET method, request parameter - id: {}", userId);
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.map(service.findUserByUserId(userId), UserDTO.class));
+    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws NoContentException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findUserByUserId(userId));
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createNewUser(@RequestBody UserDTO userDTO) {
-        log.debug("Endpoint address: 'user' with POST method, request parameter - user data: {}; {}; {}; {}"
-                , userDTO.getFirstName()
-                , userDTO.getLastName()
-                , userDTO.getEmail()
-                , userDTO.getPhoneNumber());
-        User result = service.createNewUser(mapper.map(userDTO, User.class));
-        log.debug("Add new user with Id: {}", result.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(service.createNewUser(result), UserDTO.class));
+    public ResponseEntity<UserResponse> createNewUser(@RequestBody @Valid UserRequest userRequest) throws UsernameAlreadyExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) throws NoContentException {
-        log.debug("Endpoint address: 'user/{userId}' with PUT method, request parameter - userId: {};  user data: {}; {}; {}; {}"
-                , userId
-                , userDTO.getFirstName()
-                , userDTO.getLastName()
-                , userDTO.getEmail()
-                , userDTO.getPhoneNumber());
-        User result = service.updateUser(userId, mapper.map(userDTO, User.class));
-        log.debug("Updated brewery with Id: {}", result.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.map(result, UserDTO.class));
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws NoContentException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity deleteUser(@PathVariable Long userId) throws NoContentException {
-        log.debug("Endpoint address: 'user/{userId}' with DELETE method, request parameter - id: {}", userId);
-        service.deleteUser(userId);
-        log.debug("Deleted user with Id: {}", userId);
+    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws NoContentException {
+        userService.permanentDeleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

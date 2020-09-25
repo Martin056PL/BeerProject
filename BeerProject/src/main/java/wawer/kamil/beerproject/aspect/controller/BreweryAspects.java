@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.aspect;
+package wawer.kamil.beerproject.aspect.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;

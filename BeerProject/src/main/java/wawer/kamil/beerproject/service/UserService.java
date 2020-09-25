@@ -2,22 +2,27 @@ package wawer.kamil.beerproject.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.dto.request.UserRequest;
+import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
+import wawer.kamil.beerproject.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    Page<User> findAllUsersPage(Pageable pageable);
+    User generateDefaultUserToDatabase();
 
-    List<User> findAllUsersList();
+    Page<UserResponse> findAllUsersPage(Pageable pageable);
 
-    User findUserByUserId(Long userId) throws NoContentException;
+    List<UserResponse> findAllUsersList();
 
-    User createNewUser(User user);
+    UserResponse findUserByUserId(Long userId) throws NoContentException;
 
-    User updateUser(Long userId, User user) throws NoContentException;
+    UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException;
 
-    void deleteUser(Long userId) throws NoContentException;
+    UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException;
+
+    void permanentDeleteUser(Long userId) throws NoContentException;
 }
