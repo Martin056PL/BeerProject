@@ -81,7 +81,6 @@ public class UserControllerTest {
         assertThat(allUsersPageResponseEntity.getBody()).isEqualTo(userResponsePage);
         assertThat(allUsersPageResponseEntity.getBody().getTotalElements()).isEqualTo(1L);
         assertThat(allUsersPageResponseEntity.getBody().getTotalPages()).isEqualTo(1);
-        assertThat(allUsersPageResponseEntity.getBody().getContent()).isEqualTo(userResponseList);
     }
 
     @Test
