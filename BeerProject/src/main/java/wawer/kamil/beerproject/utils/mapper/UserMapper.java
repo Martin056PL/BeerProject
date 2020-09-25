@@ -42,6 +42,4 @@ public class UserMapper {
     public void mapUserRequestToUserEntityForUpdateMethod(UserRequest userRequest, User userEntity) {
         modelMapperForUserToUser.map(userRequest, userEntity);
     }
-
-
 }

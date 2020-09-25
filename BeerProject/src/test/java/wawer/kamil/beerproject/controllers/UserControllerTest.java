@@ -30,7 +30,7 @@ import static wawer.kamil.beerproject.controllers.UserControllerTestHelper.*;
 public class UserControllerTest {
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @InjectMocks
     UserController controller;

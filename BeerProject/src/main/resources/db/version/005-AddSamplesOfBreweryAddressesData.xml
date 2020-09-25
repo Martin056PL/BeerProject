@@ -24,6 +24,5 @@
             <column name="brewery_id" type="numeric" header="brewery_id"/>
             <column name="address_id" type="numeric" header="address_id"/>
         </loadUpdateData>
-
     </changeSet>
 </databaseChangeLog>
