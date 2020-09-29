@@ -1,6 +1,5 @@
 package wawer.kamil.beerproject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,11 +27,9 @@ public class Brewery implements Serializable {
     private Long breweryId;
 
     @NotEmpty
-    @Column(name = "name")
     private String name;
 
     @NotEmpty
-    @Column(name = "email")
     private String email;
 
     @NotNull
@@ -44,11 +41,9 @@ public class Brewery implements Serializable {
     private Address address;
 
     @NotEmpty
-    @Column(name = "website")
     private String website;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @JsonIgnore
     @OneToMany(mappedBy = "brewery",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

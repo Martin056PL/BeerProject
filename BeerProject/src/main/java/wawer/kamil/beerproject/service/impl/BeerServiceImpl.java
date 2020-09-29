@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.model.Beer;
-import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.model.Beer;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BeerService;
@@ -34,6 +34,11 @@ public class BeerServiceImpl implements BeerService {
     private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
 
     //get beers
+
+    @Override
+    public List<Beer> findBeerByListOfBreweriesId(List<Long> listOfBreweriesId) {
+        return beerRepository.findBeerByListOfBreweriesId(listOfBreweriesId);
+    }
 
     @Override
     public Page<Beer> findAllBeersPage(Pageable pageable) {

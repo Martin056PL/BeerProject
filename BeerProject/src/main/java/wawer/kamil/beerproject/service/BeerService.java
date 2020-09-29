@@ -4,14 +4,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.model.Beer;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface BeerService {
+
+    List<Beer> findBeerByListOfBreweriesId(List<Long> listOfBreweriesId);
 
     Page<Beer> findAllBeersPage(Pageable pageable);
 

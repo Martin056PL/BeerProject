@@ -1,32 +1,17 @@
 package wawer.kamil.beerproject.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 import wawer.kamil.beerproject.model.Address;
-import wawer.kamil.beerproject.model.Beer;
-
-import java.util.List;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter @Setter
+@Getter
 public class BreweryDTO {
 
+    private long breweryId;
     private String name;
-
     private String email;
-
     private Long phoneNumber;
-
     private Address address;
-
     private String website;
-
-    @JsonIgnore
-    private List<Beer> beerList;
-
-    @JsonIgnore
-    private byte [] breweryImage;
-
 }
