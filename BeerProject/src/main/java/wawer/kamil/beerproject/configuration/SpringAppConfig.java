@@ -5,6 +5,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.model.User;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +40,25 @@ public class SpringAppConfig {
                 map().setAccountNonLocked(source.isAccountNonLocked());
                 map().setCredentialsNonExpired(source.isCredentialsNonExpired());
                 map().setEnabled(source.isEnabled());
+            }
+        });
+        return modelMapper;
+    }
+
+    @Bean(name = "BreweryMapper")
+    public ModelMapper getBreweryModelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<Brewery, Brewery>() {
+            @Override
+            protected void configure() {
+                skip(destination.getBreweryId());
+                map().setName(source.getName());
+                map().setEmail(source.getEmail());
+                map().setPhoneNumber(source.getPhoneNumber());
+                map().setAddress(source.getAddress());
+                map().setWebsite(source.getWebsite());
+                map().setBeerList(source.getBeerList());
+                map().setBreweryImage(source.getBreweryImage());
             }
         });
         return modelMapper;
