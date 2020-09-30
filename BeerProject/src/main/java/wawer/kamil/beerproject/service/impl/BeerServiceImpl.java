@@ -39,13 +39,13 @@ public class BeerServiceImpl implements BeerService {
     //get beers
 
     @Override
-//    @Cacheable(cacheNames = "beerCache", key = "#pageable") // coś jest źle error 418
+    @Cacheable(cacheNames = "beerCache", key = "#pageable")
     public Page<Beer> findAllBeersPage(Pageable pageable) {
         return beerRepository.findAll(pageable);
     }
 
     @Override
-    @Cacheable(cacheNames = "beerCache") //dziala
+    @Cacheable(cacheNames = "beerCache")
     public List<Beer> findAllBeersList() {
         return beerRepository.findAll();
     }
@@ -64,7 +64,7 @@ public class BeerServiceImpl implements BeerService {
     //get beers by breweryID
 
     @Override
-    @Cacheable(cacheNames = "breweryCache")// dziala
+    @Cacheable(cacheNames = "breweryCache")
     public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -76,7 +76,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Cacheable(cacheNames = "breweryCache", key = "#breweryId") // dziala
+    @Cacheable(cacheNames = "breweryCache", key = "#breweryId")
     public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -88,7 +88,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    @Cacheable(cacheNames = "beerCache", key = "#beerId")// cache działa ale nie działa wyszukanie np beer 1 i brewery 3
+    @Cacheable(cacheNames = "beerCache", key = "#beerId")
     //error 500 wtedy
     public Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
@@ -108,7 +108,7 @@ public class BeerServiceImpl implements BeerService {
     //post beers
 
     @Override
-    @CachePut(cacheNames = "beerCache", key = "#result.beerId") // dziala
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer addNewBeerToRepository(Beer beer) {
         return beerRepository.save(beer);
     }
@@ -126,7 +126,7 @@ public class BeerServiceImpl implements BeerService {
     //put beers
 
     @Override
-    @CachePut(cacheNames = "beerCache", key = "#result.beerId")//dziala
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beer.setBeerId(beerId);
@@ -137,7 +137,7 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
-    @CachePut(cacheNames = "beerCache", key = "#result.beerId")// dzila
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             if (beerRepository.existsBeerByBeerId(beerId)) {
@@ -161,7 +161,7 @@ public class BeerServiceImpl implements BeerService {
     //delete beers
 
     @Override
-    @CacheEvict(cacheNames = "beerCache", allEntries = true) //dziala
+    @CacheEvict(cacheNames = "beerCache", allEntries = true)
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
