@@ -1,9 +1,9 @@
 spring:
 
   datasource:
-    url: jdbc:mysql://localhost:32768/beerProjectDevelop?serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: ENC(GTi3pzwzixdVRCrMvXttLg==)
-    password: ENC(1XPGZzYSBKjVcBFUkLw3jw==)
+    url: jdbc:mysql://localhost:61047/beerProjectDevelop?serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: user
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   liquibase:

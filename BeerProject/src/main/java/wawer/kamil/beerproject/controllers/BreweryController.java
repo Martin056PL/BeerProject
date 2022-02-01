@@ -44,7 +44,7 @@ public class BreweryController {
         return ok().body(listOfBreweryDTO);
     }
 
-    @GetMapping("/list")
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BreweryDTO>> getAllBreweryList() {
         List<Brewery> listOfBrewery = service.getAllBreweryList();
         List<BreweryDTO> listOfBreweryDTO = listOfBrewery.stream().map(brewery -> mapper.map(brewery, BreweryDTO.class)).collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class BreweryController {
         return ok().body(listOfBreweryDTO);
     }
 
-    @GetMapping("{breweryId}")
+    @GetMapping(value = "{breweryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BreweryDTO> getBreweryByBreweryId(@PathVariable Long breweryId) throws NoContentException {
         BreweryDTO brewery = mapper.map(service.getBreweryByBreweryId(breweryId), BreweryDTO.class);
         return ok().body(brewery);
@@ -65,14 +65,14 @@ public class BreweryController {
         return created(new URI("add-beer" + result.getBreweryId())).body(mapper.map(result, BreweryDTO.class));
     }
 
-    @PutMapping("{breweryId}")
+    @PutMapping(value = "{breweryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BreweryDTO> updateBrewery(@PathVariable Long breweryId, @Valid @RequestBody BreweryDTO breweryDTO) throws NoContentException {
         Brewery result = service.updateBreweryById(breweryId, mapper.map(breweryDTO, Brewery.class));
         log.debug("Updated brewery with Id: {}", result.getBreweryId());
         return ok().body(mapper.map(result, BreweryDTO.class));
     }
 
-    @DeleteMapping("{breweryId}")
+    @DeleteMapping(value = "{breweryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteBrewery(@PathVariable Long breweryId) throws NoContentException {
         service.deleteBreweryByBreweryId(breweryId);
         log.debug("Deleted brewery with Id: {}", breweryId);
