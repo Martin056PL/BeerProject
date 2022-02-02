@@ -12,10 +12,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.BreweryDTO;
 
 import static java.lang.String.format;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static wawer.kamil.beerproject.controllers.BreweryControllerTestHelper.breweryContent;
+import static wawer.kamil.beerproject.controllers.BreweryControllerTestHelper.getListOfBreweryDTO;
 
 
 @SpringBootTest
@@ -34,6 +36,7 @@ class BreweryControllerIntegrationTest {
 
     private static final String SINGLE_BREWERY_ENDPOINT = "/brewery/%d";
     private static final String BREWERY_ENDPOINT = "/brewery";
+    private static final String BREWERY_ENDPOINT_ALL = "/brewery/list";
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,10 +63,13 @@ class BreweryControllerIntegrationTest {
 
     @Test
     @DisplayName("Test - should return status created when adding single Brewery")
+    @Transactional
     void should_return_status_created_when_adding_single_brewery() throws Exception {
 
         // given
         String content = breweryContent();
+        MvcResult mvcResult = getAllBrewerysRequest();
+        int sizeOfOriginalFetchedList = getListOfBreweryDTO(mvcResult).size();
 
         // when
         ResultActions perform = mockMvc.perform(post(BREWERY_ENDPOINT)
@@ -72,5 +78,16 @@ class BreweryControllerIntegrationTest {
 
         // then
         perform.andExpect(status().is(CREATED.value()));
+
+        MvcResult mvcResult1 = getAllBrewerysRequest();
+        int sizeOfFetchedListAfterPost = getListOfBreweryDTO(mvcResult1).size();
+        assertEquals(sizeOfOriginalFetchedList + 1, sizeOfFetchedListAfterPost);
     }
+
+    private MvcResult getAllBrewerysRequest() throws Exception {
+        return mockMvc.perform(get(BREWERY_ENDPOINT_ALL)
+                        .contentType(APPLICATION_JSON))
+                .andReturn();
+    }
+
 }
