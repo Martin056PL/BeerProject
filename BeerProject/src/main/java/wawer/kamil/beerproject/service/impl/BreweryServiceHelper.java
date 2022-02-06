@@ -1,36 +1,46 @@
 package wawer.kamil.beerproject.service.impl;
 
-import wawer.kamil.beerproject.dto.BreweryDTO;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.model.Brewery;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import static wawer.kamil.beerproject.utils.mapper.BreweryMapper.mapBreweryDTOToBreweryEntity;
+import static java.util.stream.Collectors.toList;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BreweryServiceHelper {
 
-    private BreweryServiceHelper() {
+    public static Page<Brewery> getBreweriesWithBeers(Page<Brewery> listOfBreweryPage, List<Beer> beersByBreweryId) {
+        return listOfBreweryPage.map(mapBrewery(beersByBreweryId));
     }
 
-    public static List<Long> getBreweryIdList(List<BreweryDTO> breweryPageList) {
-        return breweryPageList.stream()
-                .map(BreweryDTO::getBreweryId)
-                .collect(Collectors.toList());
+    public static List<Brewery> getBreweriesWithBeers(List<Brewery> listOfBreweryPage, List<Beer> beersByBreweryId) {
+        return listOfBreweryPage.stream().map(mapBrewery(beersByBreweryId)).collect(toList());
     }
 
-    public static List<Brewery> getBreweriesWithBeersPagedList(List<BreweryDTO> listOfBreweryPage, List<Beer> beersByBreweryId) {
-        return listOfBreweryPage.stream().map(mapBreweryDTOToBreweryEntity(beersByBreweryId))
-                .collect(Collectors.toList());
+    private static Function<Brewery, Brewery> mapBrewery(List<Beer> beersByBreweryId) {
+        return brewery ->
+                Brewery.builder()
+                        .breweryId(brewery.getBreweryId())
+                        .name(brewery.getName())
+                        .email(brewery.getEmail())
+                        .phoneNumber(brewery.getPhoneNumber())
+                        .website(brewery.getWebsite())
+                        .address(brewery.getAddress())
+                        .beerList(getBeerListForBrewery(beersByBreweryId, brewery))
+                        .build();
     }
 
-    public static List<Beer> getBeerListForBrewery(List<Beer> beersByBreweryId, BreweryDTO bp) {
-        return beersByBreweryId.stream().filter(matchBeerToBreweryByIdPredicate(bp)).collect(Collectors.toList());
+    public static List<Beer> getBeerListForBrewery(List<Beer> beersByBreweryId, Brewery bp) {
+        return beersByBreweryId.stream().filter(matchBeerToBreweryByIdPredicate(bp)).collect(toList());
     }
 
-    private static Predicate<Beer> matchBeerToBreweryByIdPredicate(BreweryDTO bp) {
+    private static Predicate<Beer> matchBeerToBreweryByIdPredicate(Brewery bp) {
         return beer -> getBreweryId(beer).equals(bp.getBreweryId());
     }
 

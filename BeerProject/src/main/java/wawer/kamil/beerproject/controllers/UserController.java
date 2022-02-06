@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws NoContentException {
+    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws ElementNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUserByUserId(userId));
     }
 
@@ -53,12 +53,12 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws NoContentException {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws ElementNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws NoContentException {
+    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws ElementNotFoundException {
         userService.permanentDeleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

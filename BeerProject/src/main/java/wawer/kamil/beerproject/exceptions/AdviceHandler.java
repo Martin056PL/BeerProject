@@ -40,9 +40,9 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(exceptionFormat);
     }
 
-    @ExceptionHandler(NoContentException.class)
+    @ExceptionHandler(ElementNotFoundException.class)
     public ResponseEntity<Object> notFoundHandler() {
-        exceptionFormat.setMessage("Your content haven't been found! Check request params!");
+        exceptionFormat.setMessage("Your item hasn't been found! Check request params!");
         exceptionFormat.setStatus(HttpStatus.NOT_FOUND);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

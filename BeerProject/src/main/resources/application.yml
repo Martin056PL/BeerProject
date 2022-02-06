@@ -18,4 +18,5 @@ logging:
 image:
   path: src/main/resources/images/.
   requirements:
-    standard-type: image/jpeg
+    standard-type: image/jpeg, image/jpg, image/png, image/bpm
+    max-file-size: 10485760

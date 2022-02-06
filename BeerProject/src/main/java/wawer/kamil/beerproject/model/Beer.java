@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "beer")
+@ToString
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;
@@ -42,7 +43,7 @@ public class Beer implements Serializable {
     private Double alcohol;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
+            CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "brewery_id")
     @JsonIgnore
     private Brewery brewery;

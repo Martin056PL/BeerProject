@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
@@ -53,8 +53,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserResponse findUserByUserId(Long userId) throws NoContentException {
-        User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
+    public UserResponse findUserByUserId(Long userId) throws ElementNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
         return userMapper.mapUserEntityToUserResponse(user);
     }
 
@@ -75,15 +75,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public UserResponse updateUser(Long userId, UserRequest userRequest) throws NoContentException {
-        User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
+    public UserResponse updateUser(Long userId, UserRequest userRequest) throws ElementNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
         userMapper.mapUserRequestToUserEntityForUpdateMethod(userRequest, user);
         return userMapper.mapUserEntityToUserResponse(user);
     }
 
     @Override
-    public void permanentDeleteUser(Long userId) throws NoContentException {
-        User user = userRepository.findById(userId).orElseThrow(NoContentException::new);
+    public void permanentDeleteUser(Long userId) throws ElementNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
         userRepository.delete(user);
     }
 }

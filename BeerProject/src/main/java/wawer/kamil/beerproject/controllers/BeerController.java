@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.service.BeerService;
 
@@ -57,7 +57,7 @@ public class BeerController {
     }
 
     @GetMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<Page<BeerDTO>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws NoContentException {
+    public ResponseEntity<Page<BeerDTO>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws ElementNotFoundException {
         Page<Beer> resultListOfBeers = service.findAllBeersByBreweryIdPage(breweryId, pageable);
         Page<BeerDTO> resultListOfBeersDTO = resultListOfBeers.map(beer -> mapper.map(beer, BeerDTO.class));
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -65,7 +65,7 @@ public class BeerController {
     }
 
     @GetMapping("brewery/{breweryId}/beer/list")
-    public ResponseEntity<List<BeerDTO>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws NoContentException {
+    public ResponseEntity<List<BeerDTO>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws ElementNotFoundException {
         List<Beer> resultListOfBeers = service.findAllBeersByBreweryIdList(breweryId);
         List<BeerDTO> resultListOfBeersDTO = resultListOfBeers.stream().map(beer -> mapper.map(beer, BeerDTO.class)).collect(Collectors.toList());
         log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(Beer::getBeerId).collect(Collectors.toList()));
@@ -73,13 +73,13 @@ public class BeerController {
     }
 
     @GetMapping("beer/{beerId}")
-    public ResponseEntity<BeerDTO> findProperBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity<BeerDTO> findProperBeerByBeerId(@PathVariable Long beerId) throws ElementNotFoundException {
         BeerDTO resultBeerDTO = mapper.map(service.findBeerByBeerId(beerId), BeerDTO.class);
         return ok().body(resultBeerDTO);
     }
 
     @GetMapping("brewery/{breweryId}/beer/{beerId}")
-    public ResponseEntity<BeerDTO> findProperBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity<BeerDTO> findProperBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws ElementNotFoundException {
         BeerDTO resultBeerDTO = mapper.map(service.findProperBeerByBreweryIdAndBeerId(breweryId, beerId), BeerDTO.class);
         return ok().body(resultBeerDTO);
     }
@@ -94,7 +94,7 @@ public class BeerController {
     }
 
     @PostMapping("brewery/{breweryId}/beer")
-    public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException, URISyntaxException {
+    public ResponseEntity<BeerDTO> addNewBeerAssignedToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerDTO beerDTO) throws ElementNotFoundException, URISyntaxException {
         Beer resultBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, mapper.map(beerDTO, Beer.class));
         log.debug("Add new beer with Id: {}", resultBeer.getBeerId());
         return created(new URI("add-beer" + resultBeer.getBeerId())).body(mapper.map(resultBeer, BeerDTO.class));
@@ -103,7 +103,7 @@ public class BeerController {
     //put methods
 
     @PutMapping("beer/{beerId}")
-    public ResponseEntity<BeerDTO> updateBeer(@PathVariable Long beerId, @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
+    public ResponseEntity<BeerDTO> updateBeer(@PathVariable Long beerId, @Valid @RequestBody BeerDTO beerDTO) throws ElementNotFoundException {
         Beer resultBeer = service.updateBeerByBeerId(beerId, mapper.map(beerDTO, Beer.class));
         log.debug("Updated beer with Id: {}", resultBeer.getBeerId());
         return ok().body(mapper.map(resultBeer, BeerDTO.class));
@@ -112,7 +112,7 @@ public class BeerController {
     @PutMapping("brewery/{breweryId}/beer/{beerId}")
     public ResponseEntity<BeerDTO> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                       @PathVariable Long beerId,
-                                                                      @Valid @RequestBody BeerDTO beerDTO) throws NoContentException {
+                                                                      @Valid @RequestBody BeerDTO beerDTO) throws ElementNotFoundException {
         Beer resultBeer = service.updateBeerByBreweryIdAndBeerId(breweryId, beerId, mapper.map(beerDTO, Beer.class));
         log.debug("Updated beer with Id: {}", resultBeer.getBeerId());
         return ok().body(mapper.map(resultBeer, BeerDTO.class));
@@ -121,25 +121,25 @@ public class BeerController {
     //delete methods
 
     @DeleteMapping("beer/{beerId}")
-    public ResponseEntity deleteBeerByBeerId(@PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity deleteBeerByBeerId(@PathVariable Long beerId) throws ElementNotFoundException {
         service.deleteBeerByBeerId(beerId);
         return noContent().build();
     }
 
     @DeleteMapping("brewery/{breweryId}/beer/{beerId}")
-    public ResponseEntity deleteBeerByBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity deleteBeerByBreweryIdAndBeerId(@PathVariable Long breweryId, @PathVariable Long beerId) throws ElementNotFoundException {
         service.deleteBeerByBreweryIdAndBeerId(breweryId, beerId);
         return noContent().build();
     }
 
     @PostMapping(value = "brewery/{breweryId}/beer/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, NoContentException, InvalidImageParameters {
+    public ResponseEntity<Object> uploadImage(@PathVariable Long breweryId, @PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
         service.setBeerImageToProperBeerBaseOnBeerId(breweryId, beerId, file);
         return ok().body("File is uploaded successfully");
     }
 
     @GetMapping(value = "brewery/{breweryId}/beer/{beerId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws NoContentException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long breweryId, @PathVariable Long beerId) throws ElementNotFoundException {
         byte[] image = service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryId, beerId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

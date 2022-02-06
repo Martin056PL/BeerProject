@@ -1,17 +1,18 @@
 package wawer.kamil.beerproject.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Beer;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class BreweryRequest {
 
     @NotEmpty

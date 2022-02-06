@@ -5,10 +5,12 @@ import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.model.User;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.TimeZone;
 
 @Configuration
@@ -51,7 +53,7 @@ public class SpringAppConfig {
         modelMapper.addMappings(new PropertyMap<Brewery, Brewery>() {
             @Override
             protected void configure() {
-                skip(destination.getBreweryId());
+                map().setBreweryId(source.getBreweryId());
                 map().setName(source.getName());
                 map().setEmail(source.getEmail());
                 map().setPhoneNumber(source.getPhoneNumber());

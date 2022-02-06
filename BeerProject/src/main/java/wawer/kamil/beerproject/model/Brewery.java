@@ -9,13 +9,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 
 @Entity
+@Data
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@ToString(exclude = "beerList")
 @Table(name = "brewery")
 public class Brewery implements Serializable {
 
@@ -36,22 +38,22 @@ public class Brewery implements Serializable {
     @Column(name = "phone_number")
     private Long phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 
     @NotEmpty
     private String website;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "brewery",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany(
+            mappedBy = "brewery",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<Beer> beerList;
 
     @Lob
     @Column(name = "brewery_image", columnDefinition = "mediumblob")
-    private byte [] breweryImage;
+    private byte[] breweryImage;
 
 
     public void addBeer(Beer beer) {
