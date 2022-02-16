@@ -26,18 +26,7 @@ public class ImageUpload {
     private Long fileSize;
 
 
-    private static String PATH;
-    private static String STANDARD_TYPE;
-    private static Long MAX_SIZE_OF_FILE;
-
-    @PostConstruct
-    public void initFields() {
-        PATH = path;
-        STANDARD_TYPE = standardType;
-        MAX_SIZE_OF_FILE = fileSize;
-    }
-
-    public static byte[] convertImageFileToByteArray(MultipartFile file) throws IOException {
+    public byte[] convertImageToByteArray(MultipartFile file) throws IOException {
         byte[] byteObject = new byte[file.getBytes().length];
         int i = 0;
         for (byte b : file.getBytes()) {
@@ -46,8 +35,8 @@ public class ImageUpload {
         return byteObject;
     }
 
-    public static void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
-        File createdFile = new File(PATH.substring(0, PATH.length() - 1) + file.getOriginalFilename());
+    public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
+        File createdFile = new File(path.substring(0, path.length() - 1) + file.getOriginalFilename());
         try (FileOutputStream outputStream = new FileOutputStream(createdFile)) {
             outputStream.write(file.getBytes());
         } catch (FileNotFoundException e) {
@@ -55,7 +44,7 @@ public class ImageUpload {
         }
     }
 
-    public static boolean validateFile(MultipartFile file) {
+    public boolean validateFile(MultipartFile file) {
         String type = file.getContentType();
         long size = file.getSize();
         boolean fileTypeResult = validateFileType(type);
@@ -65,11 +54,11 @@ public class ImageUpload {
         return result;
     }
 
-    private static boolean validateFileType(String type){
-        return Arrays.asList(STANDARD_TYPE.split(",")).contains(type);
+    private boolean validateFileType(String type){
+        return Arrays.asList(standardType.split(",")).contains(type);
     }
 
-    private static boolean validateFileSize(long size) {
-        return size <= MAX_SIZE_OF_FILE;
+    private boolean validateFileSize(long size) {
+        return size <= fileSize;
     }
 }

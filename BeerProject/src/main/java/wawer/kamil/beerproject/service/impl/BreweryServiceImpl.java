@@ -14,14 +14,13 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BreweryService;
+import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.getBreweriesIds;
 import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.getBreweriesWithBeers;
-import static wawer.kamil.beerproject.utils.upload.ImageUpload.convertImageFileToByteArray;
-import static wawer.kamil.beerproject.utils.upload.ImageUpload.validateFile;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository breweryRepository;
     private final BeerRepository beerRepository;
+    private final ImageUpload imageUpload;
 
     @Override
     @Transactional
@@ -47,13 +47,6 @@ public class BreweryServiceImpl implements BreweryService {
         return getBreweriesWithBeers(breweries, beersByListOfBreweriesId);
     }
 
-    private List<Long> getBreweriesIds(Page<Brewery> breweries) {
-        return breweries.map(Brewery::getBreweryId).toList();
-    }
-
-    private List<Long> getBreweriesIds(List<Brewery> breweries) {
-        return breweries.stream().map(Brewery::getBreweryId).collect(toList());
-    }
 
     @Override
     public Brewery getBreweryById(Long id) throws ElementNotFoundException {
@@ -72,9 +65,12 @@ public class BreweryServiceImpl implements BreweryService {
         fetchedBrewery.setName(brewery.getName());
         fetchedBrewery.setEmail(brewery.getEmail());
         fetchedBrewery.setPhoneNumber(brewery.getPhoneNumber());
-        fetchedBrewery.setAddress(brewery.getAddress());
+        fetchedBrewery.getAddress().setCity(brewery.getAddress().getCity());
+        fetchedBrewery.getAddress().setLocalNumber(brewery.getAddress().getLocalNumber());
+        fetchedBrewery.getAddress().setParcelNumber(brewery.getAddress().getParcelNumber());
+        fetchedBrewery.getAddress().setStreet(brewery.getAddress().getStreet());
+        fetchedBrewery.getAddress().setZipCode(brewery.getAddress().getZipCode());
         fetchedBrewery.setWebsite(brewery.getWebsite());
-        fetchedBrewery.setBeerList(brewery.getBeerList());
         return fetchedBrewery;
     }
 
@@ -89,8 +85,8 @@ public class BreweryServiceImpl implements BreweryService {
     @Transactional
     public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
         Brewery brewery = getBreweryById(breweryId);
-        if (validateFile(file)) {
-            byte[] imageAsByteArray = convertImageFileToByteArray(file);
+        if (imageUpload.validateFile(file)) {
+            byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             brewery.setBreweryImage(imageAsByteArray);
         } else {
             throw new InvalidImageParameters();

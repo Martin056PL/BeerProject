@@ -29,8 +29,7 @@ public interface BreweryRepository extends JpaRepository<Brewery, Long> {
 
     @Override
     @Query(
-            value = "select distinct b from Brewery b left join fetch b.beerList left join fetch b.address where b.breweryId = ?1",
-            countQuery = "select count(b) from Brewery b where b.breweryId = ?1"
+            value = "select distinct b from Brewery b left join fetch b.beerList left join fetch b.address where b.breweryId = ?1"
     )
     Optional<Brewery> findById(Long id);
 

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class BreweryMapper {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public BreweryMapper(@Qualifier(value = "BreweryMapper") ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
@@ -35,6 +35,4 @@ public class BreweryMapper {
     public Brewery mapBreweryRequestToBreweryEntity(BreweryRequest breweryRequest) {
         return modelMapper.map(breweryRequest, Brewery.class);
     }
-
-
 }

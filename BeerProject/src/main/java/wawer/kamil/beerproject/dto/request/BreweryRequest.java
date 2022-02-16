@@ -25,6 +25,6 @@ public class BreweryRequest {
     private Address address;
     @NotEmpty
     private String website;
+
     private List<Beer> beerList;
-    private byte[] breweryImage;
 }

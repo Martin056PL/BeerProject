@@ -18,7 +18,7 @@ public class UserMapper {
     private final ModelMapper modelMapperForUserToUser;
 
     public UserMapper(@Qualifier(value = "defaultMapper") ModelMapper modelMapper,
-                      @Qualifier(value = "UserToUserMapper") ModelMapper modelMapperForUserToUser) {
+                      @Qualifier(value = "UserMapper") ModelMapper modelMapperForUserToUser) {
         this.modelMapper = modelMapper;
         this.modelMapperForUserToUser = modelMapperForUserToUser;
     }

@@ -10,7 +10,6 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.model.User;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.TimeZone;
 
 @Configuration
@@ -27,7 +26,7 @@ public class SpringAppConfig {
         return new ModelMapper();
     }
 
-    @Bean(name = "UserToUserMapper")
+    @Bean(name = "UserMapper")
     public ModelMapper getUserModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new PropertyMap<User, User>() {
@@ -61,6 +60,23 @@ public class SpringAppConfig {
                 map().setWebsite(source.getWebsite());
                 map().setBeerList(source.getBeerList());
                 map().setBreweryImage(source.getBreweryImage());
+            }
+        });
+        return modelMapper;
+    }
+
+    @Bean(name = "BeerMapper")
+    public ModelMapper getBeerModelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<Beer, Beer>() {
+            @Override
+            protected void configure() {
+                map().setBeerId(source.getBeerId());
+                map().setName(source.getName());
+                map().setAlcohol(source.getAlcohol());
+                map().setExtract(source.getExtract());
+                map().setBrewery(source.getBrewery());
+                map().setBeerImage(source.getBeerImage());
             }
         });
         return modelMapper;

@@ -45,9 +45,9 @@ public class BreweryController {
     @GetMapping("/list")
     public ResponseEntity<List<BreweryResponse>> getAllBreweryList() {
         List<Brewery> listOfBrewery = service.getAllBreweryList();
-        List<BreweryResponse> listOfBreweryDTO = breweryMapper.mapListOfBreweryEntityToListBreweryResponse(listOfBrewery);
+        List<BreweryResponse> listOfBreweriesResponse = breweryMapper.mapListOfBreweryEntityToListBreweryResponse(listOfBrewery);
         log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ok().body(listOfBreweryDTO);
+        return ok().body(listOfBreweriesResponse);
     }
 
     @GetMapping("{breweryId}")

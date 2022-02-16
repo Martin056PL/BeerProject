@@ -23,6 +23,14 @@ public class BreweryServiceHelper {
         return listOfBreweryPage.stream().map(mapBrewery(beersByBreweryId)).collect(toList());
     }
 
+    public static List<Long> getBreweriesIds(Page<Brewery> breweries) {
+        return breweries.map(Brewery::getBreweryId).toList();
+    }
+
+    public static List<Long> getBreweriesIds(List<Brewery> breweries) {
+        return breweries.stream().map(Brewery::getBreweryId).collect(toList());
+    }
+
     private static Function<Brewery, Brewery> mapBrewery(List<Beer> beersByBreweryId) {
         return brewery ->
                 Brewery.builder()

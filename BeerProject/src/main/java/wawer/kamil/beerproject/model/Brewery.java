@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.LAZY;
-
 
 @Entity
 @Data
@@ -38,7 +36,7 @@ public class Brewery implements Serializable {
     @Column(name = "phone_number")
     private Long phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -47,8 +45,8 @@ public class Brewery implements Serializable {
 
     @OneToMany(
             mappedBy = "brewery",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
+            cascade = CascadeType.ALL
+    )
     private List<Beer> beerList;
 
     @Lob

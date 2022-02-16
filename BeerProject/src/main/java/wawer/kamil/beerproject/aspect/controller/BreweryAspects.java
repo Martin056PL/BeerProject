@@ -5,7 +5,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import wawer.kamil.beerproject.dto.BreweryDTO;
+import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BreweryRequest;
 
 @Aspect
 @Component
@@ -22,38 +23,44 @@ public class BreweryAspects {
         log.debug("Endpoint address: 'brewery/list' with GET method");
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.getBreweryByBreweryId(..)) && args(id)")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.getBreweryById(..)) && args(id)")
     public void logGetBreweryByBreweryId(Long id) {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with GET method, request parameter - id: {}", id);
+        log.debug("Endpoint address: 'brewery/{id}' with GET method, request parameter - id: {}", id);
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.addNewBrewery(..)) && args(breweryDTO)")
-    public void logAddNewBrewery(BreweryDTO breweryDTO) {
-        log.debug("Endpoint address: 'brewery' with POST method, request parameter - brewery data: {}; {}; {}; {}"
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.addNewBrewery(..)) && args(breweryRequest)")
+    public void logAddNewBrewery(BreweryRequest breweryRequest) {
+        log.debug("Endpoint address: 'brewery' with POST method, request parameter - brewery data: {}; {}; {}; {}; {}"
+                , breweryRequest.getName()
+                , breweryRequest.getEmail()
+                , breweryRequest.getPhoneNumber()
+                , breweryRequest.getAddress()
+                , breweryRequest.getWebsite());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.updateBrewery(..)) && args(breweryId, breweryDTO)", argNames = "breweryId,breweryDTO")
-    public void logUpdateBrewery(Long breweryId, BreweryDTO breweryDTO) {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}"
-                , breweryId
-                , breweryDTO.getName()
-                , breweryDTO.getWebsite()
-                , breweryDTO.getEmail()
-                , breweryDTO.getPhoneNumber());
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.updateBrewery(..)) && args(id, breweryRequest)", argNames = "id, breweryRequest")
+    public void logUpdateBrewery(Long id, BreweryRequest breweryRequest) {
+        log.debug("Endpoint address: 'brewery/{id}' with PUT method, request parameter - brewery id: {};  brewery data: {}; {}; {}; {}; {}"
+                , id
+                , breweryRequest.getName()
+                , breweryRequest.getEmail()
+                , breweryRequest.getPhoneNumber()
+                , breweryRequest.getAddress()
+                , breweryRequest.getWebsite());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.deleteBrewery(..)) && args(breweryId)")
-    public void logDeleteBrewery(Long breweryId) {
-        log.debug("Endpoint address: 'brewery/{breweryId}' with DELETE method, request parameter - id: {}", breweryId);
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.deleteBrewery(..)) && args(id)")
+    public void logDeleteBrewery(Long id) {
+        log.debug("Endpoint address: 'brewery/{id}' with DELETE method, request parameter - id: {}", id);
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.getBreweryByBreweryId(..)) && args(breweryId)")
-    public void logUploadImage(Long breweryId) {
-        log.debug("Endpoint address: 'brewery/{breweryId}/image' with POST method, request parameter - id: {}", breweryId);
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.uploadImage(..)) && args(id, multipartFile)", argNames = "id, multipartFile")
+    public void logUploadImage(Long id, MultipartFile multipartFile) {
+        log.debug("Endpoint address: 'brewery/{id}/image' with POST method, request parameter - id: {}, multipartFile: name: {}, contentType: {} , size: {}"
+                , id
+                , multipartFile.getName()
+                , multipartFile.getContentType()
+                , multipartFile.getSize());
     }
 
 }

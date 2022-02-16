@@ -9,7 +9,7 @@ import wawer.kamil.beerproject.model.Brewery;
 
 import java.util.List;
 
-public class BreweryControllerTestHelper {
+public class BreweryTestHelper {
 
     public static Page<Brewery> getBreweryPage() {
         return new PageImpl<>(List.of(getSingleSavedBrewery()));
