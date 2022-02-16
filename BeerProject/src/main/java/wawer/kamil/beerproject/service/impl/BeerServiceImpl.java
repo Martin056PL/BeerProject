@@ -175,7 +175,7 @@ public class BeerServiceImpl implements BeerService {
     public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
         Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
         if (imageUpload.validateFile(file)) {
-            byte[] imageAsByteArray = imageUpload.convertImageFileToByteArray(file);
+            byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             beer.setBeerImage(imageAsByteArray);
             beerRepository.save(beer);
         } else {
