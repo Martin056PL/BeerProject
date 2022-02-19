@@ -8,7 +8,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
+  servlet:
+    multipart:
+      max-file-size: 6MB
 server:
   port: 8085
 
@@ -19,4 +21,4 @@ image:
   path: src/main/resources/images/.
   requirements:
     standard-type: image/jpeg, image/jpg, image/png, image/bpm
-    max-file-size: 10485760
+    max-file-size: 5242880

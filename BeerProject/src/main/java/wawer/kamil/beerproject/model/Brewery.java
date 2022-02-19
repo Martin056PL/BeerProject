@@ -27,13 +27,14 @@ public class Brewery implements Serializable {
     private Long breweryId;
 
     @NotEmpty
+    @Column(nullable = false)
     private String name;
 
     @NotEmpty
     private String email;
 
     @NotNull
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",nullable = false)
     private Long phoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -54,12 +55,12 @@ public class Brewery implements Serializable {
     private byte[] breweryImage;
 
 
-    public void addBeer(Beer beer) {
+    public Beer addBeer(Beer beer) {
         if (beerList == null) {
             beerList = new ArrayList<>();
         }
         beerList.add(beer);
         beer.setBrewery(this);
-
+        return beer;
     }
 }

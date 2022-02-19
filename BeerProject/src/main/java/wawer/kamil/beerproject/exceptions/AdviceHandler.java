@@ -50,7 +50,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidImageParameters.class)
     public ResponseEntity<Object> badImageParameters() {
-        exceptionFormat.setMessage("Your image has bad type or is over 10MB. Check again your image!");
+        exceptionFormat.setMessage("Your image has unhanded file type or it is over 10MB. Check again your image!");
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
@@ -79,7 +79,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
                 + "\n REQUEST ADDRESS: " + request.getRequestURL());
         exceptionFormat.setMessage("Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL");
-        exceptionFormat.setStatus(HttpStatus.I_AM_A_TEAPOT);
+        exceptionFormat.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 

@@ -18,6 +18,9 @@ import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
+import static wawer.kamil.beerproject.service.impl.BeerServiceHelper.mapBeerProperties;
 
 
 @Service
@@ -25,20 +28,11 @@ import java.util.List;
 @Slf4j(topic = "application.logger")
 public class BeerServiceImpl implements BeerService {
 
-
     private final BeerRepository beerRepository;
     private final BreweryRepository breweryRepository;
     private final ImageUpload imageUpload;
 
-    private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
-    private static final String THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The beer base on id: {} has not been found";
-
     //get beers
-
-    @Override
-    public List<Beer> findBeerByListOfBreweriesId(List<Long> listOfBreweriesId) {
-        return beerRepository.findBeersByListOfBreweriesId(listOfBreweriesId);
-    }
 
     @Override
     public Page<Beer> findAllBeersPage(Pageable pageable) {
@@ -51,145 +45,78 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Beer findBeerByBeerId(Long beerId) throws ElementNotFoundException {
-        if (beerRepository.existsBeerByBeerId(beerId)) {
-            return beerRepository.findBeerByBeerId(beerId);
-        } else {
-            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
-            throw new ElementNotFoundException();
-        }
+    public Beer findBeerById(Long id) throws ElementNotFoundException {
+        return beerRepository.findById(id).orElseThrow(ElementNotFoundException::new);
     }
 
     //get beers by breweryID
 
     @Override
     public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException {
-        Brewery brewery = breweryRepository.findById(breweryId)
-                .orElseThrow(() -> {
-                    log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
-                    return new ElementNotFoundException();
-                });
-        return beerRepository.findAllByBrewery(brewery, pageable);
+        Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
+        return beerRepository.findAllByBreweryId(fetchedBrewery.getBreweryId(), pageable);
     }
 
     @Override
     public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException {
-        Brewery brewery = breweryRepository.findById(breweryId)
-                .orElseThrow(() -> {
-                    log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
-                    return new ElementNotFoundException();
-                });
-        return beerRepository.findAllByBrewery(brewery);
-    }
-
-    @Override
-    public Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws ElementNotFoundException {
-//        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
-//            if (beerRepository.existsBeerByBeerId(beerId)) {
-//                Brewery brewery = breweryRepository.findByBreweryId(breweryId);
-//                return beerRepository.findBeerByBreweryAndBeerId(brewery, beerId);
-//            } else {
-//                log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
-//                throw new ElementNotFoundException();
-//            }
-//        } else {
-//            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
-//            throw new ElementNotFoundException();
-//        }
-        return null;
+        Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
+        return beerRepository.findAllByBreweryId(brewery.getBreweryId());
     }
 
     //post beers
 
     @Override
-    public Beer addNewBeerToRepository(Beer beer) {
-        return beerRepository.save(beer);
-    }
-
-    @Override
+    @Transactional
     public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws ElementNotFoundException {
-        return breweryRepository.findById(breweryID)
-                .map(brewery -> {
-                    beer.setBrewery(brewery);
-                    return beerRepository.save(beer);
-                }).orElseThrow(ElementNotFoundException::new);
+        Brewery brewery = breweryRepository.findById(breweryID).orElseThrow(ElementNotFoundException::new);
+        beer.setBrewery(brewery);
+        return beerRepository.save(beer);
     }
 
     //put beers
 
     @Override
-    public Beer updateBeerByBeerId(Long beerId, Beer beer) throws ElementNotFoundException {
-        if (beerRepository.existsBeerByBeerId(beerId)) {
-            beer.setBeerId(beerId);
-            return beerRepository.save(beer);
-        } else {
-            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
-            throw new ElementNotFoundException();
-        }
+    @Transactional
+    public Beer updateBeerByBeerId(Long beerId, Beer updatedBeer) throws ElementNotFoundException {
+        Beer fetchedBeer = beerRepository.findById(beerId).orElseThrow(ElementNotFoundException::new);
+        mapBeerProperties(fetchedBeer, updatedBeer);
+        return fetchedBeer;
     }
 
+    @Override
+    @Transactional
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws ElementNotFoundException {
-        if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
-            if (beerRepository.existsBeerByBeerId(beerId)) {
-                Beer beer = beerRepository.findBeerByBeerId(beerId);
-                beer.setName(updatedBeer.getName());
-                beer.setAlcohol(updatedBeer.getAlcohol());
-                beer.setStyle(updatedBeer.getStyle());
-                beer.setExtract(updatedBeer.getExtract());
-                beer.setBeerImage(updatedBeer.getBeerImage());
-                return beerRepository.save(beer);
-            } else {
-                log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
-                throw new ElementNotFoundException();
-            }
-        } else {
-            log.debug(THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND, breweryId);
-            throw new ElementNotFoundException();
-        }
+        Beer fetchedBeer = Optional.ofNullable(beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId)).orElseThrow(ElementNotFoundException::new);
+        mapBeerProperties(fetchedBeer, updatedBeer);
+        return fetchedBeer;
     }
 
     //delete beers
 
     @Override
-    public void deleteBeerByBeerId(Long beerId) throws ElementNotFoundException {
-        if (beerRepository.existsBeerByBeerId(beerId)) {
-            beerRepository.deleteById(beerId);
-        } else {
-            log.debug(THE_BEER_BASE_ON_ID_HAS_NOT_BEEN_FOUND, beerId);
-            throw new ElementNotFoundException();
-        }
-    }
-
-    @Override
-    public void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws ElementNotFoundException {
-        if (breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId)) {
-            beerRepository.deleteById(beerId);
-        } else {
-            log.debug("The brewery base on breweryId: {} or beer base on beerId: {} has not been found", breweryId, beerId);
+    public void deleteBeerById(Long id) throws ElementNotFoundException {
+        try {
+            beerRepository.deleteById(id);
+        } catch (IllegalArgumentException ex) {
+            log.debug("The beer base on id: {} has not been found", id);
             throw new ElementNotFoundException();
         }
     }
 
     @Override
     @Transactional
-    public void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
-        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
+    public void setBeerImageToBeerByBeerId(Long beerId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+        Beer beer = findBeerById(beerId);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             beer.setBeerImage(imageAsByteArray);
-            beerRepository.save(beer);
         } else {
             throw new InvalidImageParameters();
         }
     }
 
     @Override
-    public byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId) throws ElementNotFoundException {
-        Beer beer = findProperBeerByBreweryIdAndBeerId(breweryId, beerId);
-        if (beer.getBeerImage() == null) {
-            throw new ElementNotFoundException();
-        } else {
-            return beer.getBeerImage();
-        }
+    public byte[] getBeerImageBaseOnBeerId(Long id) throws ElementNotFoundException {
+        return Optional.ofNullable(beerRepository.findBeerImageByBeerId(id)).orElseThrow(ElementNotFoundException::new);
     }
 }

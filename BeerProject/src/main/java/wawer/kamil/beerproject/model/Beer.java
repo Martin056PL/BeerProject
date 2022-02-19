@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+
 import java.io.Serializable;
 
 @Entity
@@ -26,24 +24,19 @@ public class Beer implements Serializable {
     @Column(name = "beer_id")
     private Long beerId;
 
-    @NotEmpty
     @Column(name = "name")
     private String name;
 
     @Column(name = "style")
     private String style;
 
-    @Min(value = 0)
     @Column(name = "extract")
     private Double extract;
 
-    @Min(value = 0)
-    @Max(value = 100)
     @Column(name = "alcohol")
     private Double alcohol;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "brewery_id")
     @JsonIgnore
     private Brewery brewery;

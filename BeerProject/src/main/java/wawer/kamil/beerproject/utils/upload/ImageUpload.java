@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -35,15 +31,6 @@ public class ImageUpload {
         return byteObject;
     }
 
-    public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
-        File createdFile = new File(path.substring(0, path.length() - 1) + file.getOriginalFilename());
-        try (FileOutputStream outputStream = new FileOutputStream(createdFile)) {
-            outputStream.write(file.getBytes());
-        } catch (FileNotFoundException e) {
-            log.debug(e.getMessage());
-        }
-    }
-
     public boolean validateFile(MultipartFile file) {
         String type = file.getContentType();
         long size = file.getSize();
@@ -54,7 +41,7 @@ public class ImageUpload {
         return result;
     }
 
-    private boolean validateFileType(String type){
+    private boolean validateFileType(String type) {
         return Arrays.asList(standardType.split(",")).contains(type);
     }
 
