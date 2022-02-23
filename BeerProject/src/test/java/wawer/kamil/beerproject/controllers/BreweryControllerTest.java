@@ -1,5 +1,6 @@
 package wawer.kamil.beerproject.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,23 +52,49 @@ class BreweryControllerTest {
     @InjectMocks
     BreweryController controller;
 
+    private Page<Brewery> breweryPage;
+    private Page<BreweryResponse> breweryResponsePage;
+    private List<Brewery> breweryList;
+    private List<BreweryResponse> breweryResponseList;
+    private BreweryRequest breweryRequest;
+    private BreweryRequest updatedSingleBreweryRequest;
+    private Brewery singleBreweryBeforeSave;
+    private Brewery singleSavedBrewery;
+    private Brewery updatedSingleBreweryBeforeSave;
+    private Brewery updatedSingleBreweryAfterSave;
+    private BreweryResponse updatedSingleBreweryResponseAfterSave;
+    private BreweryResponse singleBreweryResponse;
+
     private final static Long ID = 1L;
     private final static String URI = "add-beer/";
+
+    @BeforeEach
+    void setUp() {
+        this.breweryPage = getBreweryPage();
+        this.breweryResponsePage = getBreweryResponsePage();
+        this.breweryList = getBreweryList();
+        this.breweryResponseList = getBreweryResponseList();
+        this.breweryRequest = getSingleBreweryRequest();
+        this.updatedSingleBreweryRequest = getUpdatedSingleBreweryRequest();
+        this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
+        this.singleSavedBrewery = getSingleSavedBrewery();
+        this.updatedSingleBreweryBeforeSave = getUpdatedSingleBreweryBeforeSave();
+        this.updatedSingleBreweryAfterSave = getUpdatedSingleBreweryAfterSave();
+        this.updatedSingleBreweryResponseAfterSave = getUpdatedSingleBreweryResponseAfterSave();
+        this.singleBreweryResponse = getSingleBreweryResponse();
+    }
 
     @Test
     @DisplayName("Should return response entity equal to controllers response entity for brewery PAGE")
     void should_return_response_entity_equal_to_controllers_response_entity_for_brewery_page() {
         //given
-        Page<Brewery> breweryPage = getBreweryPage();
         when(service.getAllBreweryPage(pageable)).thenReturn(breweryPage);
-        Page<BreweryResponse> breweryResponsePage = getBreweryResponsePage();
         when(mapper.mapBreweryEntityPageToBreweryResponsePage(breweryPage)).thenReturn(breweryResponsePage);
 
         //when
         ResponseEntity<Page<BreweryResponse>> allBreweryPage = controller.getAllBreweryPage(pageable);
 
         //then
-        assertEquals(ok(breweryResponsePage), allBreweryPage);
         assertEquals(HttpStatus.OK, allBreweryPage.getStatusCode());
         assertEquals(breweryResponsePage, allBreweryPage.getBody());
     }
@@ -76,16 +103,13 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity for brewery LIST")
     void should_return_response_entity_equal_to_controllers_response_entity_for_brewery_list() {
         //given
-        List<Brewery> breweryList = getBreweryList();
         when(service.getAllBreweryList()).thenReturn(breweryList);
-        List<BreweryResponse> breweryResponseList = getBreweryResponseList();
         when(mapper.mapListOfBreweryEntityToListBreweryResponse(breweryList)).thenReturn(breweryResponseList);
 
         //when
         ResponseEntity<List<BreweryResponse>> allBreweryList = controller.getAllBreweryList();
 
         //then
-        assertEquals(ok(breweryResponseList), allBreweryList);
         assertEquals(HttpStatus.OK, allBreweryList.getStatusCode());
         assertEquals(breweryResponseList, allBreweryList.getBody());
     }
@@ -94,16 +118,13 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on SINGLE brewery id")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        Brewery b = getSingleSavedBrewery();
-        when(service.getBreweryById(ID)).thenReturn(b);
-        BreweryResponse singleBreweryResponse = getSingleBreweryResponse();
-        when(mapper.mapBreweryToBreweryResponse(b)).thenReturn(singleBreweryResponse);
+        when(service.getBreweryById(ID)).thenReturn(singleSavedBrewery);
+        when(mapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(singleBreweryResponse);
 
         //when
         ResponseEntity<BreweryResponse> breweryById = controller.getBreweryById(ID);
 
         //then
-        assertEquals(ok(singleBreweryResponse), breweryById);
         assertEquals(HttpStatus.OK, breweryById.getStatusCode());
         assertEquals(ok(singleBreweryResponse).getBody(), breweryById.getBody());
     }
@@ -123,19 +144,14 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on CREATED brewery")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_created_brewery() throws URISyntaxException {
         //given
-        BreweryRequest brq = getSingleBreweryRequest();
-        Brewery singleBreweryBeforeSave = getSingleBreweryBeforeSave();
-        when(mapper.mapBreweryRequestToBreweryEntity(brq)).thenReturn(singleBreweryBeforeSave);
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
+        when(mapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleBreweryBeforeSave);
         when(service.createNewBrewery(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
-        BreweryResponse singleBreweryResponse = getSingleBreweryResponse();
         when(mapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(singleBreweryResponse);
 
         //when
-        ResponseEntity<BreweryResponse> breweryById = controller.addNewBrewery(brq);
+        ResponseEntity<BreweryResponse> breweryById = controller.addNewBrewery(breweryRequest);
 
         //then
-        assertEquals(created(new URI(URI + singleBreweryResponse.getId())).body(singleBreweryResponse), breweryById);
         assertEquals(HttpStatus.CREATED, breweryById.getStatusCode());
         assertEquals(created(new URI(URI + singleBreweryResponse.getId())).body(singleBreweryResponse).getBody(), breweryById.getBody());
     }
@@ -145,19 +161,14 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on UPDATED brewery")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_UPDATED_brewery() throws ElementNotFoundException {
         // given
-        BreweryRequest brq = getUpdatedSingleBreweryRequest();
-        Brewery updatedSingleBreweryBeforeSave = getUpdatedSingleBreweryBeforeSave();
-        when(mapper.mapBreweryRequestToBreweryEntity(brq)).thenReturn(updatedSingleBreweryBeforeSave);
-        Brewery updatedSingleBreweryAfterSave = getUpdatedSingleBreweryAfterSave();
+        when(mapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(updatedSingleBreweryBeforeSave);
         when(service.updateBreweryById(ID, updatedSingleBreweryBeforeSave)).thenReturn(updatedSingleBreweryAfterSave);
-        BreweryResponse updatedSingleBreweryResponseAfterSave = getUpdatedSingleBreweryResponseAfterSave();
         when(mapper.mapBreweryToBreweryResponse(updatedSingleBreweryAfterSave)).thenReturn(updatedSingleBreweryResponseAfterSave);
 
         //when
-        ResponseEntity<BreweryResponse> breweryResponseResponseEntity = controller.updateBrewery(ID, brq);
+        ResponseEntity<BreweryResponse> breweryResponseResponseEntity = controller.updateBrewery(ID, breweryRequest);
 
         //then
-        assertEquals(ok(updatedSingleBreweryResponseAfterSave), breweryResponseResponseEntity);
         assertEquals(HttpStatus.OK, breweryResponseResponseEntity.getStatusCode());
         assertEquals(ok(updatedSingleBreweryResponseAfterSave).getBody(), breweryResponseResponseEntity.getBody());
     }
@@ -171,8 +182,6 @@ class BreweryControllerTest {
 
     private void callUpdateBreweryByIdWithException() throws ElementNotFoundException {
         //given
-        BreweryRequest updatedSingleBreweryRequest = getUpdatedSingleBreweryRequest();
-        Brewery updatedSingleBreweryBeforeSave = getUpdatedSingleBreweryBeforeSave();
         when(mapper.mapBreweryRequestToBreweryEntity(updatedSingleBreweryRequest)).thenReturn(updatedSingleBreweryBeforeSave);
         when(service.updateBreweryById(ID, updatedSingleBreweryBeforeSave)).thenThrow(ElementNotFoundException.class);
 
@@ -212,7 +221,6 @@ class BreweryControllerTest {
         ResponseEntity<Object> getImageResponseEntity = controller.uploadImage(ID, multipartFile);
 
         //then
-        assertEquals(ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully"), getImageResponseEntity);
         assertEquals(HttpStatus.OK, controller.uploadImage(ID, multipartFile).getStatusCode());
         assertEquals("File is uploaded successfully", controller.uploadImage(ID, multipartFile).getBody());
     }

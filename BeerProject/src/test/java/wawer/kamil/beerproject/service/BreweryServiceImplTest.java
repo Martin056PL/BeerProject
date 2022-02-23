@@ -1,5 +1,6 @@
 package wawer.kamil.beerproject.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static wawer.kamil.beerproject.controllers.BeerTestHelper.getListOfBearsBaseOnIDs;
+import static wawer.kamil.beerproject.controllers.BeerTestHelper.getListOfBeers;
 import static wawer.kamil.beerproject.controllers.BreweryTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,15 +51,29 @@ class BreweryServiceImplTest {
     @InjectMocks
     BreweryServiceImpl service;
 
+    private Page<Brewery> breweryPage;
+    private List<Long> ids;
+    private List<Beer> listOfBearsBaseOnIDs;
+    private List<Brewery> breweryList;
+    private Brewery singleSavedBrewery;
+    private Brewery singleBreweryBeforeSave;
+
     private final static Long ID = 1L;
+
+    @BeforeEach
+    void setUp() {
+        this.breweryPage = getBreweryPage();
+        this.ids = List.of(ID);
+        this.listOfBearsBaseOnIDs = getListOfBeers();
+        this.breweryList = getBreweryList();
+        this.singleSavedBrewery = getSingleSavedBrewery();
+        this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
+    }
 
     @Test
     @DisplayName("Verify if find all for pageable method is called during getting page of breweries")
     void verify_if_find_all_for_pageable_method_is_called() {
         //given
-        Page<Brewery> breweryPage = getBreweryPage();
-        List<Long> ids = List.of(ID);
-        List<Beer> listOfBearsBaseOnIDs = getListOfBearsBaseOnIDs();
         when(breweryRepository.findAll(pageable)).thenReturn(breweryPage);
         when(beerRepository.findBeersByListOfBreweriesId(ids)).thenReturn(listOfBearsBaseOnIDs);
 
@@ -74,9 +89,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if findAll for list method is called during getting list of breweries")
     void verify_if_find_all_for_list_method_is_called() {
         //given
-        List<Brewery> breweryList = getBreweryList();
-        List<Beer> listOfBearsBaseOnIDs = getListOfBearsBaseOnIDs();
-        List<Long> ids = List.of(ID);
         when(breweryRepository.findAll()).thenReturn(breweryList);
         when(beerRepository.findBeersByListOfBreweriesId(ids)).thenReturn(listOfBearsBaseOnIDs);
 
@@ -91,7 +103,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if findById method is called during getting single brewery by id")
     void verify_get_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
         //when
@@ -105,8 +116,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if save method is called during brewery creation")
     void verify_create_new_brewery() {
         //given
-        Brewery singleBreweryBeforeSave = getSingleBreweryBeforeSave();
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.save(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
 
         //when
@@ -120,7 +129,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify update brewery by brewery id when brewery id does not exists")
     void verify_update_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
         //when
@@ -145,7 +153,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if delete method is called during brewery deletion")
     void verify_delete_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
         //when
@@ -175,7 +182,6 @@ class BreweryServiceImplTest {
     @DisplayName("Verify get brewery image from db base on brewery id")
     void verify_get_brewery_image_from_db_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
         //when
@@ -188,7 +194,6 @@ class BreweryServiceImplTest {
     @Test
     void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws ElementNotFoundException, IOException, InvalidImageParameters {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         byte[] byteArray = new byte[10];
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(imageUpload.validateFile(file)).thenReturn(true);
@@ -225,7 +230,6 @@ class BreweryServiceImplTest {
 
     private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() throws ElementNotFoundException, InvalidImageParameters, IOException {
         //given
-        Brewery singleSavedBrewery = getSingleSavedBrewery();
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(imageUpload.validateFile(file)).thenReturn(false);
 
