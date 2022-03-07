@@ -40,7 +40,7 @@ public class BeerController {
     //get methods
 
     @GetMapping("beer")
-    @PreAuthorize("hasAuthority('user:read')")
+    @PreAuthorize("hasAnyAuthority('user:read','admin:read')")
     public ResponseEntity<Page<BeerDTO>> findAllBeersPage(Pageable pageable) {
         Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
         Page<BeerDTO> resultListOfBeersDTO = resultListOfBeers.map(beer -> mapper.map(beer, BeerDTO.class));

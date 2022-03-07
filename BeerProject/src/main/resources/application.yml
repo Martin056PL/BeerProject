@@ -8,7 +8,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 server:
   port: 8085
 

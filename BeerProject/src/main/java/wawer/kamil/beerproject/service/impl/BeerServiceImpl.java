@@ -2,6 +2,9 @@ package wawer.kamil.beerproject.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,16 +39,19 @@ public class BeerServiceImpl implements BeerService {
     //get beers
 
     @Override
+    @Cacheable(cacheNames = "beerCache", key = "#pageable")
     public Page<Beer> findAllBeersPage(Pageable pageable) {
         return beerRepository.findAll(pageable);
     }
 
     @Override
+    @Cacheable(cacheNames = "beerCache")
     public List<Beer> findAllBeersList() {
         return beerRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames = "beerCache", key = "#beerId") //dziala
     public Beer findBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             return beerRepository.findBeerByBeerId(beerId);
@@ -58,6 +64,7 @@ public class BeerServiceImpl implements BeerService {
     //get beers by breweryID
 
     @Override
+    @Cacheable(cacheNames = "breweryCache")
     public Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -69,6 +76,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Cacheable(cacheNames = "breweryCache", key = "#breweryId")
     public List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             Brewery brewery = breweryRepository.findByBreweryId(breweryId);
@@ -80,6 +88,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @Cacheable(cacheNames = "beerCache", key = "#beerId")
+    //error 500 wtedy
     public Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             if (beerRepository.existsBeerByBeerId(beerId)) {
@@ -98,11 +108,13 @@ public class BeerServiceImpl implements BeerService {
     //post beers
 
     @Override
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer addNewBeerToRepository(Beer beer) {
         return beerRepository.save(beer);
     }
 
     @Override
+    @CachePut(cacheNames = "breweryCache", key = "#result.beerId")//metoda dziala, dzila tak zapisany cache
     public Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException {
         return breweryRepository.findById(breweryID)
                 .map(brewery -> {
@@ -114,6 +126,7 @@ public class BeerServiceImpl implements BeerService {
     //put beers
 
     @Override
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beer.setBeerId(beerId);
@@ -124,6 +137,7 @@ public class BeerServiceImpl implements BeerService {
         }
     }
 
+    @CachePut(cacheNames = "beerCache", key = "#result.beerId")
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId)) {
             if (beerRepository.existsBeerByBeerId(beerId)) {
@@ -147,6 +161,7 @@ public class BeerServiceImpl implements BeerService {
     //delete beers
 
     @Override
+    @CacheEvict(cacheNames = "beerCache", allEntries = true)
     public void deleteBeerByBeerId(Long beerId) throws NoContentException {
         if (beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);
@@ -157,6 +172,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "beerCache", key = "#result.beerId", allEntries = true) // dziala, tylko np że beerid = 2
+    //usunie się nawet gdy podam breweryId=3. usunie się wtdy beerid =2 z breweryId =1;
     public void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException {
         if (breweryRepository.existsBreweryByBreweryId(breweryId) && beerRepository.existsBeerByBeerId(beerId)) {
             beerRepository.deleteById(beerId);

@@ -2,6 +2,9 @@ package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,16 +31,19 @@ public class BreweryServiceImpl implements BreweryService {
     private static final String THE_BREWERY_BASE_ON_ID_HAS_NOT_BEEN_FOUND = "The brewery base on id: {} has not been found";
 
     @Override
+    @Cacheable(cacheNames = "breweryCache")
     public Page<Brewery> getAllBreweryPage(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
+    @Cacheable(cacheNames = "breweryCache")
     public List<Brewery> getAllBreweryList() {
         return repository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames = "breweryCache", key = "#breweryId")
     public Brewery getBreweryByBreweryId(Long breweryId) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             return repository.findByBreweryId(breweryId);
@@ -48,11 +54,13 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
+    @CachePut(cacheNames = "breweryCache", key = "#result.breweryId")
     public Brewery createNewBrewery(Brewery brewery) {
         return repository.save(brewery);
     }
 
     @Override
+    @CachePut(cacheNames = "breweryCache", key = "#result.breweryId")
     public Brewery updateBreweryById(Long breweryId, Brewery brewery) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             brewery.setBreweryId(breweryId);
@@ -64,6 +72,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
+    @CacheEvict(value = "breweryCache", allEntries = true)
     public void deleteBreweryByBreweryId(Long breweryId) throws NoContentException {
         if (repository.existsBreweryByBreweryId(breweryId)) {
             repository.deleteById(breweryId);
