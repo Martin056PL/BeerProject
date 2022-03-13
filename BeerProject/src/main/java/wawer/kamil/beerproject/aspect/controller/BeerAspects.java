@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import wawer.kamil.beerproject.dto.BeerDTO;
 import wawer.kamil.beerproject.dto.request.BeerRequest;
 
 @Aspect
