@@ -44,7 +44,7 @@ public class UserControllerAspects {
                 , userRequest.getGrantedAuthorities());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.deleteUser(..)) && args(id)")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.deleteUserPermanently(..)) && args(id)")
     public void logDeleteUserById(long id) {
         log.debug("Endpoint address: 'user/{id}' with DELETE method, request parameter - id: {}", id);
     }

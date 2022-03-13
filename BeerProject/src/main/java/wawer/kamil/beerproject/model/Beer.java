@@ -9,12 +9,10 @@ import java.io.Serializable;
 
 @Entity
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "beer")
-@ToString
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;

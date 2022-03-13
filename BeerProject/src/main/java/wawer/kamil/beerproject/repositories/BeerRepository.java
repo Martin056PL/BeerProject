@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import wawer.kamil.beerproject.model.Beer;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BeerRepository extends JpaRepository<Beer, Long> {
@@ -25,7 +26,7 @@ public interface BeerRepository extends JpaRepository<Beer, Long> {
     List<Beer> findAllByBreweryId(Long breweryId);
 
     @Query("select be from Beer be join Brewery br on br.breweryId = be.brewery.breweryId where br.breweryId = ?1 and be.beerId = ?2")
-    Beer findBeerByBreweryAndBeerId(Long breweryId, Long beerId);
+    Optional<Beer> findBeerByBreweryAndBeerId(Long breweryId, Long beerId);
 
     @Query("select b.beerImage from Beer b where b.beerId = ?1")
     byte[] findBeerImageByBeerId(Long beerId);

@@ -16,7 +16,7 @@ public interface BreweryService {
 
     List<Brewery> getAllBreweryList();
 
-    Brewery getBreweryById(Long id) throws ElementNotFoundException;
+    Brewery findBreweryById(Long id) throws ElementNotFoundException;
 
     Brewery createNewBrewery(Brewery brewery);
 

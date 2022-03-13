@@ -1,4 +1,4 @@
-beer_id, brewery_id,name,style,extract,alcohol
+beer_id,brewery_id,name,style,extract,alcohol
 1,1,Plazowicz,European Fruit & Flavoured,12,4.7
 2,1,Jubilat,American India Pale Ale,12,4.4
 3,1,Sokowirowka,American India Pale Ale,13,5

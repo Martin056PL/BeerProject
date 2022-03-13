@@ -86,7 +86,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws ElementNotFoundException {
-        Beer fetchedBeer = Optional.ofNullable(beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId)).orElseThrow(ElementNotFoundException::new);
+        Beer fetchedBeer = beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId).orElseThrow(ElementNotFoundException::new);
         mapBeerProperties(fetchedBeer, updatedBeer);
         return fetchedBeer;
     }
@@ -94,13 +94,10 @@ public class BeerServiceImpl implements BeerService {
     //delete beers
 
     @Override
+    @Transactional
     public void deleteBeerById(Long id) throws ElementNotFoundException {
-        try {
-            beerRepository.deleteById(id);
-        } catch (IllegalArgumentException ex) {
-            log.debug("The beer base on id: {} has not been found", id);
-            throw new ElementNotFoundException();
-        }
+        Beer fetchedBeer = beerRepository.findById(id).orElseThrow(ElementNotFoundException::new);
+        beerRepository.delete(fetchedBeer);
     }
 
     @Override

@@ -118,7 +118,7 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on SINGLE brewery id")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        when(service.getBreweryById(ID)).thenReturn(singleSavedBrewery);
+        when(service.findBreweryById(ID)).thenReturn(singleSavedBrewery);
         when(mapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(singleBreweryResponse);
 
         //when
@@ -136,7 +136,7 @@ class BreweryControllerTest {
     }
 
     private void callGetBreweryByIdWithException() throws ElementNotFoundException {
-        when(service.getBreweryById(ID)).thenThrow(ElementNotFoundException.class);
+        when(service.findBreweryById(ID)).thenThrow(ElementNotFoundException.class);
         controller.getBreweryById(ID);
     }
 

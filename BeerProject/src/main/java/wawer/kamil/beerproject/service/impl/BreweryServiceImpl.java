@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,8 +49,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
 
-    @Override
-    public Brewery getBreweryById(Long id) throws ElementNotFoundException {
+    public Brewery findBreweryById(Long id) throws ElementNotFoundException {
         return breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
     }
 
@@ -84,7 +84,7 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     @Transactional
     public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
-        Brewery brewery = getBreweryById(breweryId);
+        Brewery brewery = findBreweryById(breweryId);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             brewery.setBreweryImage(imageAsByteArray);
@@ -95,7 +95,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws ElementNotFoundException {
-        Brewery brewery = getBreweryById(breweryId);
+        Brewery brewery = findBreweryById(breweryId);
         return brewery.getBreweryImage();
     }
 }

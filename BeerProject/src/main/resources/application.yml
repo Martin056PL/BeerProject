@@ -2,12 +2,8 @@ spring:
   profiles:
     active: production
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
   servlet:
     multipart:
       max-file-size: 6MB

@@ -52,7 +52,7 @@ public class BreweryController {
 
     @GetMapping("{id}")
     public ResponseEntity<BreweryResponse> getBreweryById(@PathVariable Long id) throws ElementNotFoundException {
-        BreweryResponse breweryResponse = breweryMapper.mapBreweryToBreweryResponse(service.getBreweryById(id));
+        BreweryResponse breweryResponse = breweryMapper.mapBreweryToBreweryResponse(service.findBreweryById(id));
         return ok().body(breweryResponse);
     }
 

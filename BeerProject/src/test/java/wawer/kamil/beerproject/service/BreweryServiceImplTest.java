@@ -25,8 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static wawer.kamil.beerproject.controllers.BeerTestHelper.getListOfBeers;
 import static wawer.kamil.beerproject.controllers.BreweryTestHelper.*;
 
@@ -70,6 +69,10 @@ class BreweryServiceImplTest {
         this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
     }
 
+    //
+    // TODO Rename tests
+    //
+
     @Test
     @DisplayName("Verify if find all for pageable method is called during getting page of breweries")
     void verify_if_find_all_for_pageable_method_is_called() {
@@ -106,7 +109,7 @@ class BreweryServiceImplTest {
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
         //when
-        service.getBreweryById(ID);
+        service.findBreweryById(ID);
 
         //then
         verify(breweryRepository).findById(ID);
@@ -153,7 +156,7 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if delete method is called during brewery deletion")
     void verify_delete_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
-        when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
+        when(breweryRepository.findById(ID)).thenReturn(Optional.ofNullable(singleSavedBrewery));
 
         //when
         service.deleteBreweryById(ID);
