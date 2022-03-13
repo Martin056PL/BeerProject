@@ -74,8 +74,8 @@ class BreweryServiceImplTest {
     //
 
     @Test
-    @DisplayName("Verify if find all for pageable method is called during getting page of breweries")
-    void verify_if_find_all_for_pageable_method_is_called() {
+    @DisplayName("Verify if find all with beers for pageable method is called during getting page of breweries")
+    void verify_if_find_all_with_beers_for_pageable_method_is_called() {
         //given
         when(breweryRepository.findAll(pageable)).thenReturn(breweryPage);
         when(beerRepository.findBeersByListOfBreweriesId(ids)).thenReturn(listOfBearsBaseOnIDs);
@@ -89,8 +89,8 @@ class BreweryServiceImplTest {
     }
 
     @Test
-    @DisplayName("Verify if findAll for list method is called during getting list of breweries")
-    void verify_if_find_all_for_list_method_is_called() {
+    @DisplayName("Verify if findAll with beers for list method is called during getting list of breweries")
+    void verify_if_find_all_with_beers_for_list_method_is_called() {
         //given
         when(breweryRepository.findAll()).thenReturn(breweryList);
         when(beerRepository.findBeersByListOfBreweriesId(ids)).thenReturn(listOfBearsBaseOnIDs);
@@ -195,6 +195,7 @@ class BreweryServiceImplTest {
     }
 
     @Test
+    @DisplayName("Verify set brewery image to proper brewery base on brewery id")
     void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws ElementNotFoundException, IOException, InvalidImageParameters {
         //given
         byte[] byteArray = new byte[10];

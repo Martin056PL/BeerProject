@@ -53,12 +53,12 @@ class BeerControllerTest {
     BeerController beerController;
 
     private Page<Beer> beerPage;
-    private Page<BeerResponse> beerResponsesPage;               //
-    private List<Beer> listOfBeersBaseOnIDs;                   //
-    private List<BeerResponse> listOfBeersResponses;            //   TODO zrobić update dla adnotacji @DisplayName
-    private Beer beer;                                          //
-    private BeerResponse beerResponse;                          //
-    private BeerRequest beerRequest;                            //
+    private Page<BeerResponse> beerResponsesPage;
+    private List<Beer> listOfBeersBaseOnIDs;
+    private List<BeerResponse> listOfBeersResponses;
+    private Beer beer;
+    private BeerResponse beerResponse;
+    private BeerRequest beerRequest;
 
     private static final Long beerID = 1L;
     private static final Long breweryID = 1L;
@@ -77,8 +77,8 @@ class BeerControllerTest {
     //get
 
     @Test
-    @DisplayName("Should return status ok when controller returns some beers page")
-    void should_return_status_ok_when_controller_returns_some_beer_page() {
+    @DisplayName("Should return status ok with response body when controller returns beers page")
+    void should_return_status_ok_with_response_body_when_controller_returns_beer_page() {
         // given
         when(service.findAllBeersPage(pageable)).thenReturn(beerPage);
         when(beerMapper.mapBeerEntityPageToBeerResponsePage(beerPage)).thenReturn(beerResponsesPage);
@@ -92,8 +92,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should return status ok when controller returns some beers list")
-    void should_return_status_ok_when_controller_returns_some_beer_list() {
+    @DisplayName("Should return status ok with response body when controller returns some beers list")
+    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_list() {
         //given
         when(service.findAllBeersList()).thenReturn(listOfBeersBaseOnIDs);
         when(beerMapper.mapListOfBeerEntityToListBeerResponse(listOfBeersBaseOnIDs)).thenReturn(listOfBeersResponses);
@@ -107,8 +107,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should return status ok when controller returns some beer page base on brewery id")
-    void should_return_status_ok_when_controller_returns_some_beer_page_base_on_brewery_id() throws ElementNotFoundException {
+    @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
+    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() throws ElementNotFoundException {
         //given
         when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(beerPage);
         when(beerMapper.mapBeerEntityPageToBeerResponsePage(beerPage)).thenReturn(beerResponsesPage);
@@ -125,10 +125,10 @@ class BeerControllerTest {
     @DisplayName("Should throw exception when there is no beer base on beer id")
     void should_throw_exception_when_there_is_no_beers_page_base_on_brewery_id() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callGetBeersPageByBreweryIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdPageWithException);
     }
 
-    private void callGetBeersPageByBreweryIdWithException() throws ElementNotFoundException {
+    private void callFindAllBeersByBreweryIdPageWithException() throws ElementNotFoundException {
         //given
         when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenThrow(ElementNotFoundException.class);
 
@@ -137,8 +137,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should return status ok when controller returns some beer page base on brewery id")
-    void should_return_status_ok_when_controller_returns_some_beer_list_base_on_brewery_id() throws ElementNotFoundException {
+    @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
+    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_list_base_on_brewery_id() throws ElementNotFoundException {
         //given
         when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(listOfBeersBaseOnIDs);
         when(beerMapper.mapListOfBeerEntityToListBeerResponse(listOfBeersBaseOnIDs)).thenReturn(listOfBeersResponses);
@@ -152,13 +152,13 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_throw_exception_when_there_is_no_beers_list_base_on_brewery_id() {
+    @DisplayName("Should throw exception when there is no brewery id during finding all beers base on brewery id")
+    void should_throw_exception_when_there_is_no_brewery_id_during_finding_all_beers_base_on_brewery_id() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callGetBeerListByBreweryIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdListWithException);
     }
 
-    private void callGetBeerListByBreweryIdWithException() throws ElementNotFoundException {
+    private void callFindAllBeersByBreweryIdListWithException() throws ElementNotFoundException {
         //given
         when(service.findAllBeersByBreweryIdList(breweryID)).thenThrow(ElementNotFoundException.class);
 
@@ -167,8 +167,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should return ")
-    void should() throws ElementNotFoundException {
+    @DisplayName("Should return status ok with response body when controller returns some single beer base on beer id")
+    void should_return_status_ok_with_response_body_when_controller_returns_some_single_beer_base_on_beer_id() throws ElementNotFoundException {
         //given
         when(service.findBeerById(breweryID)).thenReturn(beer);
         when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
@@ -185,10 +185,10 @@ class BeerControllerTest {
     @DisplayName("Should throw exception when there is no beer base on beer id")
     void should_throw_exception_when_there_is_no_beer_base_on_beer_id() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callGetBeerByIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callFindProperBeerByBeerIdWithException);
     }
 
-    private void callGetBeerByIdWithException() throws ElementNotFoundException {
+    private void callFindProperBeerByBeerIdWithException() throws ElementNotFoundException {
         //given
         when(service.findBeerById(beerID)).thenThrow(ElementNotFoundException.class);
 
@@ -200,8 +200,8 @@ class BeerControllerTest {
     //post
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_return_response_body_equal_to_controller_response_with_just_created_beer_base_on_request_body_beer() throws URISyntaxException, ElementNotFoundException {
+    @DisplayName("Should return status created with response body when controller returns just created beer")
+    void should_return_status_created_with_response_body_when_controller_returns_just_created_beer() throws URISyntaxException, ElementNotFoundException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer)).thenReturn(beer);
@@ -216,13 +216,13 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_creating_beer() {
+    @DisplayName("Should throw exception when there is no brewery base on brewery id during adding new beer")
+    void should_throw_exception_when_there_is_no_brewery_base_on_brewery_id_during_adding_new_beer() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callCreateBeerWithBreweryIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callAddBeerToBreweryByBreweryIdWithException);
     }
 
-    private void callCreateBeerWithBreweryIdWithException() throws ElementNotFoundException, URISyntaxException {
+    private void callAddBeerToBreweryByBreweryIdWithException() throws ElementNotFoundException, URISyntaxException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.addNewBeerAssignedToBreweryByBreweryId(beerID, beer)).thenThrow(ElementNotFoundException.class);
@@ -234,7 +234,8 @@ class BeerControllerTest {
     //put
 
     @Test
-    void should_return_response_body_equal_to_controller_response_with_just_updated_beer_base_on_request_body_beer_and_beer_id() throws ElementNotFoundException {
+    @DisplayName("Should return status ok with response body when controller returns just updated beer base on beer id and new version of beer")
+    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_beer_id_and_new_version_of_beer() throws ElementNotFoundException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.updateBeerByBeerId(beerID, beer)).thenReturn(beer);
@@ -249,13 +250,13 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_creating_beer123() {
+    @DisplayName("Should throw exception when there is no beer base on beer id when updating beer")
+    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_updating_beer() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callUpdateBeerWithBeerIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callUpdateBeerBeerIdWithException);
     }
 
-    private void callUpdateBeerWithBeerIdWithException() throws ElementNotFoundException {
+    private void callUpdateBeerBeerIdWithException() throws ElementNotFoundException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.updateBeerByBeerId(beerID, beer)).thenThrow(ElementNotFoundException.class);
@@ -265,7 +266,8 @@ class BeerControllerTest {
     }
 
     @Test
-    void should_return_response_body_equal_to_controller_response_with_just_updated_beer_base_on_request_body_beer_and_beer_idsdfsdfdsf() throws ElementNotFoundException {
+    @DisplayName("should return status ok with response body when controller returns just updated beer base on existing brewery id and beer id")
+    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_existing_brewery_id_and_beer_id() throws ElementNotFoundException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer)).thenReturn(beer);
@@ -280,13 +282,13 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_creating_beerddd() {
+    @DisplayName("Should throw exception when there is no beer or brewery base on ids when updating beer")
+    void should_throw_exception_when_there_is_no_beer_or_brewery_base_on_ids_when_updating_beer() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callUpdateBeerWithBeerIdWithException123);
+        assertThrows(ElementNotFoundException.class, this::callUpdateBeerBaseOnBreweryIdAndBeerId);
     }
 
-    private void callUpdateBeerWithBeerIdWithException123() throws ElementNotFoundException {
+    private void callUpdateBeerBaseOnBreweryIdAndBeerId() throws ElementNotFoundException {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer)).thenThrow(ElementNotFoundException.class);
@@ -298,19 +300,19 @@ class BeerControllerTest {
     //delete
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_return_status_no_content_when_controller_successfully_delete_beer_base_on_beer_id() throws ElementNotFoundException {
+    @DisplayName("Should return status no content when deleting beer base on beer id")
+    void Should_return_status_no_content_when_deleting_beer_base_on_beer_id() throws ElementNotFoundException {
         assertEquals(ResponseEntity.noContent().build(), beerController.deleteBeerByBeerId(beerID));
     }
 
     @Test
-    @DisplayName("")
-    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_creating_beer1() {
+    @DisplayName("Should throw exception when there is no beer base on beer id when deleting beer")
+    void should_throw_exception_when_there_is_no_beer_base_on_beer_id_when_deleting_beer() {
         //then
-        assertThrows(ElementNotFoundException.class, this::callDeleteBeerWithBeerIdWithException);
+        assertThrows(ElementNotFoundException.class, this::callDeleteBeerByBeerIdIdWithException);
     }
 
-    private void callDeleteBeerWithBeerIdWithException() throws ElementNotFoundException {
+    private void callDeleteBeerByBeerIdIdWithException() throws ElementNotFoundException {
         //given
         doThrow(new ElementNotFoundException()).when(service).deleteBeerById(beerID);
 
@@ -319,8 +321,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_return_status_ok_when_controller_successfully_add_image_for_brewery() throws IOException, ElementNotFoundException, InvalidImageParameters {
+    @DisplayName("Should return status ok and response message when controller successfully add image for brewery")
+    void should_return_status_ok_and_response_message_when_controller_successfully_add_image_for_brewery() throws IOException, ElementNotFoundException, InvalidImageParameters {
         //given
         ResponseEntity<String> file_is_uploaded_successfully = ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully");
 
@@ -332,8 +334,8 @@ class BeerControllerTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when there is no beer base on beer id")
-    void should_return_status_ok_when_controller_successfully_download_image_for_brewery() throws ElementNotFoundException {
+    @DisplayName("Should return status ok when controller successfully getting image for beer")
+    void should_return_status_ok_when_controller_successfully_getting_image_for_beer() throws ElementNotFoundException {
         //given
         when(service.getBeerImageBaseOnBeerId(beerID)).thenReturn(newArrayForBeerImage());
         HttpHeaders headers = new HttpHeaders();

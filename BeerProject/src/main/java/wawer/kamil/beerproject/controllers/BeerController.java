@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.request.BeerRequest;
@@ -39,7 +40,7 @@ public class BeerController {
     //get methods
 
     @GetMapping("beers")
- //   @PreAuthorize("hasAuthority('user:read')")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<Page<BeerResponse>> findAllBeersPage(Pageable pageable) {
         Page<Beer> resultListOfBeers = service.findAllBeersPage(pageable);
         Page<BeerResponse> resultListOfBeersResponse = beerMapper.mapBeerEntityPageToBeerResponsePage(resultListOfBeers);
