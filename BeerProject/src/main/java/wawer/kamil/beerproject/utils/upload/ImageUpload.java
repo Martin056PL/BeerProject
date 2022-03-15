@@ -12,9 +12,6 @@ import java.util.Arrays;
 @Slf4j(topic = "application.logger")
 public class ImageUpload {
 
-    @Value("${image.path}")
-    private String path;
-
     @Value("${image.requirements.standard-type}")
     private String standardType;
 
@@ -32,20 +29,18 @@ public class ImageUpload {
     }
 
     public boolean validateFile(MultipartFile file) {
-        String type = file.getContentType();
-        long size = file.getSize();
-        boolean fileTypeResult = validateFileType(type);
-        boolean fileSizeResult = validateFileSize(size);
-        boolean result = fileTypeResult && fileSizeResult;
-        log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", fileTypeResult, fileSizeResult, result);
+        boolean result = isFileTypeValid(file) && isFileSizeValid(file);
+        log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", isFileTypeValid(file), isFileSizeValid(file), result);
         return result;
     }
 
-    private boolean validateFileType(String type) {
+    private boolean isFileTypeValid(MultipartFile file){
+        String type = file.getContentType();
         return Arrays.asList(standardType.split(",")).contains(type);
     }
 
-    private boolean validateFileSize(long size) {
+    private boolean isFileSizeValid(MultipartFile file) {
+        long size = file.getSize();
         return size <= fileSize;
     }
 }

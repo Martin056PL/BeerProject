@@ -21,7 +21,7 @@
         <sonar.jdbc.password>user</sonar.jdbc.password>
         <sonar.exclusions>
             **/aspect/**/*.java,
-            **/configuration/*.java,
+            **/configuration/**/*.java,
             **/dto/**/*.java,
             **/exceptions/**/*.java,
             **/generators/*.java

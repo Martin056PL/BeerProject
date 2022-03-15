@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static wawer.kamil.beerproject.controllers.BeerTestHelper.*;
+import static wawer.kamil.beerproject.helpers.BeerTestHelper.*;
 
 
 @ExtendWith(MockitoExtension.class)

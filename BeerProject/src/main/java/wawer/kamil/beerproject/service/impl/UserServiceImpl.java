@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         if (isUsernameExistInDatabase(userRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
-        User user = userMapper.mapUserRequestToUserEntityAsDefaultMethod(userRequest);
+        User user = userMapper.mapUserRequestToUserEntity(userRequest);
         User savedUser = userRepository.save(user);
         return userMapper.mapUserEntityToUserResponse(savedUser);
     }
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional
     public UserResponse updateUser(Long userId, UserRequest userRequest) throws ElementNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
-        userMapper.mapUserRequestToUserEntityForUpdateMethod(userRequest, user);
+        userMapper.mapUserRequestToUserEntity(userRequest, user);
         return userMapper.mapUserEntityToUserResponse(user);
     }
 

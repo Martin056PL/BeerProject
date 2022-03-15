@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.controllers;
+package wawer.kamil.beerproject.helpers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,7 +12,7 @@ import java.util.List;
 public class BreweryTestHelper {
 
     public static Page<Brewery> getBreweryPage() {
-        return new PageImpl<>(List.of(getSingleSavedBrewery()));
+        return new PageImpl<>(List.of(getSingleBrewery()));
     }
 
     public static Page<BreweryResponse> getBreweryResponsePage() {
@@ -20,7 +20,7 @@ public class BreweryTestHelper {
     }
 
     public static List<Brewery> getBreweryList() {
-        return List.of(getSingleSavedBrewery());
+        return List.of(getSingleBrewery());
     }
 
     public static List<BreweryResponse> getBreweryResponseList() {
@@ -63,7 +63,7 @@ public class BreweryTestHelper {
                 .build();
     }
 
-    public static Brewery getSingleSavedBrewery() {
+    public static Brewery getSingleBrewery() {
         return Brewery.builder()
                 .breweryId(1L)
                 .name("Testowy")

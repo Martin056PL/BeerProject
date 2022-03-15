@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.ResponseEntity.*;
-import static wawer.kamil.beerproject.controllers.BreweryTestHelper.*;
+import static wawer.kamil.beerproject.helpers.BreweryTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class BreweryControllerTest {
@@ -77,7 +77,7 @@ class BreweryControllerTest {
         this.breweryRequest = getSingleBreweryRequest();
         this.updatedSingleBreweryRequest = getUpdatedSingleBreweryRequest();
         this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
-        this.singleSavedBrewery = getSingleSavedBrewery();
+        this.singleSavedBrewery = getSingleBrewery();
         this.updatedSingleBreweryBeforeSave = getUpdatedSingleBreweryBeforeSave();
         this.updatedSingleBreweryAfterSave = getUpdatedSingleBreweryAfterSave();
         this.updatedSingleBreweryResponseAfterSave = getUpdatedSingleBreweryResponseAfterSave();

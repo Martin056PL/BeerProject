@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.controllers;
+package wawer.kamil.beerproject.helpers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -8,7 +8,7 @@ import wawer.kamil.beerproject.model.Beer;
 
 import java.util.List;
 
-import static wawer.kamil.beerproject.controllers.BreweryTestHelper.getSingleSavedBrewery;
+import static wawer.kamil.beerproject.helpers.BreweryTestHelper.getSingleBrewery;
 
 public class BeerTestHelper {
 
@@ -31,7 +31,7 @@ public class BeerTestHelper {
     public static Beer getBeer() {
         return Beer.builder()
                 .beerId(1L)
-                .brewery(getSingleSavedBrewery())
+                .brewery(getSingleBrewery())
                 .name("Testowe Piwo")
                 .style("Testoy styl")
                 .alcohol(5.6)
@@ -42,7 +42,7 @@ public class BeerTestHelper {
     public static Beer getUpdatedBeer() {
         return Beer.builder()
                 .beerId(1L)
-                .brewery(getSingleSavedBrewery())
+                .brewery(getSingleBrewery())
                 .name("Nowe piwo testowe")
                 .style("Nowy testowy styl")
                 .alcohol(7.0)

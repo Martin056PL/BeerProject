@@ -45,40 +45,4 @@ public class SpringAppConfig {
         });
         return modelMapper;
     }
-
-    @Bean(name = "BreweryMapper")
-    public ModelMapper getBreweryModelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<Brewery, Brewery>() {
-            @Override
-            protected void configure() {
-                map().setBreweryId(source.getBreweryId());
-                map().setName(source.getName());
-                map().setEmail(source.getEmail());
-                map().setPhoneNumber(source.getPhoneNumber());
-                map().setAddress(source.getAddress());
-                map().setWebsite(source.getWebsite());
-                map().setBeerList(source.getBeerList());
-                map().setBreweryImage(source.getBreweryImage());
-            }
-        });
-        return modelMapper;
-    }
-
-    @Bean(name = "BeerMapper")
-    public ModelMapper getBeerModelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<Beer, Beer>() {
-            @Override
-            protected void configure() {
-                map().setBeerId(source.getBeerId());
-                map().setName(source.getName());
-                map().setAlcohol(source.getAlcohol());
-                map().setExtract(source.getExtract());
-                map().setBrewery(source.getBrewery());
-                map().setBeerImage(source.getBeerImage());
-            }
-        });
-        return modelMapper;
-    }
 }

@@ -26,8 +26,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static wawer.kamil.beerproject.controllers.BeerTestHelper.getListOfBeers;
-import static wawer.kamil.beerproject.controllers.BreweryTestHelper.*;
+import static wawer.kamil.beerproject.helpers.BeerTestHelper.getListOfBeers;
+import static wawer.kamil.beerproject.helpers.BreweryTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class BreweryServiceImplTest {
@@ -65,7 +65,7 @@ class BreweryServiceImplTest {
         this.ids = List.of(ID);
         this.listOfBearsBaseOnIDs = getListOfBeers();
         this.breweryList = getBreweryList();
-        this.singleSavedBrewery = getSingleSavedBrewery();
+        this.singleSavedBrewery = getSingleBrewery();
         this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
     }
 

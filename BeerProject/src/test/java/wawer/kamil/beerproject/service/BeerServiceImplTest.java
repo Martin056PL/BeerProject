@@ -25,8 +25,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static wawer.kamil.beerproject.controllers.BeerTestHelper.*;
-import static wawer.kamil.beerproject.controllers.BreweryTestHelper.getSingleBreweryBeforeSave;
+import static wawer.kamil.beerproject.helpers.BeerTestHelper.*;
+import static wawer.kamil.beerproject.helpers.BreweryTestHelper.getSingleBreweryBeforeSave;
 
 @ExtendWith(MockitoExtension.class)
 class BeerServiceImplTest {
@@ -66,10 +66,6 @@ class BeerServiceImplTest {
         this.beerList = getListOfBeers();
         this.brewery = getSingleBreweryBeforeSave();
     }
-
-    //
-    // TODO It is needed to rename all tests
-    //
 
     @Test
     @DisplayName("Verify if find all with pageable method is called during beers getting")

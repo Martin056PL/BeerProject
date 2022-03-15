@@ -24,7 +24,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-import static wawer.kamil.beerproject.controllers.UserControllerTestHelper.*;
+import static wawer.kamil.beerproject.helpers.UserTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
@@ -48,10 +48,10 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         this.userResponse = createUserResponse();
-        this.userResponsePage = createPage();
-        this.userResponseList = createListOfUsers();
+        this.userResponsePage = createUserResponsePage();
+        this.userResponseList = createListOfUsersResponse();
         this.pageable = createPageable(PAGE_PAGE, PAGE_SIZE);
-        this.userRequest = createUserRequest();
+        this.userRequest = getUserRequest();
     }
 
     @Test
