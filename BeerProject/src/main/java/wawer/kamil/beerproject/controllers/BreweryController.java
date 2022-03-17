@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
-@RequestMapping("brewery")
+@RequestMapping("breweries")
 @RequiredArgsConstructor
 @Slf4j(topic = "application.logger")
 public class BreweryController {
@@ -34,14 +34,12 @@ public class BreweryController {
     @GetMapping
     public ResponseEntity<Page<BreweryResponse>> getAllBreweryPage(Pageable pageable) {
         Page<BreweryResponse> listOfBrewery = service.getAllBreweryPage(pageable);
-        log.debug("List of returned Id: {}", listOfBrewery.stream().map(BreweryResponse::getId).collect(Collectors.toList()));
         return ok().body(listOfBrewery);
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<BreweryResponse>> getAllBreweryList() {
         List<BreweryResponse> listOfBrewery = service.getAllBreweryList();
-        log.debug("List of returned Id: {}", listOfBrewery.stream().map(BreweryResponse::getId).collect(Collectors.toList()));
         return ok().body(listOfBrewery);
     }
 
@@ -54,34 +52,31 @@ public class BreweryController {
     @PostMapping
     public ResponseEntity<BreweryResponse> addNewBrewery(@RequestBody BreweryRequest breweryRequest) throws URISyntaxException {
         BreweryResponse savedBrewery = service.createNewBrewery(breweryRequest);
-        log.debug("Add new brewery with Id: {}", savedBrewery.getId());
         return created(new URI("add-beer/" + savedBrewery.getId())).body(savedBrewery);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<BreweryResponse> updateBrewery(@PathVariable Long id, @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
+    @PutMapping()
+    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
         BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
-        log.debug("Updated brewery with Id: {}", updatedBrewery.getId());
         return ok().body(updatedBrewery);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Object> deleteBrewery(@PathVariable Long id) throws ElementNotFoundException {
+    @DeleteMapping()
+    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id) throws ElementNotFoundException {
         service.deleteBreweryById(id);
-        log.debug("Deleted brewery with Id: {}", id);
         return noContent().build();
     }
 
-    @GetMapping(value = "{id}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> downloadImage(@PathVariable Long id) throws ElementNotFoundException {
+    @GetMapping(value = "/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id) throws ElementNotFoundException {
         byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return ok().headers(headers).body(image);
     }
 
-    @PostMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadImage(@PathVariable Long id, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(id, file);
         return ok().body("File is uploaded successfully");
     }

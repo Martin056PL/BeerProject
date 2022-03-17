@@ -45,7 +45,6 @@ public class BeerServiceImpl implements BeerService {
         List<BeerResponse> collectAllBeersPages = beerRepository.findAll(pageable).stream()
                 .map(beerMapper::mapBeerToBeerResponse)
                 .collect(Collectors.toList());
-        log.debug("List of returned Id: {}", collectAllBeersPages.stream().map(BeerResponse::getId).collect(Collectors.toList()));
         return new PageImpl<>(collectAllBeersPages);
     }
 
@@ -68,7 +67,6 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException {
         Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
-        // TODO move to aspects -> log.debug("List of returned beerId: {}", listOfBeers.stream().map(BeerResponse::getId).collect(Collectors.toList()));
         return beerRepository.findAllByBreweryId(fetchedBrewery.getBreweryId(), pageable)
                 .map(beerMapper::mapBeerToBeerResponse);
     }
@@ -76,7 +74,6 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
-        // TODO move to aspects -> log.debug("List of returned beerId: {}", resultListOfBeers.stream().map(BeerResponse::getId).collect(Collectors.toList()));
         return beerRepository.findAllByBreweryId(brewery.getBreweryId())
                 .stream()
                 .map(beerMapper::mapBeerToBeerResponse)

@@ -10,7 +10,7 @@ import wawer.kamil.beerproject.dto.request.BeerRequest;
 @Aspect
 @Component
 @Slf4j(topic = "application.logger")
-public class BeerAspects {
+public class BeerControllerAspects {
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersPage(..)) && args(pageable)")
     public void logFindAllBeersPage(Pageable pageable) {

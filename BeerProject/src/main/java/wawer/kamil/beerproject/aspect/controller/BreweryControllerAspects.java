@@ -11,7 +11,7 @@ import wawer.kamil.beerproject.dto.request.BreweryRequest;
 @Aspect
 @Component
 @Slf4j(topic = "application.logger")
-public class BreweryAspects {
+public class BreweryControllerAspects {
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.getAllBreweryPage(..)) && args(pageable)")
     public void logGetAllBreweryPage(Pageable pageable) {
