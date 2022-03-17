@@ -4,7 +4,7 @@ import lombok.*;
 import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Beer;
 
-import javax.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 @Builder
@@ -15,15 +15,15 @@ import java.util.List;
 @EqualsAndHashCode
 public class BreweryRequest {
 
-    @NotEmpty
+
     private String name;
-    @NotEmpty
+
     private String email;
-    @NotEmpty
+
     private Long phoneNumber;
-    @NotEmpty
+
     private Address address;
-    @NotEmpty
+
     private String website;
 
     private List<Beer> beerList;

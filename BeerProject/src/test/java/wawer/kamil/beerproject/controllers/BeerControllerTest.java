@@ -19,9 +19,7 @@ import wawer.kamil.beerproject.dto.request.BeerRequest;
 import wawer.kamil.beerproject.dto.response.BeerResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
-import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,19 +42,13 @@ class BeerControllerTest {
     Pageable pageable;
 
     @Mock
-    BeerMapper beerMapper;
-
-    @Mock
     MultipartFile multipartFile;
 
     @InjectMocks
     BeerController beerController;
 
-    private Page<Beer> beerPage;
     private Page<BeerResponse> beerResponsesPage;
-    private List<Beer> listOfBeersBaseOnIDs;
     private List<BeerResponse> listOfBeersResponses;
-    private Beer beer;
     private BeerResponse beerResponse;
     private BeerRequest beerRequest;
 
@@ -65,11 +57,8 @@ class BeerControllerTest {
 
     @BeforeEach
     void setUp() {
-        this.beerPage = getBeerPage();
         this.beerResponsesPage = getBeerResponsesPage();
-        this.listOfBeersBaseOnIDs = getListOfBeers();
         this.listOfBeersResponses = getListOfBeersResponses();
-        this.beer = getBeer();
         this.beerResponse = getBeerResponse();
         this.beerRequest = getBeerRequest();
     }
@@ -80,8 +69,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns beers page")
     void should_return_status_ok_with_response_body_when_controller_returns_beer_page() {
         // given
-        when(service.findAllBeersPage(pageable)).thenReturn(beerPage);
-        when(beerMapper.mapBeerEntityPageToBeerResponsePage(beerPage)).thenReturn(beerResponsesPage);
+        when(service.findAllBeersPage(pageable)).thenReturn(beerResponsesPage);
 
         //when
         ResponseEntity<Page<BeerResponse>> allBeersPage = beerController.findAllBeersPage(pageable);
@@ -95,8 +83,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns some beers list")
     void should_return_status_ok_with_response_body_when_controller_returns_some_beer_list() {
         //given
-        when(service.findAllBeersList()).thenReturn(listOfBeersBaseOnIDs);
-        when(beerMapper.mapListOfBeerEntityToListBeerResponse(listOfBeersBaseOnIDs)).thenReturn(listOfBeersResponses);
+        when(service.findAllBeersList()).thenReturn(listOfBeersResponses);
 
         //when
         ResponseEntity<List<BeerResponse>> allBeersList = beerController.findAllBeersList();
@@ -110,8 +97,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
     void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(beerPage);
-        when(beerMapper.mapBeerEntityPageToBeerResponsePage(beerPage)).thenReturn(beerResponsesPage);
+        when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(beerResponsesPage);
 
         //when
         ResponseEntity<Page<BeerResponse>> allBeersByBreweryIdPage = beerController.findAllBeersByBreweryIdPage(breweryID, pageable);
@@ -140,8 +126,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
     void should_return_status_ok_with_response_body_when_controller_returns_some_beer_list_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(listOfBeersBaseOnIDs);
-        when(beerMapper.mapListOfBeerEntityToListBeerResponse(listOfBeersBaseOnIDs)).thenReturn(listOfBeersResponses);
+        when(service.findAllBeersByBreweryIdList(breweryID)).thenReturn(listOfBeersResponses);
 
         //when
         ResponseEntity<List<BeerResponse>> allBeersByBreweryIdPage = beerController.findAllBeersByBreweryIdList(breweryID);
@@ -170,8 +155,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns some single beer base on beer id")
     void should_return_status_ok_with_response_body_when_controller_returns_some_single_beer_base_on_beer_id() throws ElementNotFoundException {
         //given
-        when(service.findBeerById(breweryID)).thenReturn(beer);
-        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+        when(service.findBeerById(breweryID)).thenReturn(beerResponse);
 
         //when
         ResponseEntity<BeerResponse> properBeerByBeerId = beerController.findProperBeerByBeerId(beerID);
@@ -203,9 +187,7 @@ class BeerControllerTest {
     @DisplayName("Should return status created with response body when controller returns just created beer")
     void should_return_status_created_with_response_body_when_controller_returns_just_created_beer() throws URISyntaxException, ElementNotFoundException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer)).thenReturn(beer);
-        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+        when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest)).thenReturn(beerResponse);
 
         //when
         ResponseEntity<BeerResponse> beerResponseResponseEntity = beerController.addBeerToBreweryByBreweryId(breweryID, beerRequest);
@@ -224,8 +206,7 @@ class BeerControllerTest {
 
     private void callAddBeerToBreweryByBreweryIdWithException() throws ElementNotFoundException, URISyntaxException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.addNewBeerAssignedToBreweryByBreweryId(beerID, beer)).thenThrow(ElementNotFoundException.class);
+        when(service.addNewBeerAssignedToBreweryByBreweryId(beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
         beerController.addBeerToBreweryByBreweryId(breweryID, beerRequest);
@@ -237,9 +218,7 @@ class BeerControllerTest {
     @DisplayName("Should return status ok with response body when controller returns just updated beer base on beer id and new version of beer")
     void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_beer_id_and_new_version_of_beer() throws ElementNotFoundException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.updateBeerByBeerId(beerID, beer)).thenReturn(beer);
-        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+        when(service.updateBeerByBeerId(beerID, beerRequest)).thenReturn(beerResponse);
 
         //when
         ResponseEntity<BeerResponse> beerResponseResponseEntity = beerController.updateBeerBeerId(beerID, beerRequest);
@@ -258,8 +237,7 @@ class BeerControllerTest {
 
     private void callUpdateBeerBeerIdWithException() throws ElementNotFoundException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.updateBeerByBeerId(beerID, beer)).thenThrow(ElementNotFoundException.class);
+        when(service.updateBeerByBeerId(beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
         beerController.updateBeerBeerId(breweryID, beerRequest);
@@ -269,9 +247,7 @@ class BeerControllerTest {
     @DisplayName("should return status ok with response body when controller returns just updated beer base on existing brewery id and beer id")
     void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_existing_brewery_id_and_beer_id() throws ElementNotFoundException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer)).thenReturn(beer);
-        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+        when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest)).thenReturn(beerResponse);
 
         //when
         ResponseEntity<BeerResponse> beerResponseResponseEntity = beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID, beerID, beerRequest);
@@ -290,8 +266,7 @@ class BeerControllerTest {
 
     private void callUpdateBeerBaseOnBreweryIdAndBeerId() throws ElementNotFoundException {
         //given
-        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
-        when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer)).thenThrow(ElementNotFoundException.class);
+        when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
         beerController.updateBeerBaseOnBreweryIdAndBeerId(breweryID, beerID, beerRequest);

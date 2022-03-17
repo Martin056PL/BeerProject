@@ -13,9 +13,7 @@ import wawer.kamil.beerproject.dto.request.BreweryRequest;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.service.BreweryService;
-import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,46 +30,43 @@ import static org.springframework.http.ResponseEntity.*;
 public class BreweryController {
 
     private final BreweryService service;
-    private final BreweryMapper breweryMapper;
 
     @GetMapping
     public ResponseEntity<Page<BreweryResponse>> getAllBreweryPage(Pageable pageable) {
-        Page<Brewery> listOfBrewery = service.getAllBreweryPage(pageable);
-        Page<BreweryResponse> mappedBrewery = breweryMapper.mapBreweryEntityPageToBreweryResponsePage(listOfBrewery);
-        log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ok().body(mappedBrewery);
+        Page<BreweryResponse> listOfBrewery = service.getAllBreweryPage(pageable);
+        log.debug("List of returned Id: {}", listOfBrewery.stream().map(BreweryResponse::getId).collect(Collectors.toList()));
+        return ok().body(listOfBrewery);
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<BreweryResponse>> getAllBreweryList() {
-        List<Brewery> listOfBrewery = service.getAllBreweryList();
-        List<BreweryResponse> listOfBreweriesResponse = breweryMapper.mapListOfBreweryEntityToListBreweryResponse(listOfBrewery);
-        log.debug("List of returned Id: {}", listOfBrewery.stream().map(Brewery::getBreweryId).collect(Collectors.toList()));
-        return ok().body(listOfBreweriesResponse);
+        List<BreweryResponse> listOfBrewery = service.getAllBreweryList();
+        log.debug("List of returned Id: {}", listOfBrewery.stream().map(BreweryResponse::getId).collect(Collectors.toList()));
+        return ok().body(listOfBrewery);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<BreweryResponse> getBreweryById(@PathVariable Long id) throws ElementNotFoundException {
-        BreweryResponse breweryResponse = breweryMapper.mapBreweryToBreweryResponse(service.findBreweryById(id));
+        BreweryResponse breweryResponse = service.findBreweryById(id);
         return ok().body(breweryResponse);
     }
 
     @PostMapping
     public ResponseEntity<BreweryResponse> addNewBrewery(@RequestBody BreweryRequest breweryRequest) throws URISyntaxException {
-        Brewery savedBrewery = service.createNewBrewery(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest));
-        log.debug("Add new brewery with Id: {}", savedBrewery.getBreweryId());
-        return created(new URI("add-beer/" + savedBrewery.getBreweryId())).body(breweryMapper.mapBreweryToBreweryResponse(savedBrewery));
+        BreweryResponse savedBrewery = service.createNewBrewery(breweryRequest);
+        log.debug("Add new brewery with Id: {}", savedBrewery.getId());
+        return created(new URI("add-beer/" + savedBrewery.getId())).body(savedBrewery);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<BreweryResponse> updateBrewery(@PathVariable Long id, @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
-        Brewery updatedBrewery = service.updateBreweryById(id, breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest));
-        log.debug("Updated brewery with Id: {}", updatedBrewery.getBreweryId());
-        return ok().body(breweryMapper.mapBreweryToBreweryResponse(updatedBrewery));
+        BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
+        log.debug("Updated brewery with Id: {}", updatedBrewery.getId());
+        return ok().body(updatedBrewery);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteBrewery(@PathVariable Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> deleteBrewery(@PathVariable Long id) throws ElementNotFoundException {
         service.deleteBreweryById(id);
         log.debug("Deleted brewery with Id: {}", id);
         return noContent().build();

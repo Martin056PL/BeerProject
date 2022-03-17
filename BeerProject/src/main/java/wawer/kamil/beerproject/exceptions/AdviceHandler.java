@@ -2,6 +2,7 @@ package wawer.kamil.beerproject.exceptions;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,16 +58,24 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RollbackException.class)
-    public ResponseEntity<Object> rollbackException(RollbackException e) {
-        exceptionFormat.setMessage(e.getLocalizedMessage());
+    public ResponseEntity<Object> rollbackException(RollbackException ex) {
+        exceptionFormat.setMessage(ex.getLocalizedMessage());
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException e) {
+    public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
         exceptionFormat.setMessage("Username is unavailable");
+        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<Object> invalidRequestParameter(PropertyReferenceException ex){
+        exceptionFormat.setMessage(String.format("Request Parameters are invalid: %s", ex.getMessage()));
         exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

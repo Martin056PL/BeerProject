@@ -3,6 +3,8 @@ package wawer.kamil.beerproject.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BreweryRequest;
+import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Brewery;
@@ -12,15 +14,15 @@ import java.util.List;
 
 public interface BreweryService {
 
-    Page<Brewery> getAllBreweryPage(Pageable pageable);
+    Page<BreweryResponse> getAllBreweryPage(Pageable pageable);
 
-    List<Brewery> getAllBreweryList();
+    List<BreweryResponse> getAllBreweryList();
 
-    Brewery findBreweryById(Long id) throws ElementNotFoundException;
+    BreweryResponse findBreweryById(Long id) throws ElementNotFoundException;
 
-    Brewery createNewBrewery(Brewery brewery);
+    BreweryResponse createNewBrewery(BreweryRequest breweryRequest);
 
-    Brewery updateBreweryById(Long breweryId, Brewery brewery) throws ElementNotFoundException;
+    BreweryResponse updateBreweryById(Long breweryId, BreweryRequest brewery) throws ElementNotFoundException;
 
     void deleteBreweryById(Long breweryId) throws ElementNotFoundException;
 

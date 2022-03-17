@@ -28,6 +28,25 @@ public class BeerTestHelper {
         return List.of(getBeerResponse());
     }
 
+    public static BeerRequest getBeerRequest() {
+        return BeerRequest.builder()
+                .name("Testowe Piwo")
+                .style("Testoy styl")
+                .alcohol(5.6)
+                .extract(20.0)
+                .build();
+    }
+
+    public static Beer getBeerBeforeUpdate() {
+        return Beer.builder()
+                .beerId(1L)
+                .name("Testowe Piwo")
+                .style("Testoy styl")
+                .alcohol(5.6)
+                .extract(20.0)
+                .build();
+    }
+
     public static Beer getBeer() {
         return Beer.builder()
                 .beerId(1L)
@@ -60,12 +79,13 @@ public class BeerTestHelper {
                 .build();
     }
 
-    public static BeerRequest getBeerRequest() {
-        return BeerRequest.builder()
-                .name("Testowe Piwo")
-                .style("Testoy styl")
-                .alcohol(5.6)
-                .extract(20.0)
+    public static BeerResponse getUpdatedBeerResponse() {
+        return BeerResponse.builder()
+                .id(1L)
+                .name("Nowe piwo testowe")
+                .style("Nowy testowy styl")
+                .alcohol(7.0)
+                .extract(10.0)
                 .build();
     }
 

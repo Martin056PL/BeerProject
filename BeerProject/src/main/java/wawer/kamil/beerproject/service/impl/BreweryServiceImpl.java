@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BreweryRequest;
+import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Beer;
@@ -14,13 +16,14 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BreweryService;
+import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.getBreweriesIds;
-import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.getBreweriesWithBeers;
+import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,48 +32,51 @@ public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository breweryRepository;
     private final BeerRepository beerRepository;
+    private final BreweryMapper breweryMapper;
     private final ImageUpload imageUpload;
 
     @Override
     @Transactional
-    public Page<Brewery> getAllBreweryPage(Pageable pageable) {
+    public Page<BreweryResponse> getAllBreweryPage(Pageable pageable) {
         Page<Brewery> brewery = breweryRepository.findAll(pageable);
-        List<Beer> beers = beerRepository.findBeersByListOfBreweriesId(getBreweriesIds(brewery));
-        return getBreweriesWithBeers(brewery, beers);
+        List<Long> breweriesIds = getBreweriesIds(brewery);
+        List<Beer> beers = beerRepository.findBeersByListOfBreweriesId(breweriesIds);
+        Page<Brewery> breweriesWithBeers = getBreweriesWithBeers(brewery, beers);
+        return breweryMapper.mapBreweryEntityPageToBreweryResponsePage(breweriesWithBeers);
     }
 
     @Override
     @Transactional
-    public List<Brewery> getAllBreweryList() {
+    public List<BreweryResponse> getAllBreweryList() {
         List<Brewery> breweries = breweryRepository.findAll();
         List<Beer> beersByListOfBreweriesId = beerRepository.findBeersByListOfBreweriesId(getBreweriesIds(breweries));
-        return getBreweriesWithBeers(breweries, beersByListOfBreweriesId);
-    }
-
-
-    public Brewery findBreweryById(Long id) throws ElementNotFoundException {
-        return breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
+        List<Brewery> breweriesWithBeers = getBreweriesWithBeers(breweries, beersByListOfBreweriesId);
+        return breweriesWithBeers.stream()
+                .map(breweryMapper::mapBreweryToBreweryResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Brewery createNewBrewery(Brewery brewery) {
-        return breweryRepository.save(brewery);
+    public BreweryResponse findBreweryById(Long id) throws ElementNotFoundException {
+        return breweryRepository.findById(id)
+                .map(breweryMapper::mapBreweryToBreweryResponse)
+                .orElseThrow(ElementNotFoundException::new);
+    }
+
+    @Override
+    public BreweryResponse createNewBrewery(BreweryRequest breweryRequest) {
+        Brewery brewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
+        Brewery savedBrewery = breweryRepository.save(brewery);
+        return breweryMapper.mapBreweryToBreweryResponse(savedBrewery);
     }
 
     @Override
     @Transactional
-    public Brewery updateBreweryById(Long id, Brewery brewery) throws ElementNotFoundException {
+    public BreweryResponse updateBreweryById(Long id, BreweryRequest breweryRequest) throws ElementNotFoundException {
+        Brewery mappedBrewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
         Brewery fetchedBrewery = breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
-        fetchedBrewery.setName(brewery.getName());
-        fetchedBrewery.setEmail(brewery.getEmail());
-        fetchedBrewery.setPhoneNumber(brewery.getPhoneNumber());
-        fetchedBrewery.getAddress().setCity(brewery.getAddress().getCity());
-        fetchedBrewery.getAddress().setLocalNumber(brewery.getAddress().getLocalNumber());
-        fetchedBrewery.getAddress().setParcelNumber(brewery.getAddress().getParcelNumber());
-        fetchedBrewery.getAddress().setStreet(brewery.getAddress().getStreet());
-        fetchedBrewery.getAddress().setZipCode(brewery.getAddress().getZipCode());
-        fetchedBrewery.setWebsite(brewery.getWebsite());
-        return fetchedBrewery;
+        mapBreweryProperties(fetchedBrewery, mappedBrewery);
+        return breweryMapper.mapBreweryToBreweryResponse(fetchedBrewery);
     }
 
     @Override
@@ -83,7 +89,7 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     @Transactional
     public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
-        Brewery brewery = findBreweryById(breweryId);
+        Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             brewery.setBreweryImage(imageAsByteArray);
@@ -94,7 +100,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws ElementNotFoundException {
-        Brewery brewery = findBreweryById(breweryId);
+        Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return brewery.getBreweryImage();
     }
 }

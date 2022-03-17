@@ -18,9 +18,7 @@ import wawer.kamil.beerproject.dto.request.BreweryRequest;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
-import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -41,9 +39,6 @@ class BreweryControllerTest {
     BreweryServiceImpl service;
 
     @Mock
-    BreweryMapper mapper;
-
-    @Mock
     Pageable pageable;
 
     @Mock
@@ -52,17 +47,9 @@ class BreweryControllerTest {
     @InjectMocks
     BreweryController controller;
 
-    private Page<Brewery> breweryPage;
     private Page<BreweryResponse> breweryResponsePage;
-    private List<Brewery> breweryList;
     private List<BreweryResponse> breweryResponseList;
     private BreweryRequest breweryRequest;
-    private BreweryRequest updatedSingleBreweryRequest;
-    private Brewery singleBreweryBeforeSave;
-    private Brewery singleSavedBrewery;
-    private Brewery updatedSingleBreweryBeforeSave;
-    private Brewery updatedSingleBreweryAfterSave;
-    private BreweryResponse updatedSingleBreweryResponseAfterSave;
     private BreweryResponse singleBreweryResponse;
 
     private final static Long ID = 1L;
@@ -70,17 +57,9 @@ class BreweryControllerTest {
 
     @BeforeEach
     void setUp() {
-        this.breweryPage = getBreweryPage();
         this.breweryResponsePage = getBreweryResponsePage();
-        this.breweryList = getBreweryList();
         this.breweryResponseList = getBreweryResponseList();
         this.breweryRequest = getSingleBreweryRequest();
-        this.updatedSingleBreweryRequest = getUpdatedSingleBreweryRequest();
-        this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
-        this.singleSavedBrewery = getSingleBrewery();
-        this.updatedSingleBreweryBeforeSave = getUpdatedSingleBreweryBeforeSave();
-        this.updatedSingleBreweryAfterSave = getUpdatedSingleBreweryAfterSave();
-        this.updatedSingleBreweryResponseAfterSave = getUpdatedSingleBreweryResponseAfterSave();
         this.singleBreweryResponse = getSingleBreweryResponse();
     }
 
@@ -88,8 +67,7 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity for brewery PAGE")
     void should_return_response_entity_equal_to_controllers_response_entity_for_brewery_page() {
         //given
-        when(service.getAllBreweryPage(pageable)).thenReturn(breweryPage);
-        when(mapper.mapBreweryEntityPageToBreweryResponsePage(breweryPage)).thenReturn(breweryResponsePage);
+        when(service.getAllBreweryPage(pageable)).thenReturn(breweryResponsePage);
 
         //when
         ResponseEntity<Page<BreweryResponse>> allBreweryPage = controller.getAllBreweryPage(pageable);
@@ -103,8 +81,7 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity for brewery LIST")
     void should_return_response_entity_equal_to_controllers_response_entity_for_brewery_list() {
         //given
-        when(service.getAllBreweryList()).thenReturn(breweryList);
-        when(mapper.mapListOfBreweryEntityToListBreweryResponse(breweryList)).thenReturn(breweryResponseList);
+        when(service.getAllBreweryList()).thenReturn(breweryResponseList);
 
         //when
         ResponseEntity<List<BreweryResponse>> allBreweryList = controller.getAllBreweryList();
@@ -118,8 +95,7 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on SINGLE brewery id")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_brewery_id() throws ElementNotFoundException {
         //given
-        when(service.findBreweryById(ID)).thenReturn(singleSavedBrewery);
-        when(mapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(singleBreweryResponse);
+        when(service.findBreweryById(ID)).thenReturn(singleBreweryResponse);
 
         //when
         ResponseEntity<BreweryResponse> breweryById = controller.getBreweryById(ID);
@@ -144,9 +120,7 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on CREATED brewery")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_created_brewery() throws URISyntaxException {
         //given
-        when(mapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleBreweryBeforeSave);
-        when(service.createNewBrewery(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
-        when(mapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(singleBreweryResponse);
+        when(service.createNewBrewery(breweryRequest)).thenReturn(singleBreweryResponse);
 
         //when
         ResponseEntity<BreweryResponse> breweryById = controller.addNewBrewery(breweryRequest);
@@ -161,16 +135,14 @@ class BreweryControllerTest {
     @DisplayName("Should return response entity equal to controllers response entity base on UPDATED brewery")
     void should_return_response_entity_equal_to_controllers_response_entity_base_on_UPDATED_brewery() throws ElementNotFoundException {
         // given
-        when(mapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(updatedSingleBreweryBeforeSave);
-        when(service.updateBreweryById(ID, updatedSingleBreweryBeforeSave)).thenReturn(updatedSingleBreweryAfterSave);
-        when(mapper.mapBreweryToBreweryResponse(updatedSingleBreweryAfterSave)).thenReturn(updatedSingleBreweryResponseAfterSave);
+        when(service.updateBreweryById(ID, breweryRequest)).thenReturn(singleBreweryResponse);
 
         //when
         ResponseEntity<BreweryResponse> breweryResponseResponseEntity = controller.updateBrewery(ID, breweryRequest);
 
         //then
         assertEquals(HttpStatus.OK, breweryResponseResponseEntity.getStatusCode());
-        assertEquals(ok(updatedSingleBreweryResponseAfterSave).getBody(), breweryResponseResponseEntity.getBody());
+        assertEquals(ok(singleBreweryResponse).getBody(), breweryResponseResponseEntity.getBody());
     }
 
     @Test
@@ -182,11 +154,10 @@ class BreweryControllerTest {
 
     private void callUpdateBreweryByIdWithException() throws ElementNotFoundException {
         //given
-        when(mapper.mapBreweryRequestToBreweryEntity(updatedSingleBreweryRequest)).thenReturn(updatedSingleBreweryBeforeSave);
-        when(service.updateBreweryById(ID, updatedSingleBreweryBeforeSave)).thenThrow(ElementNotFoundException.class);
+        when(service.updateBreweryById(ID, breweryRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
-        controller.updateBrewery(ID, updatedSingleBreweryRequest);
+        controller.updateBrewery(ID, breweryRequest);
     }
 
 

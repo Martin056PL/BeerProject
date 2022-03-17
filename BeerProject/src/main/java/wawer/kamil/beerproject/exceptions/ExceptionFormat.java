@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -17,8 +18,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Component
 public class ExceptionFormat {
 
+    private String uuid = String.valueOf(UUID.randomUUID());
     private HttpStatus status;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss[.SSSS]")
     private LocalDateTime timestamp = LocalDateTime.now();
     private String message;
 }

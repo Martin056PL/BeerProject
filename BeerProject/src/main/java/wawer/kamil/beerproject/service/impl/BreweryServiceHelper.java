@@ -56,5 +56,16 @@ public class BreweryServiceHelper {
         return beer.getBrewery().getBreweryId();
     }
 
+    public static void mapBreweryProperties(Brewery breweryToUpdate, Brewery breweryFromRequest) {
+        breweryToUpdate.setName(breweryFromRequest.getName());
+        breweryToUpdate.setEmail(breweryFromRequest.getEmail());
+        breweryToUpdate.setPhoneNumber(breweryFromRequest.getPhoneNumber());
+        breweryToUpdate.getAddress().setCity(breweryFromRequest.getAddress().getCity());
+        breweryToUpdate.getAddress().setLocalNumber(breweryFromRequest.getAddress().getLocalNumber());
+        breweryToUpdate.getAddress().setParcelNumber(breweryFromRequest.getAddress().getParcelNumber());
+        breweryToUpdate.getAddress().setStreet(breweryFromRequest.getAddress().getStreet());
+        breweryToUpdate.getAddress().setZipCode(breweryFromRequest.getAddress().getZipCode());
+        breweryToUpdate.setWebsite(breweryFromRequest.getWebsite());
+    }
 
 }

@@ -10,6 +10,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BreweryRequest;
+import wawer.kamil.beerproject.dto.response.BeerResponse;
+import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Beer;
@@ -17,6 +20,7 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
+import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
@@ -25,7 +29,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static wawer.kamil.beerproject.helpers.BeerTestHelper.getListOfBeers;
 import static wawer.kamil.beerproject.helpers.BreweryTestHelper.*;
 
@@ -37,6 +42,9 @@ class BreweryServiceImplTest {
 
     @Mock
     BeerRepository beerRepository;
+
+    @Mock
+    BreweryMapper breweryMapper;
 
     @Mock
     Pageable pageable;
@@ -56,6 +64,8 @@ class BreweryServiceImplTest {
     private List<Brewery> breweryList;
     private Brewery singleSavedBrewery;
     private Brewery singleBreweryBeforeSave;
+    private BreweryResponse breweryResponse;
+    private BreweryRequest breweryRequest;
 
     private final static Long ID = 1L;
 
@@ -67,11 +77,9 @@ class BreweryServiceImplTest {
         this.breweryList = getBreweryList();
         this.singleSavedBrewery = getSingleBrewery();
         this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
+        this.breweryResponse = getSingleBreweryResponse();
+        this.breweryRequest = getSingleBreweryRequest();
     }
-
-    //
-    // TODO Rename tests
-    //
 
     @Test
     @DisplayName("Verify if find all with beers for pageable method is called during getting page of breweries")
@@ -107,6 +115,7 @@ class BreweryServiceImplTest {
     void verify_get_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
+        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
         service.findBreweryById(ID);
@@ -119,10 +128,12 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if save method is called during brewery creation")
     void verify_create_new_brewery() {
         //given
+        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleBreweryBeforeSave);
         when(breweryRepository.save(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
+        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
-        service.createNewBrewery(singleBreweryBeforeSave);
+        service.createNewBrewery(breweryRequest);
 
         //then
         verify(breweryRepository).save(singleBreweryBeforeSave);
@@ -132,10 +143,12 @@ class BreweryServiceImplTest {
     @DisplayName("Verify update brewery by brewery id when brewery id does not exists")
     void verify_update_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
         //given
+        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
+        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
-        service.updateBreweryById(ID, getSingleBreweryBeforeSave());
+        service.updateBreweryById(ID, breweryRequest);
 
         //then
         verify(breweryRepository).findById(ID);
@@ -148,8 +161,9 @@ class BreweryServiceImplTest {
     }
 
     private void callUpdateBreweryByIdWhichDoesNotExist() throws ElementNotFoundException {
+        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
-        service.updateBreweryById(ID, getSingleBreweryBeforeSave());
+        service.updateBreweryById(ID, getSingleBreweryRequest());
     }
 
     @Test

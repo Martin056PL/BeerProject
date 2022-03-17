@@ -8,11 +8,11 @@ import wawer.kamil.beerproject.model.Beer;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BeerServiceHelper {
 
-    public static void mapBeerProperties(Beer beerToUpdate, Beer updatedBeer) {
-        beerToUpdate.setName(updatedBeer.getName());
-        beerToUpdate.setExtract(updatedBeer.getExtract());
-        beerToUpdate.setStyle(updatedBeer.getStyle());
-        beerToUpdate.setAlcohol(updatedBeer.getAlcohol());
+    public static void mapBeerProperties(Beer beerToUpdate, Beer beerFromRequest) {
+        beerToUpdate.setName(beerFromRequest.getName());
+        beerToUpdate.setExtract(beerFromRequest.getExtract());
+        beerToUpdate.setStyle(beerFromRequest.getStyle());
+        beerToUpdate.setAlcohol(beerFromRequest.getAlcohol());
     }
 
 }

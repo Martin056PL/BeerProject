@@ -3,6 +3,8 @@ package wawer.kamil.beerproject.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BeerRequest;
+import wawer.kamil.beerproject.dto.response.BeerResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Beer;
@@ -12,21 +14,21 @@ import java.util.List;
 
 public interface BeerService {
 
-    Page<Beer> findAllBeersPage(Pageable pageable);
+    Page<BeerResponse> findAllBeersPage(Pageable pageable);
 
-    List<Beer> findAllBeersList();
+    List<BeerResponse> findAllBeersList();
 
-    Beer findBeerById(Long beerId) throws ElementNotFoundException;
+    BeerResponse findBeerById(Long beerId) throws ElementNotFoundException;
 
-    Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException;
+    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException;
 
-    Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws ElementNotFoundException;
+    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) throws ElementNotFoundException;
 
-    Beer updateBeerByBeerId(Long beerId, Beer beer) throws ElementNotFoundException;
+    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest) throws ElementNotFoundException;
 
-    Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws ElementNotFoundException;
+    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) throws ElementNotFoundException;
 
-    List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException;
+    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException;
 
     void deleteBeerById(Long id) throws ElementNotFoundException;
 

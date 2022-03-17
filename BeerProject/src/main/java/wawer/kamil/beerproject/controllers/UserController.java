@@ -13,7 +13,6 @@ import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -48,12 +47,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createNewUser(@RequestBody @Valid UserRequest userRequest) throws UsernameAlreadyExistsException {
+    public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) throws UsernameAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest) throws ElementNotFoundException {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) throws ElementNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
     }
 

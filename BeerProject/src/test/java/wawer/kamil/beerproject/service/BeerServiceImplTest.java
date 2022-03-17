@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BeerRequest;
+import wawer.kamil.beerproject.dto.response.BeerResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Beer;
@@ -17,6 +19,7 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
+import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
@@ -38,6 +41,9 @@ class BeerServiceImplTest {
     BreweryRepository breweryRepository;
 
     @Mock
+    BeerMapper beerMapper;
+
+    @Mock
     Pageable pageable;
 
     @Mock
@@ -51,6 +57,11 @@ class BeerServiceImplTest {
 
     private Beer beer;
     private Beer updatedBeer;
+    private Beer beerBeforeUpdate;
+    private BeerResponse beerResponse;
+    private BeerResponse updatedBeerResponse;
+    private BeerRequest beerRequest;
+
     private Page<Beer> beerPage;
     private List<Beer> beerList;
     private Brewery brewery;
@@ -61,6 +72,10 @@ class BeerServiceImplTest {
     @BeforeEach
     void setUp() {
         this.beer = getBeer();
+        this.beerResponse = getBeerResponse();
+        this.beerRequest = getBeerRequest();
+        this.beerBeforeUpdate = getBeerBeforeUpdate();
+        this.updatedBeerResponse = getUpdatedBeerResponse();
         this.updatedBeer = getUpdatedBeer();
         this.beerPage = getBeerPage();
         this.beerList = getListOfBeers();
@@ -70,6 +85,10 @@ class BeerServiceImplTest {
     @Test
     @DisplayName("Verify if find all with pageable method is called during beers getting")
     void verify_if_find_all_with_pageable_method_is_called_during_beers_getting() {
+        // given
+        when(beerRepository.findAll(pageable)).thenReturn(beerPage);
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+
         //when
         service.findAllBeersPage(pageable);
 
@@ -92,6 +111,7 @@ class BeerServiceImplTest {
     void verify_find_beer_by_beer_id_when_id_exists() throws ElementNotFoundException {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
 
         //when
         service.findBeerById(beerID);
@@ -179,12 +199,16 @@ class BeerServiceImplTest {
     @DisplayName("Verify if save beer is called when brewery id exists")
     void verify_save_beer_when_brewery_id_exists() throws ElementNotFoundException {
         //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
+        when(beerRepository.save(beer)).thenReturn(beer);
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
 
         //when
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest);
 
         //then
+        verify(breweryRepository).findById(breweryID);
         verify(beerRepository).save(beer);
     }
 
@@ -197,10 +221,11 @@ class BeerServiceImplTest {
 
     private void callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist() throws ElementNotFoundException {
         //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
 
         //when
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest);
     }
 
 
@@ -208,16 +233,17 @@ class BeerServiceImplTest {
     @DisplayName("Verify if updated beer has the same properties as on request during beer update with beer id")
     void verify_if_updated_beer_has_the_same_properties_as_on_request_during_beer_update_with_beer_id() throws ElementNotFoundException {
         //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(updatedBeerResponse);
 
         //when
-        Beer updatedBeerByService = service.updateBeerByBeerId(beerID, updatedBeer);
+        BeerResponse updatedBeerByService = service.updateBeerByBeerId(beerID, beerRequest);
 
         //then
-        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getBeerId());
+        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
         assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
         assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
-        assertEquals(updatedBeer.getBrewery(), updatedBeerByService.getBrewery());
         assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());
         assertEquals(updatedBeer.getAlcohol(), updatedBeerByService.getAlcohol());
     }
@@ -234,23 +260,24 @@ class BeerServiceImplTest {
         when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
 
         //when
-        service.updateBeerByBeerId(beerID, updatedBeer);
+        service.updateBeerByBeerId(beerID, beerRequest);
     }
 
     @Test
     @DisplayName("Verify if updated beer has the same properties as on request beer during beer update with brewery and beer id")
     void verify_if_updated_beer_has_the_same_properties_as_on_request_beer_during_beer_update_with_brewery_and_beer_id() throws ElementNotFoundException {
         //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
         when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(updatedBeerResponse);
 
         //when
-        Beer updatedBeerByService = service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, updatedBeer);
+        BeerResponse updatedBeerByService = service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest);
 
         //then
-        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getBeerId());
+        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
         assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
         assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
-        assertEquals(updatedBeer.getBrewery(), updatedBeerByService.getBrewery());
         assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());
         assertEquals(updatedBeer.getAlcohol(), updatedBeerByService.getAlcohol());
     }
@@ -267,7 +294,7 @@ class BeerServiceImplTest {
         when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.empty());
 
         //when
-        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, updatedBeer);
+        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest);
     }
 
     @Test

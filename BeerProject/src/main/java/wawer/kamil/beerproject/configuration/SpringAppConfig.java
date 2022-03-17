@@ -5,8 +5,6 @@ import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import wawer.kamil.beerproject.model.Beer;
-import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.model.User;
 
 import javax.annotation.PostConstruct;
