@@ -83,10 +83,11 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request) {
-        log.error("APPLICATION THROWS EXCEPTION: " + e.getClass() + ",\n CAUSE OF EXCEPTION: "
-                + e.getCause().toString() + ",\n EXCEPTION MESSAGE: " + e.getMessage()
+        log.error("APPLICATION THROWS EXCEPTION WITH ID: " + exceptionFormat.getUuid()
+                + " AND " + e.getClass() + ",\n CAUSE OF EXCEPTION: " + e.getCause().toString()
+                + ",\n EXCEPTION MESSAGE: " + e.getMessage()
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
-                + "\n REQUEST ADDRESS: " + request.getRequestURL());
+                + ",\n REQUEST ADDRESS: " + request.getRequestURL());
         exceptionFormat.setMessage("Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL");
         exceptionFormat.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

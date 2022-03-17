@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -45,7 +44,6 @@ public class BeerController {
     @GetMapping("beers/list")
     public ResponseEntity<List<BeerResponse>> findAllBeersList() {
         List<BeerResponse> listOfBeers = service.findAllBeersList();
-        log.debug("List of returned Id: {}", listOfBeers.stream().map(BeerResponse::getId).collect(Collectors.toList()));
         return ok().body(listOfBeers);
     }
 
@@ -72,7 +70,6 @@ public class BeerController {
     @PostMapping("brewery/{breweryId}/beers")
     public ResponseEntity<BeerResponse> addBeerToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody BeerRequest beerRequest) throws ElementNotFoundException, URISyntaxException {
         BeerResponse savedBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, beerRequest);
-        log.debug("Add new beer with Id: {}", savedBeer.getId());
         return created(new URI("add-beer" + savedBeer.getId())).body(savedBeer);
     }
 
@@ -91,14 +88,13 @@ public class BeerController {
                                                                            @PathVariable Long beerId,
                                                                            @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
         BeerResponse resultBeer = service.updateBeerByBreweryIdAndBeerId(breweryId, beerId, beerRequest);
-        log.debug("Updated beer with Id: {}", resultBeer.getId());
         return ok().body(resultBeer);
     }
 
     //delete methods
 
     @DeleteMapping("beers/{id}")
-    public ResponseEntity deleteBeerByBeerId(@PathVariable Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> deleteBeerByBeerId(@PathVariable Long id) throws ElementNotFoundException {
         service.deleteBeerById(id);
         return noContent().build();
     }

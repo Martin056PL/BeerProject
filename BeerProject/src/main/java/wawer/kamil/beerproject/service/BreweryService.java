@@ -7,7 +7,6 @@ import wawer.kamil.beerproject.dto.request.BreweryRequest;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.model.Brewery;
 
 import java.io.IOException;
 import java.util.List;
