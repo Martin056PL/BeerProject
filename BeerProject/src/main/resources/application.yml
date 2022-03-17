@@ -9,6 +9,8 @@ spring:
       max-file-size: 6MB
 server:
   port: 8085
+  servlet:
+    context-path: "/api/v1/"
 
 springdoc:
   swagger-ui:
