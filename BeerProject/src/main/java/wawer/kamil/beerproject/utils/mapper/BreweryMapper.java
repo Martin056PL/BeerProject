@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class BreweryMapper {
 
-    private final @Qualifier(value = "breweryRequestMapper")
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public BreweryMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;

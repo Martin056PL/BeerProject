@@ -32,20 +32,20 @@ public class BreweryController {
 
     private final BreweryService service;
 
-    @GetMapping
+    @GetMapping("/page")
     public ResponseEntity<Page<BreweryResponse>> getAllBreweryPage(Pageable pageable) {
         Page<BreweryResponse> listOfBrewery = service.getAllBreweryPage(pageable);
         return ok().body(listOfBrewery);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/all")
     public ResponseEntity<List<BreweryResponse>> getAllBreweryList() {
         List<BreweryResponse> listOfBrewery = service.getAllBreweryList();
         return ok().body(listOfBrewery);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<BreweryResponse> getBreweryById(@PathVariable Long id) throws ElementNotFoundException {
+    @GetMapping
+    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id) throws ElementNotFoundException {
         BreweryResponse breweryResponse = service.findBreweryById(id);
         return ok().body(breweryResponse);
     }
