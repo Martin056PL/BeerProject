@@ -73,12 +73,12 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
+            <version>8.0.28</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.0.0</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>

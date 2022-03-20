@@ -1,5 +1,5 @@
 spring:
-  datasource.url: jdbc:h2:mem:beer
+  datasource.url: jdbc:h2:mem:beer;DATABASE_TO_UPPER=false;
   datasource:
       driverClassName: org.h2.Driver
       username: sa

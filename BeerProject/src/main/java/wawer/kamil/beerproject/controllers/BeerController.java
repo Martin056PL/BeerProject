@@ -34,6 +34,8 @@ public class BeerController {
 
     //get methods
 
+    // TODO podmienieć na request params
+
     @GetMapping("beers")
     @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<Page<BeerResponse>> findAllBeersPage(Pageable pageable) {
@@ -47,13 +49,13 @@ public class BeerController {
         return ok().body(listOfBeers);
     }
 
-    @GetMapping("brewery/{breweryId}/beers")
+    @GetMapping("breweries/{breweryId}/beers")
     public ResponseEntity<Page<BeerResponse>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws ElementNotFoundException {
         Page<BeerResponse> listOfBeers = service.findAllBeersByBreweryIdPage(breweryId, pageable);
         return ok().body(listOfBeers);
     }
 
-    @GetMapping("brewery/{breweryId}/beers/list")
+    @GetMapping("breweries/{breweryId}/beers/list")
     public ResponseEntity<List<BeerResponse>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws ElementNotFoundException {
         List<BeerResponse> resultListOfBeers = service.findAllBeersByBreweryIdList(breweryId);
         return ok().body(resultListOfBeers);
@@ -67,7 +69,7 @@ public class BeerController {
 
     //post methods
 
-    @PostMapping("brewery/{breweryId}/beers")
+    @PostMapping("breweries/{breweryId}/beers")
     public ResponseEntity<BeerResponse> addBeerToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody BeerRequest beerRequest) throws ElementNotFoundException, URISyntaxException {
         BeerResponse savedBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, beerRequest);
         return created(new URI("add-beer" + savedBeer.getId())).body(savedBeer);
@@ -83,7 +85,7 @@ public class BeerController {
     }
 
 
-    @PutMapping("brewery/{breweryId}/beers/{beerId}")
+    @PutMapping("breweries/{breweryId}/beers/{beerId}")
     public ResponseEntity<BeerResponse> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                            @PathVariable Long beerId,
                                                                            @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {

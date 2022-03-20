@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: production
   jpa:
     hibernate:
       ddl-auto: validate
@@ -8,7 +6,6 @@ spring:
     multipart:
       max-file-size: 6MB
 server:
-  port: 8085
   servlet:
     context-path: "/api/v1/"
 

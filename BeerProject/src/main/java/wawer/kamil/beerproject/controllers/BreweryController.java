@@ -25,6 +25,7 @@ import static org.springframework.http.ResponseEntity.*;
 @RestController
 @RequestMapping("breweries")
 @RequiredArgsConstructor
+@RestControllerAdvice
 @Slf4j(topic = "application.logger")
 public class BreweryController {
 

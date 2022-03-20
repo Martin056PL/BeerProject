@@ -36,7 +36,7 @@ public class Brewery implements Serializable {
     @Column(name = "phone_number",nullable = false)
     private Long phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -45,6 +45,7 @@ public class Brewery implements Serializable {
 
     @OneToMany(
             mappedBy = "brewery",
+            targetEntity = Beer.class,
             cascade = CascadeType.ALL
     )
     private List<Beer> beerList;

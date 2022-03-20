@@ -55,7 +55,7 @@ class UserServiceImplTest {
     @DisplayName("Verify if findAllByUsername is called during getting UserDetails")
     void verify_if_findAllByUsername_is_called_during_getting_UserDetails(){
         service.loadUserByUsername(USERNAME);
-        verify(repository).findAllByUsername(USERNAME);
+        verify(repository).findByUsername(USERNAME);
     }
 
     @Test

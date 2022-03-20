@@ -6,6 +6,8 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
+        hbm2ddl:
+          jdbc_metadata_extraction_strategy: individually
         dialect: org.hibernate.dialect.MySQL8Dialect
         temp:
           use_jdbc_metadata_defaults: false
@@ -17,14 +19,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   liquibase:
-    change-log: classpath:db/master.xml
+    change-log: classpath:db/container.xml
 
   h2:
     console:
       enabled: false
 
 server:
-  port: 8080
+  port: 8081
 
 logging:
   config: classpath:logback/logback.xml

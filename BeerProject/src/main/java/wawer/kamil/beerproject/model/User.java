@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "user")
 public class User extends DataAudit implements UserDetails {
 
     @Id
@@ -27,7 +28,7 @@ public class User extends DataAudit implements UserDetails {
     private String password;
     private String email;
 
-    @ElementCollection
+    @ElementCollection(targetClass = String.class)
     private Set<String> grantedAuthorities;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;

@@ -34,7 +34,11 @@ public class Beer implements Serializable {
     @Column(name = "alcohol")
     private Double alcohol;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY,
+            targetEntity = Brewery.class
+    )
     @JoinColumn(name = "brewery_id")
     @JsonIgnore
     private Brewery brewery;
