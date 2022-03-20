@@ -6,8 +6,10 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -71,10 +73,29 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
+    @Override
+    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
+                                                                       HttpHeaders headers,
+                                                                       HttpStatus status,
+                                                                       WebRequest request) {
+        String message = String.format("Request has not required parameter: %s", ex.getMessage());
+        generateExceptionFormatProperties(message,null, BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseEntity<Object> invalidRequestParameter(PropertyReferenceException ex){
+    public ResponseEntity<Object> invalidRequestParameterException(PropertyReferenceException ex){
         String message = String.format("Request Parameters are invalid: %s", ex.getMessage());
         generateExceptionFormatProperties(message,null, BAD_REQUEST);
+        log.debug("Method throws this exception: {}", exceptionFormat);
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> AccessDeniedException(AccessDeniedException ex){
+        String message = "You have not sufficient grants to call this endpoint";
+        generateExceptionFormatProperties(message,null, FORBIDDEN);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
@@ -92,15 +113,15 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
-    private void generateExceptionFormatProperties(String message, Map<String,String> validationErrorMap, HttpStatus httpStatus) {
+    private void generateExceptionFormatProperties(String message, Map<String,String> RequestBodyValidationErrorsMap, HttpStatus httpStatus) {
+        Map<String, String> stringStringMap = Optional.ofNullable(RequestBodyValidationErrorsMap).orElseGet(() -> getSingleErrorMessageMap(message));
         exceptionFormat.setUuid(UUID.randomUUID().toString());
         exceptionFormat.setStatus(httpStatus);
         exceptionFormat.setTimestamp(LocalDateTime.now());
-        Map<String, String> stringStringMap = Optional.ofNullable(validationErrorMap).orElseGet(() -> asd(message));
         exceptionFormat.setError_message(stringStringMap);
     }
 
-    private Map<String, String> asd(String message) {
+    private Map<String, String> getSingleErrorMessageMap(String message) {
         Map<String, String> map = new HashMap<>();
         map.put("error_message", message);
         return map;

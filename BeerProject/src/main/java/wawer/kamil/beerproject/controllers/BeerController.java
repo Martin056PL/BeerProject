@@ -35,42 +35,45 @@ public class BeerController {
 
     //get methods
 
-    // TODO podmienieć na request params
-
-    @GetMapping("beers")
-    @PreAuthorize("hasAuthority('user:read')")
+    @GetMapping("beers/page")
+    @PreAuthorize("hasAnyRole('USER','ADMIN','EXHIBITOR')")
     public ResponseEntity<Page<BeerResponse>> findAllBeersPage(Pageable pageable) {
         Page<BeerResponse> beersPage = service.findAllBeersPage(pageable);
         return ok().body(beersPage);
     }
 
     @GetMapping("beers/list")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
     public ResponseEntity<List<BeerResponse>> findAllBeersList() {
         List<BeerResponse> listOfBeers = service.findAllBeersList();
         return ok().body(listOfBeers);
     }
 
-    @GetMapping("breweries/{breweryId}/beers")
+    @GetMapping("breweries/{breweryId}/beers/page")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
     public ResponseEntity<Page<BeerResponse>> findAllBeersByBreweryIdPage(@PathVariable Long breweryId, Pageable pageable) throws ElementNotFoundException {
         Page<BeerResponse> listOfBeers = service.findAllBeersByBreweryIdPage(breweryId, pageable);
         return ok().body(listOfBeers);
     }
 
     @GetMapping("breweries/{breweryId}/beers/list")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
     public ResponseEntity<List<BeerResponse>> findAllBeersByBreweryIdList(@PathVariable Long breweryId) throws ElementNotFoundException {
         List<BeerResponse> resultListOfBeers = service.findAllBeersByBreweryIdList(breweryId);
         return ok().body(resultListOfBeers);
     }
 
-    @GetMapping("beers/{id}")
-    public ResponseEntity<BeerResponse> findProperBeerByBeerId(@PathVariable Long id) throws ElementNotFoundException {
-        BeerResponse resultBeer = service.findBeerById(id);
+    @GetMapping("beers")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<BeerResponse> findProperBeerByBeerId(@RequestParam Long beerId) throws ElementNotFoundException {
+        BeerResponse resultBeer = service.findBeerById(beerId);
         return ok().body(resultBeer);
     }
 
     //post methods
 
     @PostMapping("breweries/{breweryId}/beers")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
     public ResponseEntity<BeerResponse> addBeerToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException, URISyntaxException {
         BeerResponse savedBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, beerRequest);
         return created(new URI("add-beer" + savedBeer.getId())).body(savedBeer);
@@ -78,15 +81,17 @@ public class BeerController {
 
     //put methods
 
-    @PutMapping("/beers/{id}")
-    public ResponseEntity<BeerResponse> updateBeerBeerId(@PathVariable Long id,
+    @PutMapping("/beers")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<BeerResponse> updateBeerBeerId(@RequestParam Long beerId,
                                                          @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
-        BeerResponse beerResponse = service.updateBeerByBeerId(id, beerRequest);
+        BeerResponse beerResponse = service.updateBeerByBeerId(beerId, beerRequest);
         return ok(beerResponse);
     }
 
 
     @PutMapping("breweries/{breweryId}/beers/{beerId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
     public ResponseEntity<BeerResponse> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                            @PathVariable Long beerId,
                                                                            @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
@@ -96,21 +101,24 @@ public class BeerController {
 
     //delete methods
 
-    @DeleteMapping("beers/{id}")
-    public ResponseEntity<Object> deleteBeerByBeerId(@PathVariable Long id) throws ElementNotFoundException {
-        service.deleteBeerById(id);
+    @DeleteMapping("beers")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<Object> deleteBeerByBeerId(@RequestParam Long beerId) throws ElementNotFoundException {
+        service.deleteBeerById(beerId);
         return noContent().build();
     }
 
-    @PostMapping(value = "beers/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadImage(@PathVariable Long id, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
-        service.setBeerImageToBeerByBeerId(id, file);
+    @PostMapping(value = "beers/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<Object> uploadImage(@RequestParam Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+        service.setBeerImageToBeerByBeerId(beerId, file);
         return ok().body("File is uploaded successfully");
     }
 
-    @GetMapping(value = "beers/{id}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> downloadImage(@PathVariable Long id) throws ElementNotFoundException {
-        byte[] image = service.getBeerImageBaseOnBeerId(id);
+    @GetMapping(value = "beers/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<byte[]> downloadImage(@RequestParam Long beerId) throws ElementNotFoundException {
+        byte[] image = service.getBeerImageBaseOnBeerId(beerId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return ok().headers(headers).body(image);
