@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElseThrow(ElementNotFoundException::new);
     }
 
     @Override
@@ -54,8 +54,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserResponse findUserByUserId(Long userId) throws ElementNotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
-        return userMapper.mapUserEntityToUserResponse(user);
+        return userRepository.findById(userId)
+                .map(userMapper::mapUserEntityToUserResponse)
+                .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override
@@ -76,9 +77,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public UserResponse updateUser(Long userId, UserRequest userRequest) throws ElementNotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
-        userMapper.mapUserRequestToUserEntity(userRequest, user);
-        return userMapper.mapUserEntityToUserResponse(user);
+        return userRepository.findById(userId)
+                .map(fetchedUser -> userMapper.mapUserRequestToUserEntity(userRequest, fetchedUser))
+                .map(userMapper::mapUserEntityToUserResponse)
+                .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override

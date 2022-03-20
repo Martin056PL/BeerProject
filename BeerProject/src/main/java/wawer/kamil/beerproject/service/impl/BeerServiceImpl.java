@@ -62,8 +62,6 @@ public class BeerServiceImpl implements BeerService {
                 .orElseThrow(ElementNotFoundException::new);
     }
 
-    //get beers by breweryID
-
     @Override
     public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException {
         Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
