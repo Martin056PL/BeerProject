@@ -18,7 +18,7 @@ public class BreweryResponse {
     private String name;
     private String email;
     private Long phoneNumber;
-    private Address address;
+    private AddressResponse address;
     private String website;
     private List<Beer> beerList;
 }

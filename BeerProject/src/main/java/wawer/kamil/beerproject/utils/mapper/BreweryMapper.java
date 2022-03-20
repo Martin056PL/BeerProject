@@ -1,7 +1,6 @@
 package wawer.kamil.beerproject.utils.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.dto.request.BreweryRequest;

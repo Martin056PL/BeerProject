@@ -40,7 +40,10 @@ class BreweryMapperTest {
         assertEquals(brewery.getBreweryId(), breweryResponse.getId());
         assertEquals(brewery.getName(), breweryResponse.getName());
         assertEquals(brewery.getEmail(), breweryResponse.getEmail());
-        assertEquals(brewery.getAddress(), breweryResponse.getAddress());
+        assertEquals(brewery.getAddress().getStreet(), breweryResponse.getAddress().getStreet());
+        assertEquals(brewery.getAddress().getLocalNumber(), breweryResponse.getAddress().getLocalNumber());
+        assertEquals(brewery.getAddress().getZipCode(), breweryResponse.getAddress().getZipCode());
+        assertEquals(brewery.getAddress().getParcelNumber(), breweryResponse.getAddress().getParcelNumber());
         assertEquals(brewery.getPhoneNumber(), breweryResponse.getPhoneNumber());
         assertEquals(brewery.getWebsite(), breweryResponse.getWebsite());
         assertEquals(brewery.getBeerList(), breweryResponse.getBeerList());

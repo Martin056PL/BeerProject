@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import wawer.kamil.beerproject.dto.request.AddressRequest;
 import wawer.kamil.beerproject.dto.request.BreweryRequest;
+import wawer.kamil.beerproject.dto.response.AddressResponse;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Brewery;
@@ -87,7 +88,7 @@ public class BreweryTestHelper {
                 .id(1L)
                 .name("Testowy")
                 .email("testowy@gmail.com")
-                .address(Address.builder()
+                .address(AddressResponse.builder()
                         .addressId(1L)
                         .street("Testowa")
                         .parcelNumber("1")
@@ -160,7 +161,7 @@ public class BreweryTestHelper {
                 .id(1L)
                 .name("NowyTest")
                 .email("NowyTest@gmail.com")
-                .address(Address.builder()
+                .address(AddressResponse.builder()
                         .addressId(1L)
                         .street("NowyTest")
                         .parcelNumber("1")
