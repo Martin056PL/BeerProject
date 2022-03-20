@@ -1,4 +1,4 @@
 package wawer.kamil.beerproject.exceptions;
 
-public class UsernameAlreadyExistsException extends Exception {
+public class UsernameAlreadyExistsException extends RuntimeException {
 }

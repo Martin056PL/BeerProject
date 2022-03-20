@@ -1,10 +1,12 @@
 package wawer.kamil.beerproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 
 @Entity
@@ -19,19 +21,19 @@ public class Beer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "beer_id")
+    @Column(name = "beer_id", nullable = false)
     private Long beerId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "style")
+    @Column(name = "style", nullable = false)
     private String style;
 
-    @Column(name = "extract")
+    @Column(name = "extract", nullable = false)
     private Double extract;
 
-    @Column(name = "alcohol")
+    @Column(name = "alcohol", nullable = false)
     private Double alcohol;
 
     @ManyToOne(

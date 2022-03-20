@@ -3,7 +3,8 @@ package wawer.kamil.beerproject.model;
 import lombok.*;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +26,21 @@ public class Brewery implements Serializable {
     @Column(name = "brewery_id")
     private Long breweryId;
 
-
+    @NotEmpty
     @Column(nullable = false)
     private String name;
 
-
+    @NotEmpty
+    @Column(nullable = false)
     private String email;
-
 
     @Column(name = "phone_number",nullable = false)
     private Long phoneNumber;
 
     @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
+    @NotNull
     private Address address;
-
 
     private String website;
 
@@ -53,7 +54,6 @@ public class Brewery implements Serializable {
     @Lob
     @Column(name = "brewery_image", columnDefinition = "mediumblob")
     private byte[] breweryImage;
-
 
     public Beer addBeer(Beer beer) {
         if (beerList == null) {

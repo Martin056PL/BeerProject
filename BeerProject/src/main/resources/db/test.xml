@@ -9,4 +9,5 @@
     <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
     <include file="version/005-AddSamplesOfBreweryAddressesData.xml" relativeToChangelogFile="true"/>
     <include file="version/006-AddSamplesOfUsersData.xml" relativeToChangelogFile="true"/>
+    <include file="version/007-ReplaceIntegetToStringForParcelNumberAndLocalNumber.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

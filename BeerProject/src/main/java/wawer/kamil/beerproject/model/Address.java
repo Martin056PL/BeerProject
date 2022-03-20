@@ -1,6 +1,9 @@
 package wawer.kamil.beerproject.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,22 +23,18 @@ public class Address implements Serializable {
     @Column(name = "address_id")
     private Long addressId;
 
-
-    @Column(name = "street")
+    @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "parcel_number")
-    private Integer parcelNumber;
-
+    @Column(name = "parcel_number", nullable = false)
+    private String parcelNumber;
 
     @Column(name = "local_number")
-    private Integer localNumber;
-
+    private String localNumber;
 
     @Column(name = "zip_code")
     private String zipCode;
 
-
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     private String city;
 }

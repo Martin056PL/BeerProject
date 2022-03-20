@@ -15,9 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.persistence.RollbackException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
+
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 @RequiredArgsConstructor
@@ -35,48 +36,45 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
             validationMap.put(error.getField(), error.getDefaultMessage());
         }
 
-        String mapToString = convertMapToEditedString(validationMap);
-        exceptionFormat.setStatus(HttpStatus.OK);
-        exceptionFormat.setMessage(mapToString);
+        generateExceptionFormatProperties(null, validationMap, BAD_REQUEST);
         return ResponseEntity.badRequest().body(exceptionFormat);
     }
 
     @ExceptionHandler(ElementNotFoundException.class)
     public ResponseEntity<Object> notFoundHandler() {
-        exceptionFormat.setMessage("Your item hasn't been found! Check request params!");
-        exceptionFormat.setStatus(HttpStatus.NOT_FOUND);
+        String message = "Your item hasn't been found! Check request params!";
+        generateExceptionFormatProperties(message,null, NOT_FOUND);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
     @ExceptionHandler(InvalidImageParameters.class)
     public ResponseEntity<Object> badImageParameters() {
-        exceptionFormat.setMessage("Your image has unhanded file type or it is over 10MB. Check again your image!");
-        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        String message = "Your image has unhanded file type or it is over 10MB. Check again your image!";
+        generateExceptionFormatProperties(message, null, BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
     @ExceptionHandler(RollbackException.class)
     public ResponseEntity<Object> rollbackException(RollbackException ex) {
-        exceptionFormat.setMessage(ex.getLocalizedMessage());
-        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        generateExceptionFormatProperties(ex.getLocalizedMessage(), null, BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
-        exceptionFormat.setMessage("Username is unavailable");
-        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        String message = "Username is unavailable";
+        generateExceptionFormatProperties(message,null, BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<Object> invalidRequestParameter(PropertyReferenceException ex){
-        exceptionFormat.setMessage(String.format("Request Parameters are invalid: %s", ex.getMessage()));
-        exceptionFormat.setStatus(HttpStatus.BAD_REQUEST);
+        String message = String.format("Request Parameters are invalid: %s", ex.getMessage());
+        generateExceptionFormatProperties(message,null, BAD_REQUEST);
         log.debug("Method throws this exception: {}", exceptionFormat);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
@@ -88,14 +86,23 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
                 + ",\n EXCEPTION MESSAGE: " + e.getMessage()
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
                 + ",\n REQUEST ADDRESS: " + request.getRequestURL());
-        exceptionFormat.setMessage("Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL");
-        exceptionFormat.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        String message = "Ups....Something goes wrong. Contact with administrator via github: https://github.com/Martin056PL";
+
+        generateExceptionFormatProperties(message,null, INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
-    private String convertMapToEditedString(Map<String, String> map) {
-        String string1 = map.toString().replace(", ", ",");
-        String string2 = string1.replace(",", "\n");
-        return string2.substring(1, string2.length() - 1);
+    private void generateExceptionFormatProperties(String message, Map<String,String> validationErrorMap, HttpStatus httpStatus) {
+        exceptionFormat.setUuid(UUID.randomUUID().toString());
+        exceptionFormat.setStatus(httpStatus);
+        exceptionFormat.setTimestamp(LocalDateTime.now());
+        Map<String, String> stringStringMap = Optional.ofNullable(validationErrorMap).orElseGet(() -> asd(message));
+        exceptionFormat.setError_message(stringStringMap);
+    }
+
+    private Map<String, String> asd(String message) {
+        Map<String, String> map = new HashMap<>();
+        map.put("error_message", message);
+        return map;
     }
 }

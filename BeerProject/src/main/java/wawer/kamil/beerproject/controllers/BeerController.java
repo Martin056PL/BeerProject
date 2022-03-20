@@ -16,6 +16,7 @@ import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.service.BeerService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,7 +71,7 @@ public class BeerController {
     //post methods
 
     @PostMapping("breweries/{breweryId}/beers")
-    public ResponseEntity<BeerResponse> addBeerToBreweryByBreweryId(@PathVariable Long breweryId, @RequestBody BeerRequest beerRequest) throws ElementNotFoundException, URISyntaxException {
+    public ResponseEntity<BeerResponse> addBeerToBreweryByBreweryId(@PathVariable Long breweryId, @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException, URISyntaxException {
         BeerResponse savedBeer = service.addNewBeerAssignedToBreweryByBreweryId(breweryId, beerRequest);
         return created(new URI("add-beer" + savedBeer.getId())).body(savedBeer);
     }
@@ -79,7 +80,7 @@ public class BeerController {
 
     @PutMapping("/beers/{id}")
     public ResponseEntity<BeerResponse> updateBeerBeerId(@PathVariable Long id,
-                                                         @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
+                                                         @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
         BeerResponse beerResponse = service.updateBeerByBeerId(id, beerRequest);
         return ok(beerResponse);
     }
@@ -88,7 +89,7 @@ public class BeerController {
     @PutMapping("breweries/{breweryId}/beers/{beerId}")
     public ResponseEntity<BeerResponse> updateBeerBaseOnBreweryIdAndBeerId(@PathVariable Long breweryId,
                                                                            @PathVariable Long beerId,
-                                                                           @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
+                                                                           @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
         BeerResponse resultBeer = service.updateBeerByBreweryIdAndBeerId(breweryId, beerId, beerRequest);
         return ok().body(resultBeer);
     }

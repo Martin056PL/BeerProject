@@ -23,9 +23,11 @@ public class User extends DataAudit implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String email;
 
     @ElementCollection(targetClass = String.class)

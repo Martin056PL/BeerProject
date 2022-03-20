@@ -5,6 +5,11 @@ import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Beer;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Builder
@@ -15,16 +20,13 @@ import java.util.List;
 @EqualsAndHashCode
 public class BreweryRequest {
 
-
+    @NotEmpty(message = "Name for brewery is required")
     private String name;
-
+    @Email(message = "Email has invalid format")
+    @NotEmpty(message = "Email for brewery is required")
     private String email;
-
     private Long phoneNumber;
-
-    private Address address;
-
+    private @Valid AddressRequest address;
     private String website;
-
-    private List<Beer> beerList;
+    private List<@Valid BeerRequest> beerList;
 }

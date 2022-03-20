@@ -80,6 +80,5 @@ class BeerMapperTest {
         assertEquals(beerRequest.getAlcohol(), beer.getAlcohol());
         assertEquals(beerRequest.getExtract(), beer.getExtract());
         assertEquals(beerRequest.getStyle(), beer.getStyle());
-        assertEquals(beerRequest.getBrewery(), beer.getBrewery());
     }
 }

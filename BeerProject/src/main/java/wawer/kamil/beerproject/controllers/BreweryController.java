@@ -15,6 +15,7 @@ import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.service.BreweryService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,13 +51,13 @@ public class BreweryController {
     }
 
     @PostMapping
-    public ResponseEntity<BreweryResponse> addNewBrewery(@RequestBody BreweryRequest breweryRequest) throws URISyntaxException {
+    public ResponseEntity<BreweryResponse> addNewBrewery(@RequestBody @Valid BreweryRequest breweryRequest) throws URISyntaxException {
         BreweryResponse savedBrewery = service.createNewBrewery(breweryRequest);
         return created(new URI("add-beer/" + savedBrewery.getId())).body(savedBrewery);
     }
 
     @PutMapping()
-    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
+    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
         BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
         return ok().body(updatedBrewery);
     }
