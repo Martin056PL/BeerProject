@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class DataAudit {
+abstract class DataAudit {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

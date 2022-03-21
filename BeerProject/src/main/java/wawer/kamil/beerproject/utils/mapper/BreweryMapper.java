@@ -8,7 +8,6 @@ import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.model.Brewery;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
