@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "address")
+@Table(name = "ADDRESS")
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 5341237096226780217L;

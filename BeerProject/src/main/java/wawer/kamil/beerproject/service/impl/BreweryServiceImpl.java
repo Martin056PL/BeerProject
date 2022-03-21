@@ -66,6 +66,7 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     public BreweryResponse createNewBrewery(BreweryRequest breweryRequest) {
         Brewery brewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
+        brewery.assignBreweryToAllBeersOnBrewerysList();
         Brewery savedBrewery = breweryRepository.save(brewery);
         return breweryMapper.mapBreweryToBreweryResponse(savedBrewery);
     }

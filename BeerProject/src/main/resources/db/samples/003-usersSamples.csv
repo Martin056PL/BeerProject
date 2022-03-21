@@ -1,3 +1,4 @@
 id,created_at,update_date_time,username,password,email,is_account_non_expired,is_account_non_locked,is_credentials_non_expired,is_enabled
 1,2019-09-12T12:12:12,2019-09-12T12:12:12,user,$2a$10$.mGZ4VYWTIYPrdHgf4Hwse0O4ffm4wZLzEgL6GWm2iNt/aMyT1r.e,krzysztof.kowalski@gmail.com,true,true,true,true
 2,2019-09-12T12:12:12,2019-09-12T12:12:12,admin,$2a$10$L.fKarQR72uXrLRqNm4rMe7hVfGeGEb6MUfUqa35DA0VRVh/r8Uj6,admin.admin@gmail.com,true,true,true,true
+3,2019-09-12T12:12:12,2019-09-12T12:12:12,exhibitor,$2a$10$8O0JMzHu6VrYLHsiGPp0kuzQldmP9Ew7U.RWxpSs5CR/o7Rw7eRp6,browar@browar.pl,true,true,true,true

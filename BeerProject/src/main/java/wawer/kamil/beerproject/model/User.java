@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "USER")
 public class User extends DataAudit implements UserDetails {
 
     @Id
@@ -31,10 +31,20 @@ public class User extends DataAudit implements UserDetails {
     private String email;
 
     @ElementCollection(targetClass = String.class)
+    @CollectionTable(name = "USER_GRANTED_AUTHORITIES")
+    @Column(name = "granted_authorities")
     private Set<String> grantedAuthorities;
+
+    @Column(name = "is_account_non_expired")
     private boolean isAccountNonExpired;
+
+    @Column(name = "is_account_non_locked")
     private boolean isAccountNonLocked;
+
+    @Column(name = "is_credentials_non_expired")
     private boolean isCredentialsNonExpired;
+
+    @Column(name = "is_enabled")
     private boolean isEnabled;
 
 

@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "beer")
+@Table(name = "BEER")
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;
@@ -37,11 +38,11 @@ public class Beer implements Serializable {
     private Double alcohol;
 
     @ManyToOne(
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             targetEntity = Brewery.class
     )
-    @JoinColumn(name = "brewery_id")
+    @JoinColumn(name = "brewery_id", nullable = false)
     @JsonIgnore
     private Brewery brewery;
 

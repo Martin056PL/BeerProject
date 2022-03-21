@@ -63,9 +63,9 @@ public class BeerController {
         return ok().body(resultListOfBeers);
     }
 
-    @GetMapping("beers")
+    @GetMapping("beers/{beerId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BeerResponse> findProperBeerByBeerId(@RequestParam Long beerId) throws ElementNotFoundException {
+    public ResponseEntity<BeerResponse> findProperBeerByBeerId(@PathVariable Long beerId) throws ElementNotFoundException {
         BeerResponse resultBeer = service.findBeerById(beerId);
         return ok().body(resultBeer);
     }
@@ -81,9 +81,9 @@ public class BeerController {
 
     //put methods
 
-    @PutMapping("/beers")
+    @PutMapping("/beers/{beerId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BeerResponse> updateBeerBeerId(@RequestParam Long beerId,
+    public ResponseEntity<BeerResponse> updateBeerBeerId(@PathVariable Long beerId,
                                                          @Valid @RequestBody BeerRequest beerRequest) throws ElementNotFoundException {
         BeerResponse beerResponse = service.updateBeerByBeerId(beerId, beerRequest);
         return ok(beerResponse);
@@ -101,23 +101,23 @@ public class BeerController {
 
     //delete methods
 
-    @DeleteMapping("beers")
+    @DeleteMapping("beers/{beerId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> deleteBeerByBeerId(@RequestParam Long beerId) throws ElementNotFoundException {
+    public ResponseEntity<Object> deleteBeerByBeerId(@PathVariable Long beerId) throws ElementNotFoundException {
         service.deleteBeerById(beerId);
         return noContent().build();
     }
 
-    @PostMapping(value = "beers/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "beers/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@RequestParam Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+    public ResponseEntity<Object> uploadImage(@PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
         service.setBeerImageToBeerByBeerId(beerId, file);
         return ok().body("File is uploaded successfully");
     }
 
-    @GetMapping(value = "beers/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping(value = "beers/{beerId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<byte[]> downloadImage(@RequestParam Long beerId) throws ElementNotFoundException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable Long beerId) throws ElementNotFoundException {
         byte[] image = service.getBeerImageBaseOnBeerId(beerId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

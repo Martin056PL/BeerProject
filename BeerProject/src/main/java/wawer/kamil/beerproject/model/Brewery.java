@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "beerList")
-@Table(name = "brewery")
+@Table(name = "BREWERY")
 public class Brewery implements Serializable {
 
     private static final long serialVersionUID = -9149691662724951820L;
@@ -62,5 +63,9 @@ public class Brewery implements Serializable {
         beerList.add(beer);
         beer.setBrewery(this);
         return beer;
+    }
+
+    public void assignBreweryToAllBeersOnBrewerysList(){
+        Optional.ofNullable(this.getBeerList()).ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
     }
 }

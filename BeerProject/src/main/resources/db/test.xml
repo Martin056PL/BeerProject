@@ -3,11 +3,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="version/001-CreateBasicTableStructure.xml" relativeToChangelogFile="true"/>
-    <include file="version/002-AddSampleData.xml" relativeToChangelogFile="true"/>
-    <include file="version/003-1-AddUserTableForH2.xml" relativeToChangelogFile="true"/>
-    <include file="version/004-ReplaceAddressColumnByAddressId.xml" relativeToChangelogFile="true"/>
-    <include file="version/005-AddSamplesOfBreweryAddressesData.xml" relativeToChangelogFile="true"/>
-    <include file="version/006-AddSamplesOfUsersData.xml" relativeToChangelogFile="true"/>
-    <include file="version/007-ReplaceIntegetToStringForParcelNumberAndLocalNumber.xml" relativeToChangelogFile="true"/>
+    <include file="version/001-CreateBreweryTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/002-CreateBeerTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/003-CreateAddressTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/004-CreateUserTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/005-AddSampleAddressesToAddressTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/006-AddSampleBreweriesToBreweriesTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/007-AddSampleBeersToBeerTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/008-AddSampleUsersToUserTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

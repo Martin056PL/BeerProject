@@ -4,9 +4,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="Kamil Wawer" id="4">
+    <changeSet author="Kamil Wawer" id="10">
         <loadData file="classpath:/db/samples/001-beerSamples.csv"
-                  tableName="beer">
+                  tableName="BEER">
             <column name="beer_id" type="numeric" header="beer_id"/>
             <column name="brewery_id" type="numeric" header="brewery_id"/>
             <column name="name" type="string" header="name"/>
@@ -14,16 +14,5 @@
             <column name="extract" type="numeric" header="extract"/>
             <column name="alcohol" type="numeric" header="alcohol"/>
         </loadData>
-
-        <loadData file="classpath:/db/samples/001-brewerySamples.csv"
-                  tableName="brewery">
-            <column name="brewery_id" type="numeric" header="brewery_id"/>
-            <column name="name" type="string" header="name"/>
-            <column name="email" type="string" header="email"/>
-            <column name="address" type="string" header="address"/>
-            <column name="phone_number" type="numeric" header="phone_number"/>
-            <column name="website" type="string" header="website"/>
-        </loadData>
-
     </changeSet>
 </databaseChangeLog>

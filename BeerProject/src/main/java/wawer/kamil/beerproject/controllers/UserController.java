@@ -27,7 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/generate")
+    @PostMapping("/generate")
     public ResponseEntity<User> generateUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.generateDefaultUserToDatabase());
     }

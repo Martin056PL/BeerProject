@@ -1,0 +1,34 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="5" author="Kamil Wawer">
+        <createTable tableName="ADDRESS">
+            <column name="address_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="street" type="varchar(255)"/>
+            <column name="parcel_number" type="varchar(255)"/>
+            <column name="local_number" type="varchar(255)"/>
+            <column name="zip_code" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="Kamil Wawer">
+        <createIndex indexName="index4address" tableName="BREWERY">
+            <column name="address_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="7" author="Kamil Wawer">
+        <addForeignKeyConstraint constraintName="fk_brewery2address"
+                                 baseTableName="BREWERY"
+                                 baseColumnNames="address_id"
+                                 referencedTableName="ADDRESS"
+                                 referencedColumnNames="address_id"/>
+    </changeSet>
+
+</databaseChangeLog>

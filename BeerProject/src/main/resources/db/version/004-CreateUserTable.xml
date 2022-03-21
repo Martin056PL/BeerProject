@@ -4,8 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="5" author="Kamil Wawer">
-        <createTable tableName="user">
+    <changeSet id="8" author="Kamil Wawer">
+        <createTable tableName="USER">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
@@ -22,15 +22,16 @@
             <column name="is_enabled" type="boolean"/>
         </createTable>
 
-        <createTable tableName="user_granted_authorities">
+        <createTable tableName="USER_GRANTED_AUTHORITIES">
             <column name="user_id" type="bigint"/>
             <column name="granted_authorities" type="varchar(255)"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="user_granted_authorities"
-                                 constraintName="FK5cxy225g3c11e2c3y1c45qlso"
+                                 baseTableName="USER_GRANTED_AUTHORITIES"
+                                 constraintName="FK5cxy225g3c11e2c3y1c45qdfdfo"
                                  referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 referencedTableName="USER"/>
     </changeSet>
+
 </databaseChangeLog>
