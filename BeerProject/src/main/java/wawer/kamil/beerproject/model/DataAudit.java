@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-abstract class DataAudit {
+public abstract class DataAudit {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "update_date_time")
     private LocalDateTime updatedAt;
 
-    public DataAudit(LocalDateTime updatedAt) {
+    protected DataAudit(LocalDateTime updatedAt) {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = updatedAt;
     }
