@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: file:credentials/credentials-container.yml
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
@@ -14,8 +12,9 @@ spring:
           use_jdbc_metadata_defaults: false
 
   datasource:
-    url: jdbc:mysql://db:3306/beerProjectDevelop?useSSL=true&serverTimezone=UTC
-    # username and password is getting from credentials directory from credential-container.yml
+    # username and password are taken from .env file during docker-compose up
+    # reuse .env.template: Fulfill data with yours values and remove suffix 'template'
+    url:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

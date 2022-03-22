@@ -34,5 +34,5 @@ build/
 
 logs/*
 /src/main/resources/images/*
-
+.env
 credentials/*
