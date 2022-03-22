@@ -1,12 +1,16 @@
 spring:
+  config:
+    import: file:credentials/credentials-test.yml
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+
   datasource.url: jdbc:h2:mem:beer;DATABASE_TO_UPPER=false;
   datasource:
       driverClassName: org.h2.Driver
-      username: sa
+      # username and password is getting from credentials directory from credential-test.yml
+      username:
       password:
-  jpa:
-    database-platform : org.hibernate.dialect.H2Dialect
-    show-sql: true
 
   liquibase:
     change-log: classpath:db/test.xml

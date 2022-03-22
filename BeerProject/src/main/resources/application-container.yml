@@ -1,5 +1,6 @@
 spring:
-
+  config:
+    import: file:credentials/credentials-container.yml
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
@@ -14,8 +15,9 @@ spring:
 
   datasource:
     url: jdbc:mysql://db:3306/beerProjectDevelop?useSSL=true&serverTimezone=UTC
-    username: admin
-    password: admin
+    # username and password is getting from credentials directory from credential-container.yml
+    username:
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   liquibase:
