@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="Kamil Wawer">
+        <createTable tableName="BREWERY">
+            <column name="brewery_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="address_id" type="bigint"/>
+            <column name="phone_number" type="bigint"/>
+            <column name="website" type="varchar(255)"/>
+            <column name="brewery_image" type="MEDIUMBLOB"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

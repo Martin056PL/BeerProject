@@ -5,24 +5,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Service
 @Slf4j(topic = "application.logger")
 public class ImageUpload {
 
-    @Value("${image.path}")
-    private String PATH;
-
     @Value("${image.requirements.standard-type}")
-    private String STANDARD_TYPE;
+    private String standardType;
 
-    private static final long MAX_SIZE_OF_FILE = 10000000L;
+    @Value("${image.requirements.max-file-size}")
+    private Long fileSize;
 
-    public byte[] convertFileToByteArray(MultipartFile file) throws IOException {
+
+    public byte[] convertImageToByteArray(MultipartFile file) throws IOException {
         byte[] byteObject = new byte[file.getBytes().length];
         int i = 0;
         for (byte b : file.getBytes()) {
@@ -31,23 +28,19 @@ public class ImageUpload {
         return byteObject;
     }
 
-    public void uploadBeerImageToImagesDirectory(MultipartFile file) throws IOException {
-        String path = PATH;
-        File createdFile = new File(path.substring(0, path.length() - 1) + file.getOriginalFilename());
-        try (FileOutputStream outputStream = new FileOutputStream(createdFile)) {
-            outputStream.write(file.getBytes());
-        } catch (FileNotFoundException e) {
-            log.debug(e.getMessage());
-        }
+    public boolean validateFile(MultipartFile file) {
+        boolean result = isFileTypeValid(file) && isFileSizeValid(file);
+        log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", isFileTypeValid(file), isFileSizeValid(file), result);
+        return result;
     }
 
-    public boolean validateSizeAndTypeOfFile(MultipartFile file) {
+    private boolean isFileTypeValid(MultipartFile file){
         String type = file.getContentType();
+        return Arrays.asList(standardType.split(",")).contains(type);
+    }
+
+    private boolean isFileSizeValid(MultipartFile file) {
         long size = file.getSize();
-        boolean fileTypeResult = type.equals(STANDARD_TYPE);
-        boolean fileSizeResult = size <= MAX_SIZE_OF_FILE;
-        boolean result = fileTypeResult && fileSizeResult;
-        log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", fileTypeResult, fileSizeResult, result);
-        return result;
+        return size <= fileSize;
     }
 }

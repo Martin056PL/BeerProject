@@ -24,7 +24,7 @@ public class SpringAppConfig {
         return new ModelMapper();
     }
 
-    @Bean(name = "UserToUserMapper")
+    @Bean(name = "UserMapper")
     public ModelMapper getUserModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new PropertyMap<User, User>() {

@@ -4,9 +4,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="Kamil Wawer" id="9">
+
+    <changeSet author="Kamil Wawer" id="12">
         <loadData file="classpath:/db/samples/003-usersSamples.csv"
-                  tableName="user">
+                  tableName="USER">
             <column name="id" type="numeric" header="id"/>
             <column name="created_at" type="datetime" header="created_at"/>
             <column name="update_date_time" type="datetime" header="update_date_time"/>
@@ -20,10 +21,9 @@
         </loadData>
 
         <loadData file="classpath:/db/samples/004-userGrantedAuthorities.csv"
-                  tableName="user_granted_authorities">
+                  tableName="USER_GRANTED_AUTHORITIES">
             <column name="user_id" type="numeric" header="user_id"/>
             <column name="granted_authorities" type="string" header="granted_authorities"/>
         </loadData>
-
     </changeSet>
 </databaseChangeLog>

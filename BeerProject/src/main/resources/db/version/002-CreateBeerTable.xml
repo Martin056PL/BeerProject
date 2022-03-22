@@ -4,10 +4,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="Kamil Wawer">
-        <createTable tableName="beer">
+    <changeSet id="2" author="Kamil Wawer">
+        <createTable tableName="BEER">
             <column name="beer_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="brewery_id" type="bigint"/>
             <column name="name" type="varchar(255)"/>
@@ -18,24 +18,18 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="Kamil Wawer">
-        <createTable tableName="brewery">
-            <column name="brewery_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(255)"/>
-            <column name="email" type="varchar(255)"/>
-            <column name="address" type="varchar(255)"/>
-            <column name="phone_number" type="bigint"/>
-            <column name="website" type="varchar(255)"/>
-            <column name="brewery_image" type="MEDIUMBLOB"/>
-        </createTable>
-    </changeSet>
-
     <changeSet id="3" author="Kamil Wawer">
-        <createIndex indexName="4939e7cde33371150f79d4bee5b3c15a" tableName="beer">
+        <createIndex indexName="index4brewery" tableName="BEER">
             <column name="brewery_id"/>
         </createIndex>
+    </changeSet>
+
+    <changeSet id="4" author="Kamil Wawer">
+        <addForeignKeyConstraint constraintName="fk_brewery2beer"
+                                 baseTableName="BEER"
+                                 baseColumnNames="brewery_id"
+                                 referencedTableName="BREWERY"
+                                 referencedColumnNames="brewery_id"/>
     </changeSet>
 
 </databaseChangeLog>

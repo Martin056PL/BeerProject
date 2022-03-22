@@ -5,12 +5,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import wawer.kamil.beerproject.dto.BeerDTO;
+import wawer.kamil.beerproject.dto.request.BeerRequest;
 
 @Aspect
 @Component
 @Slf4j(topic = "application.logger")
-public class BeerAspects {
+public class BeerControllerAspects {
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findAllBeersPage(..)) && args(pageable)")
     public void logFindAllBeersPage(Pageable pageable) {
@@ -37,59 +37,39 @@ public class BeerAspects {
         log.debug("Endpoint address: 'beer/{beerId}' with GET method, request parameter - beerId: {}", beerId);
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.findProperBeerBaseOnBreweryIdAndBeerId(..)) && args(breweryId, beerId)", argNames = "breweryId,beerId")
-    public void logFindProperBeerByBeerId(Long breweryId, Long beerId) {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with GET method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
-    }
-
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.addNewBeer(..)) && args(beerDTO)")
-    public void logAddNewBeer(BeerDTO beerDTO) {
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.addBeerToBreweryByBreweryId(..)) && args(beerRequest)")
+    public void logAddNewBeer(BeerRequest beerRequest) {
         log.debug("Endpoint address: 'beer' with POST method, request parameter -  beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
+                , beerRequest.getName()
+                , beerRequest.getStyle()
+                , beerRequest.getAlcohol()
+                , beerRequest.getExtract());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.addNewBeerAssignedToBreweryByBreweryId(..)) && args(breweryId, beerDTO)", argNames = "breweryId,beerDTO")
-    public void logAddNewBeerAssignedToBreweryByBreweryId(Long breweryId, BeerDTO beerDTO) {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer' with POST method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , breweryId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
-    }
-
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.updateBeer(..)) && args(beerId, beerDTO)", argNames = "beerId,beerDTO")
-    public void logUpdateBeer(Long beerId, BeerDTO beerDTO) {
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.updateBeerBeerId(..)) && args(id, beerRequest)", argNames = "id,beerRequest")
+    public void logUpdateBeer(Long id, BeerRequest beerRequest) {
         log.debug("Endpoint address: 'beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
-                , beerId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
+                , id
+                , beerRequest.getName()
+                , beerRequest.getStyle()
+                , beerRequest.getAlcohol()
+                , beerRequest.getExtract());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.updateBeerBaseOnBreweryIdAndBeerId(..)) && args(breweryId, beerId, beerDTO)", argNames = "breweryId,beerId,beerDTO")
-    public void logUpdateBeerBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId, BeerDTO beerDTO) {
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.updateBeerBaseOnBreweryIdAndBeerId(..)) && args(breweryId, beerId, beerRequest)", argNames = "breweryId,beerId,beerRequest")
+    public void logUpdateBeerBaseOnBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest beerRequest) {
         log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with PUT method, request parameter - breweryId: {}, beerId: {} beerData: Name: {}; Style: {}; Alcohol: {}; Extract: {}"
                 , breweryId
                 , beerId
-                , beerDTO.getName()
-                , beerDTO.getStyle()
-                , beerDTO.getAlcohol()
-                , beerDTO.getExtract());
+                , beerRequest.getName()
+                , beerRequest.getStyle()
+                , beerRequest.getAlcohol()
+                , beerRequest.getExtract());
     }
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.deleteBeerByBeerId(..)) && args(beerId)")
     public void logDeleteBeerByBeerId(Long beerId) {
         log.debug("Endpoint address: 'beer/{beerId}' with DELETE method, request parameter - beerId: {}", beerId);
-    }
-
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.deleteBeerByBreweryIdAndBeerId(..)) && args(breweryId, beerId)", argNames = "breweryId,beerId")
-    public void logDeleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) {
-        log.debug("Endpoint address: 'brewery/{breweryId}/beer/{beerId}' with DELETE method, request parameter - breweryId: {}, beerId: {}", breweryId, beerId);
     }
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BeerController.uploadImage(..)) && args(breweryId, beerId)", argNames = "breweryId,beerId")

@@ -127,7 +127,7 @@ public class Generator {
 
         Address address1 = Address.builder()
                 .city("Poniatowa")
-                .parcelNumber(43)
+                .parcelNumber("43")
                 .zipCode("24-320")
                 .street("Przemyslowa")
                 .build();
@@ -165,8 +165,8 @@ public class Generator {
 
         Address address2 = Address.builder()
                 .city("Toruń")
-                .localNumber(22)
-                .parcelNumber(81)
+                .localNumber("22")
+                .parcelNumber("81")
                 .zipCode("87-100")
                 .street("Przemyslowa")
                 .build();
@@ -209,7 +209,7 @@ public class Generator {
 
         Address address3 = Address.builder()
                 .city("Olsztyn")
-                .parcelNumber(2)
+                .parcelNumber("2")
                 .zipCode("10-057")
                 .street("Al. Gen. Wł. Sikorskiego")
                 .build();
@@ -252,7 +252,7 @@ public class Generator {
 
         Address address4 = Address.builder()
                 .city("Lublin")
-                .parcelNumber(7)
+                .parcelNumber("7")
                 .zipCode("20-474")
                 .street("Smoluchowskiego")
                 .build();
@@ -295,7 +295,7 @@ public class Generator {
 
         Address address5 = Address.builder()
                 .city("Żywiec")
-                .parcelNumber(22)
+                .parcelNumber("22")
                 .zipCode("34-300")
                 .street("Na Oklu")
                 .build();

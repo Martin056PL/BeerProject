@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.exceptions.NoContentException;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
@@ -24,10 +24,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-import static wawer.kamil.beerproject.controllers.UserControllerTestHelper.*;
+import static wawer.kamil.beerproject.helpers.UserTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Mock
     private UserService userService;
@@ -48,15 +48,15 @@ public class UserControllerTest {
     @BeforeEach
     void setUp() {
         this.userResponse = createUserResponse();
-        this.userResponsePage = createPage();
-        this.userResponseList = createListOfUsers();
+        this.userResponsePage = createUserResponsePage();
+        this.userResponseList = createListOfUsersResponse();
         this.pageable = createPageable(PAGE_PAGE, PAGE_SIZE);
-        this.userRequest = createUserRequest();
+        this.userRequest = getUserRequest();
     }
 
     @Test
     @DisplayName("Test - should return response entity with generated user")
-    public void should_return_response_entity_with_generated_user() {
+    void should_return_response_entity_with_generated_user() {
         //when
         ResponseEntity<User> userResponseEntity = controller.generateUser();
 
@@ -68,7 +68,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with page body")
-    public void should_return_response_entity_with_page_body() {
+    void should_return_response_entity_with_page_body() {
         //given
         when(userService.findAllUsersPage(pageable)).thenReturn(userResponsePage);
 
@@ -85,7 +85,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with list body")
-    public void should_return_response_entity_with_list_body() {
+    void should_return_response_entity_with_list_body() {
         //given
         when(userService.findAllUsersList()).thenReturn(userResponseList);
 
@@ -102,7 +102,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with proper user base on id body")
-    public void should_return_response_entity_with_proper_user_base_on_id_body() throws NoContentException {
+    void should_return_response_entity_with_proper_user_base_on_id_body() throws ElementNotFoundException {
         //given
         when(userService.findUserByUserId(USER_ID)).thenReturn(userResponse);
 
@@ -123,9 +123,9 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found")
-    public void should_throw_exception_when_user_not_found() throws NoContentException {
+    void should_throw_exception_when_user_not_found() throws ElementNotFoundException {
         //given
-        when(userService.findUserByUserId(USER_ID)).thenThrow(NoContentException.class);
+        when(userService.findUserByUserId(USER_ID)).thenThrow(ElementNotFoundException.class);
 
         //when
         assertThatThrownBy(() -> controller.findUserByUserId(USER_ID));
@@ -133,7 +133,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with saved user")
-    public void should_return_response_entity_with_saved_user() throws UsernameAlreadyExistsException {
+    void should_return_response_entity_with_saved_user() throws UsernameAlreadyExistsException {
         //given
         when(userService.addNewUser(userRequest)).thenAnswer(invocation -> {
             UserRequest argument = invocation.getArgument(0, UserRequest.class);
@@ -169,7 +169,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when username is unavailable during create")
-    public void should_throw_exception_when_username_is_unavailable_during_create() throws UsernameAlreadyExistsException {
+    void should_throw_exception_when_username_is_unavailable_during_create() throws UsernameAlreadyExistsException {
         //given
         when(userService.addNewUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
 
@@ -179,7 +179,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with updated user")
-    public void should_return_response_entity_with_updated_user() throws NoContentException {
+    void should_return_response_entity_with_updated_user() throws ElementNotFoundException {
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenAnswer(invocation -> {
             UserRequest argument = invocation.getArgument(1, UserRequest.class);
@@ -215,9 +215,9 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found during update")
-    public void should_throw_exception_when_user_not_found_during_update() throws NoContentException {
+    void should_throw_exception_when_user_not_found_during_update() throws ElementNotFoundException {
         //given
-        when(userService.updateUser(USER_ID, userRequest)).thenThrow(NoContentException.class);
+        when(userService.updateUser(USER_ID, userRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
         assertThatThrownBy(() -> controller.updateUser(USER_ID, userRequest));
@@ -225,7 +225,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity when deleting user permanently")
-    public void should_return_response_entity_when_deleting_user_permanently() throws NoContentException {
+    void should_return_response_entity_when_deleting_user_permanently() throws ElementNotFoundException {
         //when
         ResponseEntity<?> responseEntity = controller.deleteUserPermanently(USER_ID);
 
@@ -237,9 +237,9 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found during deleting user permanently")
-    public void should_throw_exception_when_user_not_found_during_deleting_user_permanently() throws NoContentException {
+    void should_throw_exception_when_user_not_found_during_deleting_user_permanently() throws ElementNotFoundException {
         //given
-        when(controller.deleteUserPermanently(USER_ID)).thenThrow(NoContentException.class);
+        when(controller.deleteUserPermanently(USER_ID)).thenThrow(ElementNotFoundException.class);
 
         //when
         assertThatThrownBy(() -> controller.deleteUserPermanently(USER_ID));

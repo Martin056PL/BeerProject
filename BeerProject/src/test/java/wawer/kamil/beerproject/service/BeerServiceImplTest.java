@@ -1,38 +1,38 @@
 package wawer.kamil.beerproject.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.dto.request.BeerRequest;
+import wawer.kamil.beerproject.dto.response.BeerResponse;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
+import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.model.Beer;
 import wawer.kamil.beerproject.model.Brewery;
-import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.exceptions.NoContentException;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
+import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static wawer.kamil.beerproject.helpers.BeerTestHelper.*;
+import static wawer.kamil.beerproject.helpers.BreweryTestHelper.getSingleBreweryBeforeSave;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BeerServiceImplTest {
-
-    @Mock
-    Pageable pageable;
-
-    @Mock
-    Beer beer;
-
-    @Mock
-    Brewery brewery;
+@ExtendWith(MockitoExtension.class)
+class BeerServiceImplTest {
 
     @Mock
     BeerRepository beerRepository;
@@ -41,229 +41,348 @@ public class BeerServiceImplTest {
     BreweryRepository breweryRepository;
 
     @Mock
-    ImageUpload imageUpload;
+    BeerMapper beerMapper;
+
+    @Mock
+    Pageable pageable;
 
     @Mock
     MultipartFile file;
 
+    @Mock
+    ImageUpload imageUpload;
+
     @InjectMocks
     BeerServiceImpl service;
+
+    private Beer beer;
+    private Beer updatedBeer;
+    private Beer beerBeforeUpdate;
+    private BeerResponse beerResponse;
+    private BeerResponse updatedBeerResponse;
+    private BeerRequest beerRequest;
+
+    private Page<Beer> beerPage;
+    private List<Beer> beerList;
+    private Brewery brewery;
 
     private static final Long beerID = 1L;
     private static final Long breweryID = 1L;
 
+    @BeforeEach
+    void setUp() {
+        this.beer = getBeer();
+        this.beerResponse = getBeerResponse();
+        this.beerRequest = getBeerRequest();
+        this.beerBeforeUpdate = getBeerBeforeUpdate();
+        this.updatedBeerResponse = getUpdatedBeerResponse();
+        this.updatedBeer = getUpdatedBeer();
+        this.beerPage = getBeerPage();
+        this.beerList = getListOfBeers();
+        this.brewery = getSingleBreweryBeforeSave();
+    }
+
     @Test
-    public void verify_find_all_beers_page() {
+    @DisplayName("Verify if find all with pageable method is called during beers getting")
+    void verify_if_find_all_with_pageable_method_is_called_during_beers_getting() {
+        // given
+        when(beerRepository.findAll(pageable)).thenReturn(beerPage);
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+
+        //when
         service.findAllBeersPage(pageable);
+
+        //then
         verify(beerRepository).findAll(pageable);
     }
 
     @Test
-    public void verify_find_all_beers_list() {
+    @DisplayName("Verify if find all method is called during beers getting")
+    void verify_if_find_all_method_is_called_during_beers_getting() {
+        //when
         service.findAllBeersList();
+
+        //then
         verify(beerRepository).findAll();
     }
 
     @Test
-    public void verify_find_beer_by_beer_id_when_id_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.findBeerByBeerId(beerID);
-        verify(beerRepository).findBeerByBeerId(beerID);
-    }
+    @DisplayName("Verify if find beer by beer id is called when id exists")
+    void verify_find_beer_by_beer_id_when_id_exists() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
 
-    @Test(expected = NoContentException.class)
-    public void verify_find_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.findBeerByBeerId(beerID);
-        verify(beerRepository).findBeerByBeerId(beerID);
+        //when
+        service.findBeerById(beerID);
+
+        //then
+        verify(beerRepository).findById(beerID);
     }
 
     @Test
-    public void verify_find_all_beers_by_brewery_id_when_id_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during getting beer by beer id")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_getting_beer_by_beer_id() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callFindByIdWhichDoesNotExist);
+    }
+
+    private void callFindByIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
+
+        //when
+        service.findBeerById(beerID);
+    }
+
+    @Test
+    @DisplayName("Verify if find brewery by brewery id and find all beers with PAGEABLE are called when brewery id exists")
+    void verify_find_brewery_by_brewery_id_and_find_all_beers_with_pageable_when_brewery_id_exists() throws ElementNotFoundException {
+        //given
+        when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
+        when(beerRepository.findAllByBreweryId(brewery.getBreweryId(), pageable)).thenReturn(beerPage);
+
+        //when
         service.findAllBeersByBreweryIdPage(breweryID, pageable);
-        verify(beerRepository).findAllByBrewery(brewery, pageable);
+
+        //then
+        verify(breweryRepository).findById(breweryID);
+        verify(beerRepository).findAllByBreweryId(brewery.getBreweryId(), pageable);
     }
 
-    @Test(expected = NoContentException.class)
-    public void verify_find_all_beers_by_brewery_id_when_id_do_not_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during getting beers by brewery id with PAGEABLE")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_getting_beers_by_brewery_id_with_pageable() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdPageWhichDoesNotExist);
+    }
+
+    private void callFindAllBeersByBreweryIdPageWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
+
+        //when
         service.findAllBeersByBreweryIdPage(breweryID, pageable);
     }
 
     @Test
-    public void verify_find_all_beers_by_brewery_id_list_when_id_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
+    @DisplayName("Verify if find brewery by brewery id and find all beers with LIST are called when brewery id exists")
+    void verify_if_find_brewery_by_brewery_id_and_find_all_beers_with_LIST_are_called_when_brewery_id_exists() throws ElementNotFoundException {
+        //given
+        when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
+        when(beerRepository.findAllByBreweryId(brewery.getBreweryId())).thenReturn(beerList);
+
+        //when
         service.findAllBeersByBreweryIdList(breweryID);
-        verify(beerRepository).findAllByBrewery(brewery);
+
+        //then
+        verify(breweryRepository).findById(breweryID);
+        verify(beerRepository).findAllByBreweryId(brewery.getBreweryId());
     }
 
-    @Test(expected = NoContentException.class)
-    public void verify_find_all_beers_by_brewery_id_list_when_id_do_not_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during getting beers by brewery id with LIST")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_getting_beers_by_brewery_id_with_LIST() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdListWhichDoesNotExist);
+    }
+
+    private void callFindAllBeersByBreweryIdListWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
+
+        //when
         service.findAllBeersByBreweryIdList(breweryID);
     }
 
     @Test
-    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_both_ids_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
-        service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID);
-        verify(beerRepository).findBeerByBreweryAndBeerId(brewery, beerID);
-    }
-
-    @Test(expected = NoContentException.class)
-    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_only_brewery_id_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
-        service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID);
-    }
-
-    @Test(expected = NoContentException.class)
-    public void verify_find_proper_beer_by_brewery_id_and_beerId_when_only_beer_id_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID);
-    }
-
-    @Test
-    public void verify_add_new_beer_to_repository() {
-        service.addNewBeerToRepository(beer);
-        verify(beerRepository).save(beer);
-    }
-
-    @Test
-    public void verify_add_new_beer_assigned_to_brewery_by_brewery_id_when_id_exists() throws NoContentException {
+    @DisplayName("Verify if save beer is called when brewery id exists")
+    void verify_save_beer_when_brewery_id_exists() throws ElementNotFoundException {
+        //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
         when(beerRepository.save(beer)).thenReturn(beer);
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
-        verify(breweryRepository).findById(beerID);
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
+
+        //when
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest);
+
+        //then
+        verify(breweryRepository).findById(breweryID);
+        verify(beerRepository).save(beer);
     }
 
-    @Test(expected = NoContentException.class)
-    public void verify_add_new_beer_assigned_to_brewery_by_brewery_id_when_id_do_not_exists() throws NoContentException {
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during saving beer")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_saving_beer() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist);
+    }
+
+    private void callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
-        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beer);
+
+        //when
+        service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest);
     }
 
-    //update
 
     @Test
-    public void verify_update_beer_by_beer_id_when_id_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.updateBeerByBeerId(breweryID, beer);
-        verify(beerRepository).save(beer);
-    }
+    @DisplayName("Verify if updated beer has the same properties as on request during beer update with beer id")
+    void verify_if_updated_beer_has_the_same_properties_as_on_request_during_beer_update_with_beer_id() throws ElementNotFoundException {
+        //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
+        when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(updatedBeerResponse);
 
-    @Test(expected = NoContentException.class)
-    public void verify_update_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.updateBeerByBeerId(breweryID, beer);
-    }
+        //when
+        BeerResponse updatedBeerByService = service.updateBeerByBeerId(beerID, beerRequest);
 
-    @Test
-    public void verify_update_beer_by_brewery_id_and_beer_id_when_both_ids_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(beerRepository.findBeerByBeerId(beerID)).thenReturn(beer);
-        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
-        verify(beerRepository).save(beer);
-    }
-
-    @Test(expected = NoContentException.class)
-    public void verify_update_beer_by_brewery_id_and_beer_id_when_brewery_id_do_not_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
-        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
-    }
-
-    @Test(expected = NoContentException.class)
-    public void verify_update_beer_by_brewery_id_and_beer_id_when_only_brewery_id_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(breweryID)).thenReturn(false);
-        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beer);
-    }
-
-    //delete
-
-    @Test
-    public void verify_delete_beer_by_beer_id_when_id_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.deleteBeerByBeerId(beerID);
-        verify(beerRepository).deleteById(beerID);
-    }
-
-    @Test(expected = NoContentException.class)
-    public void verify_delete_beer_by_beer_id_when_id_do_not_exists() throws NoContentException {
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.deleteBeerByBeerId(beerID);
+        //then
+        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
+        assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
+        assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
+        assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());
+        assertEquals(updatedBeer.getAlcohol(), updatedBeerByService.getAlcohol());
     }
 
     @Test
-    public void verify_delete_beer_by_brewery_id_and_beer_id_when_both_ids_exist() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
-        verify(beerRepository).deleteById(beerID);
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during update beer with beer id")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_update_beer_with_beer_id() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callUpdateBeerByBeerIdWhichDoesNotExist);
     }
 
-    @Test(expected = NoContentException.class)
-    public void verify_delete_beer_by_brewery_id_and_beer_id_when_brewery_id_do_not_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(false);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
-    }
+    private void callUpdateBeerByBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
 
-    @Test(expected = NoContentException.class)
-    public void verify_delete_beer_by_brewery_id_and_beer_id_when_beer_id_do_not_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(false);
-        service.deleteBeerByBreweryIdAndBeerId(breweryID, beerID);
+        //when
+        service.updateBeerByBeerId(beerID, beerRequest);
     }
 
     @Test
-    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id_and_image_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenReturn(beer);
-        when(beer.getBeerImage()).thenReturn(newArray());
-        assertEquals(beer.getBeerImage(), service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID));
-    }
+    @DisplayName("Verify if updated beer has the same properties as on request beer during beer update with brewery and beer id")
+    void verify_if_updated_beer_has_the_same_properties_as_on_request_beer_during_beer_update_with_brewery_and_beer_id() throws ElementNotFoundException {
+        //given
+        when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
+        when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.of(beer));
+        when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(updatedBeerResponse);
 
-    @Test(expected = NoContentException.class)
-    public void verify_get_beer_image_from_db_base_on_brewery_id_and_beer_id_and_image_do_not_exists() throws NoContentException {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(service.findProperBeerByBreweryIdAndBeerId(breweryID, beerID)).thenReturn(beer);
-        when(beer.getBeerImage()).thenReturn(null);
-        service.getBeerImageFromDbBaseOnBreweryIdAndBeerId(breweryID, beerID);
+        //when
+        BeerResponse updatedBeerByService = service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest);
+
+        //then
+        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
+        assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
+        assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
+        assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());
+        assertEquals(updatedBeer.getAlcohol(), updatedBeerByService.getAlcohol());
     }
 
     @Test
-    public void verify_set_beer_image_to_proper_beer_base_on_brewery_id_and_beer_id() throws NoContentException, IOException, InvalidImageParameters {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
-        when(beerRepository.findBeerByBreweryAndBeerId(brewery, beerID)).thenReturn(beer);
-        when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(true);
-        when(imageUpload.convertFileToByteArray(file)).thenReturn(newArray());
-        doNothing().when(beer).setBeerImage(newArray());
-        service.setBeerImageToProperBeerBaseOnBeerId(breweryID, beerID, file);
-        verify(beerRepository).save(beer);
+    @DisplayName("Verify if ElementNotFoundException is thrown when brewery id does not exists during update beer with brewery and beer id")
+    void verify_if_ElementNotFoundException_is_thrown_when_brewery_id_does_not_exists_during_update_beer_with_brewery_and_beer_id() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callUpdateBeerByBreweryIdAndBeerIdWhichDoesNotExist);
     }
 
-    @Test(expected = InvalidImageParameters.class)
-    public void should_throw_exception_when_image_has_invalid_parameters_for_beer_image() throws NoContentException, IOException, InvalidImageParameters {
-        when(breweryRepository.existsBreweryByBreweryId(breweryID)).thenReturn(true);
-        when(beerRepository.existsBeerByBeerId(beerID)).thenReturn(true);
-        when(breweryRepository.findByBreweryId(breweryID)).thenReturn(brewery);
-        when(beerRepository.findBeerByBreweryAndBeerId(brewery, beerID)).thenReturn(beer);
-        when(imageUpload.validateSizeAndTypeOfFile(file)).thenReturn(false);
-        service.setBeerImageToProperBeerBaseOnBeerId(breweryID, beerID, file);
+    private void callUpdateBeerByBreweryIdAndBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.empty());
+
+        //when
+        service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest);
     }
 
+    @Test
+    @DisplayName("Verify if delete beer is called when beer id exists")
+    void verify_delete_beer_when_beer_id_exists() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.ofNullable(beer));
 
-    private byte[] newArray() {
-        return new byte[10];
+        //when
+        service.deleteBeerById(beerID);
+
+        //then
+        verify(beerRepository).delete(beer);
+    }
+
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when beer id does not exists during deleting beer")
+    void verify_if_ElementNotFoundException_is_thrown_when_beer_id_does_not_exists_during_deleting_beer() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callDeleteBeerByIdWhichDoesNotExist);
+    }
+
+    private void callDeleteBeerByIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
+
+        //when
+        service.deleteBeerById(beerID);
+    }
+
+    @Test
+    @DisplayName("Verify if findBeerImageByBeerId brewery is called when image base on brewery id")
+    void verify_get_brewery_image_base_on_brewery_id() throws ElementNotFoundException {
+        //given
+        byte[] byteArray = new byte[10];
+        when(beerRepository.findBeerImageByBeerId(beerID)).thenReturn(byteArray);
+
+        //when
+        service.getBeerImageBaseOnBeerId(beerID);
+
+        //then
+        verify(beerRepository).findBeerImageByBeerId(beerID);
+    }
+
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when beer id does not exists during getting beer image")
+    void verify_if_ElementNotFoundException_is_thrown_when_beer_id_does_not_exists_during_getting_beer_image() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callGetBeerImageBaseOnBeerIdWhichDoesNotExist);
+    }
+
+    private void callGetBeerImageBaseOnBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+        //given
+        when(beerRepository.findBeerImageByBeerId(beerID)).thenReturn(null);
+
+        //when
+        service.getBeerImageBaseOnBeerId(beerID);
+    }
+
+    @Test
+    @DisplayName("Verify if findById is called when setting image to existing beer")
+    void verify_findById_when_setting_image_to_existing_beer() throws ElementNotFoundException, IOException, InvalidImageParameters {
+        //given
+        byte[] byteArray = new byte[10];
+        when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(imageUpload.validateFile(file)).thenReturn(true);
+        when(imageUpload.convertImageToByteArray(file)).thenReturn(byteArray);
+
+        //when
+        service.setBeerImageToBeerByBeerId(beerID, file);
+
+        //then
+        verify(beerRepository).findById(beerID);
+    }
+
+    @Test
+    @DisplayName("Verify if ElementNotFoundException is thrown when set image brewery by beer id does not exists")
+    void verify_set_image_brewery_by_id_when_brewery_id_do_not_exists() {
+        //then
+        assertThrows(InvalidImageParameters.class, this::callSetBeerImageToBeerByBeerIdWhichHasInvalidFile);
+    }
+
+    private void callSetBeerImageToBeerByBeerIdWhichHasInvalidFile() throws ElementNotFoundException, InvalidImageParameters, IOException {
+        //given
+        when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
+        when(imageUpload.validateFile(file)).thenReturn(false);
+
+        //when
+        service.setBeerImageToBeerByBeerId(beerID, file);
     }
 }

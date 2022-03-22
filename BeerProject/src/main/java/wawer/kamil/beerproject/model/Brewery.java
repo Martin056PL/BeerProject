@@ -1,6 +1,5 @@
 package wawer.kamil.beerproject.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,15 +8,16 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
+@Data
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Table(name = "brewery")
+@ToString(exclude = "beerList")
+@Table(name = "BREWERY")
 public class Brewery implements Serializable {
 
     private static final long serialVersionUID = -9149691662724951820L;
@@ -28,43 +28,44 @@ public class Brewery implements Serializable {
     private Long breweryId;
 
     @NotEmpty
-    @Column(name = "name")
+    @Column(nullable = false)
     private String name;
 
     @NotEmpty
-    @Column(name = "email")
+    @Column(nullable = false)
     private String email;
 
-    @NotNull
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",nullable = false)
     private Long phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
+    @NotNull
     private Address address;
 
-    @NotEmpty
-    @Column(name = "website")
     private String website;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @OneToMany(mappedBy = "brewery",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(
+            mappedBy = "brewery",
+            targetEntity = Beer.class,
+            cascade = CascadeType.ALL
+    )
     private List<Beer> beerList;
 
     @Lob
     @Column(name = "brewery_image", columnDefinition = "mediumblob")
-    private byte [] breweryImage;
+    private byte[] breweryImage;
 
-
-    public void addBeer(Beer beer) {
+    public Beer addBeer(Beer beer) {
         if (beerList == null) {
             beerList = new ArrayList<>();
         }
         beerList.add(beer);
         beer.setBrewery(this);
+        return beer;
+    }
 
+    public void assignBreweryToAllBeersOnBrewerysList(){
+        Optional.ofNullable(this.getBeerList()).ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
     }
 }

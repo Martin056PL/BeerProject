@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
@@ -15,11 +16,13 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class DataAudit {
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    private LocalDateTime updateDateTime;
+    @Column(name = "update_date_time")
+    private LocalDateTime updatedAt;
 
-    public DataAudit(LocalDateTime updateDateTime) {
+    protected DataAudit(LocalDateTime updatedAt) {
         this.createdAt = LocalDateTime.now();
-        this.updateDateTime = updateDateTime;
+        this.updatedAt = updatedAt;
     }
 }

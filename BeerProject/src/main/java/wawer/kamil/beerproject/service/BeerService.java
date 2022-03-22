@@ -2,43 +2,36 @@ package wawer.kamil.beerproject.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import wawer.kamil.beerproject.model.Beer;
+import wawer.kamil.beerproject.dto.request.BeerRequest;
+import wawer.kamil.beerproject.dto.response.BeerResponse;
+import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
-import wawer.kamil.beerproject.exceptions.NoContentException;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface BeerService {
 
-    Page<Beer> findAllBeersPage(Pageable pageable);
+    Page<BeerResponse> findAllBeersPage(Pageable pageable);
 
-    List<Beer> findAllBeersList();
+    List<BeerResponse> findAllBeersList();
 
-    Beer findBeerByBeerId(Long beerId) throws NoContentException;
+    BeerResponse findBeerById(Long beerId) throws ElementNotFoundException;
 
-    Page<Beer> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws NoContentException;
+    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException;
 
-    Beer addNewBeerToRepository(Beer beer);
+    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) throws ElementNotFoundException;
 
-    Beer addNewBeerAssignedToBreweryByBreweryId(Long breweryID, Beer beer) throws NoContentException;
+    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest) throws ElementNotFoundException;
 
-    Beer updateBeerByBeerId(Long beerId, Beer beer) throws NoContentException;
+    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) throws ElementNotFoundException;
 
-    Beer updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, Beer updatedBeer) throws NoContentException;
+    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException;
 
-    void deleteBeerByBeerId(Long beerId) throws NoContentException;
+    void deleteBeerById(Long id) throws ElementNotFoundException;
 
-    List<Beer> findAllBeersByBreweryIdList(Long breweryId) throws NoContentException;
+    void setBeerImageToBeerByBeerId(Long id, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters;
 
-    Beer findProperBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException;
-
-    void deleteBeerByBreweryIdAndBeerId(Long breweryId, Long beerId) throws NoContentException;
-
-    @Transactional
-    void setBeerImageToProperBeerBaseOnBeerId(Long breweryId, Long beerId, MultipartFile file) throws IOException, NoContentException, InvalidImageParameters;
-
-    byte[] getBeerImageFromDbBaseOnBreweryIdAndBeerId(Long breweryID, Long beerId) throws NoContentException;
+    byte[] getBeerImageBaseOnBeerId(Long id) throws ElementNotFoundException;
 }

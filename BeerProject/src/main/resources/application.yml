@@ -1,16 +1,19 @@
 spring:
-  profiles:
-    active: production
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: validate
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-
+  servlet:
+    multipart:
+      max-file-size: 6MB
 server:
-  port: 8085
+  servlet:
+    context-path: "/api/v1/"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
 
 logging:
   config: classpath:logback/logback.xml
@@ -18,4 +21,5 @@ logging:
 image:
   path: src/main/resources/images/.
   requirements:
-    standard-type: image/jpeg
+    standard-type: image/jpeg, image/jpg, image/png, image/bpm
+    max-file-size: 5242880

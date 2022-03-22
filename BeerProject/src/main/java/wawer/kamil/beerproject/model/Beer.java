@@ -1,49 +1,47 @@
 package wawer.kamil.beerproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Table(name = "beer")
+@Table(name = "BEER")
 public class Beer implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "beer_id")
+    @Column(name = "beer_id", nullable = false)
     private Long beerId;
 
-    @NotEmpty
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "style")
+    @Column(name = "style", nullable = false)
     private String style;
 
-    @Min(value = 0)
-    @Column(name = "extract")
+    @Column(name = "extract", nullable = false)
     private Double extract;
 
-    @Min(value = 0)
-    @Max(value = 100)
-    @Column(name = "alcohol")
+    @Column(name = "alcohol", nullable = false)
     private Double alcohol;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "brewery_id")
+    @ManyToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            targetEntity = Brewery.class
+    )
+    @JoinColumn(name = "brewery_id", nullable = false)
     @JsonIgnore
     private Brewery brewery;
 

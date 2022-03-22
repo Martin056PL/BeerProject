@@ -4,19 +4,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class UserRequest {
-
-    @NotEmpty
+    @NotBlank
     private String username;
-    @NotEmpty
+    @NotBlank
     private String password;
-    @NotEmpty
+    @NotBlank
     private String email;
     private Set<String> grantedAuthorities;
 }

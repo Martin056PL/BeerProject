@@ -18,7 +18,7 @@ public class UserMapper {
     private final ModelMapper modelMapperForUserToUser;
 
     public UserMapper(@Qualifier(value = "defaultMapper") ModelMapper modelMapper,
-                      @Qualifier(value = "UserToUserMapper") ModelMapper modelMapperForUserToUser) {
+                      @Qualifier(value = "UserMapper") ModelMapper modelMapperForUserToUser) {
         this.modelMapper = modelMapper;
         this.modelMapperForUserToUser = modelMapperForUserToUser;
     }
@@ -35,11 +35,12 @@ public class UserMapper {
         return userList.stream().map(user -> modelMapper.map(user, UserResponse.class)).collect(Collectors.toList());
     }
 
-    public User mapUserRequestToUserEntityAsDefaultMethod(UserRequest userRequest) {
+    public User mapUserRequestToUserEntity(UserRequest userRequest) {
         return modelMapper.map(userRequest, User.class);
     }
 
-    public void mapUserRequestToUserEntityForUpdateMethod(UserRequest userRequest, User userEntity) {
+    public User mapUserRequestToUserEntity(UserRequest userRequest, User userEntity) {
         modelMapperForUserToUser.map(userRequest, userEntity);
+        return userEntity;
     }
 }
