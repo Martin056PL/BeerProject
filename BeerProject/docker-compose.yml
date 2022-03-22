@@ -12,8 +12,7 @@ services:
     - 3306:3306
     restart: always
   api:
-   # image: martin056/beer-api:1.0
-    build: .
+    image: martin056/beer-api:1.1
     hostname: beerApp
     ports:
       - 8081:8081
