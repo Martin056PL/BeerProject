@@ -34,3 +34,7 @@ build/
 
 logs/*
 /src/main/resources/images/*
+.env
+credentials/credentials-development.yml
+credentials/credentials-test.yml
+credentials/credentials-production.yml
