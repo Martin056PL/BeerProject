@@ -35,4 +35,4 @@ build/
 logs/*
 /src/main/resources/images/*
 .env
-credentials/*
+!credentials/credentials.yml.template
