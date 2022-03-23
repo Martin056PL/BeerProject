@@ -2,13 +2,13 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Setup](#setup)
+* [Setup & Run](#setup-&-run)
 * [Status](#status)
 
-### General info
+## General info
 This is project to manage and support participants during beer day fest! 
 
-### Technologies
+## Technologies
 Current technical features:
 1. Getting and managing breweries and beers
 2. Getting and managing users existing within application and their privileges
@@ -38,15 +38,36 @@ List of used technologies and tools:
 * JUnit 5
 * SonarQube
 
-### Setup
+## Setup & Run
 
-To run this application you need to first clone this repository. Then you can use docker-compose to run app with database. All structure of will be auto generated.
-When project is successful cloned, open terminal in project directory, and finally run command:
-    
+To run this application you need to first clone this repository. Then you can run this app in two ways:
+
+#### DOCKER-COMPOSE (preferred solution)
+
+Use docker-compose to run app. Make sure you have installed docker and docker-compose on you local environment. 
+When you clone this repository you need to provide '.env' file with basic configuration. 
+Reuse existing file '.env.template' and provide your values or leave it as default. Then, open terminal in project directory, and run command:
+
     "docker-compose up"
 
-This will trigger creating containers with beer API and MySQL database. The app will be available at localhost:8081/api/v1/   
+This will trigger creating containers with beer API and MySQL database including your values. The app will be available at localhost:8081/api/v1/ (if you keep default values).
+
+#### RUN WITH TEST PROFILE
+
+You can also run this app with 'test' profile. This mode has embedded H2 database with sample data. First you need to configure credentials to DB.
+The template of credentials and instruction are placed in './credentials/credentials.yml.template'.
+
+After that, build package using maven tool. To build app use the following command:
+    
+    "mvn package"
+
+Then, go to just generated 'target' directory and run app using command line:
+
+    "java -jar beer-project-1.0.jar --spring.profiles.active=test"
+
 The full list of endpoints you can see here: [/localhost:8081/api/v1/swagger-ui/index.html](/localhost:8081/api/v1/swagger-ui/index.html)
 
+
 ### Status
+
 
