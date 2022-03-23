@@ -95,7 +95,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
-    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() throws ElementNotFoundException {
+    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() {
         //given
         when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(beerResponsesPage);
 

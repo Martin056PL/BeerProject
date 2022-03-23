@@ -18,11 +18,11 @@ public interface UserService {
 
     List<UserResponse> findAllUsersList();
 
-    UserResponse findUserByUserId(Long userId) throws ElementNotFoundException;
+    UserResponse findUserByUserId(Long userId) ;
 
-    UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException;
+    UserResponse addNewUser(UserRequest userRequest);
 
-    UserResponse updateUser(Long userId, UserRequest userRequest) throws ElementNotFoundException;
+    UserResponse updateUser(Long userId, UserRequest userRequest) ;
 
-    void permanentDeleteUser(Long userId) throws ElementNotFoundException;
+    void permanentDeleteUser(Long userId) ;
 }

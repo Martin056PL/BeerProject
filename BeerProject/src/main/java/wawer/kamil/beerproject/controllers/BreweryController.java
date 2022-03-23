@@ -49,7 +49,7 @@ public class BreweryController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id) throws ElementNotFoundException {
+    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id)  {
         BreweryResponse breweryResponse = service.findBreweryById(id);
         return ok().body(breweryResponse);
     }
@@ -63,21 +63,21 @@ public class BreweryController {
 
     @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
+    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest)  {
         BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
         return ok().body(updatedBrewery);
     }
 
     @DeleteMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id)  {
         service.deleteBreweryById(id);
         return noContent().build();
     }
 
     @GetMapping(value = "/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id)  {
         byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
@@ -86,7 +86,7 @@ public class BreweryController {
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) throws IOException {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(id, file);
         return ok().body("File is uploaded successfully");
     }

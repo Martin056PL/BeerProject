@@ -112,7 +112,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById method is called during getting single brewery by id")
-    void verify_get_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_get_brewery_by_brewery_id_when_brewery_id_exists()  {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
@@ -141,7 +141,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify update brewery by brewery id when brewery id does not exists")
-    void verify_update_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_update_brewery_by_brewery_id_when_brewery_id_exists()  {
         //given
         when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
@@ -160,7 +160,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBreweryByIdWhichDoesNotExist);
     }
 
-    private void callUpdateBreweryByIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callUpdateBreweryByIdWhichDoesNotExist()  {
         when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
         service.updateBreweryById(ID, getSingleBreweryRequest());
@@ -168,7 +168,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify if delete method is called during brewery deletion")
-    void verify_delete_brewery_by_brewery_id_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_delete_brewery_by_brewery_id_when_brewery_id_exists()  {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.ofNullable(singleSavedBrewery));
 
@@ -186,7 +186,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callDeleteBreweryByIdWhichDoesNotExist);
     }
 
-    private void callDeleteBreweryByIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callDeleteBreweryByIdWhichDoesNotExist()  {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -197,7 +197,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify get brewery image from db base on brewery id")
-    void verify_get_brewery_image_from_db_base_on_brewery_id() throws ElementNotFoundException {
+    void verify_get_brewery_image_from_db_base_on_brewery_id()  {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
@@ -210,7 +210,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify set brewery image to proper brewery base on brewery id")
-    void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws ElementNotFoundException, IOException, InvalidImageParameters {
+    void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws IOException {
         //given
         byte[] byteArray = new byte[10];
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
@@ -231,7 +231,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callSetBreweryImageBreweryByIdWhichDoesNotExist);
     }
 
-    private void callSetBreweryImageBreweryByIdWhichDoesNotExist() throws ElementNotFoundException, InvalidImageParameters, IOException {
+    private void callSetBreweryImageBreweryByIdWhichDoesNotExist() throws IOException {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -246,7 +246,7 @@ class BreweryServiceImplTest {
         assertThrows(InvalidImageParameters.class, this::callSetBreweryImageBreweryByIdWhichHasInvalidImage);
     }
 
-    private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() throws ElementNotFoundException, InvalidImageParameters, IOException {
+    private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() throws IOException {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(imageUpload.validateFile(file)).thenReturn(false);

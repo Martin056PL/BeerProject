@@ -17,15 +17,15 @@ public interface BreweryService {
 
     List<BreweryResponse> getAllBreweryList();
 
-    BreweryResponse findBreweryById(Long id) throws ElementNotFoundException;
+    BreweryResponse findBreweryById(Long id) ;
 
     BreweryResponse createNewBrewery(BreweryRequest breweryRequest);
 
-    BreweryResponse updateBreweryById(Long breweryId, BreweryRequest brewery) throws ElementNotFoundException;
+    BreweryResponse updateBreweryById(Long breweryId, BreweryRequest brewery) ;
 
-    void deleteBreweryById(Long breweryId) throws ElementNotFoundException;
+    void deleteBreweryById(Long breweryId) ;
 
-    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters;
+    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException;
 
-    byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws ElementNotFoundException;
+    byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) ;
 }

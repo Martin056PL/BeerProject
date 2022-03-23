@@ -17,21 +17,21 @@ public interface BeerService {
 
     List<BeerResponse> findAllBeersList();
 
-    BeerResponse findBeerById(Long beerId) throws ElementNotFoundException;
+    BeerResponse findBeerById(Long beerId) ;
 
-    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) throws ElementNotFoundException;
+    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) ;
 
-    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) throws ElementNotFoundException;
+    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) ;
 
-    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest) throws ElementNotFoundException;
+    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest) ;
 
-    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) throws ElementNotFoundException;
+    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) ;
 
-    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) throws ElementNotFoundException;
+    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) ;
 
-    void deleteBeerById(Long id) throws ElementNotFoundException;
+    void deleteBeerById(Long id) ;
 
-    void setBeerImageToBeerByBeerId(Long id, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters;
+    void setBeerImageToBeerByBeerId(Long id, MultipartFile file) throws IOException;
 
-    byte[] getBeerImageBaseOnBeerId(Long id) throws ElementNotFoundException;
+    byte[] getBeerImageBaseOnBeerId(Long id) ;
 }
