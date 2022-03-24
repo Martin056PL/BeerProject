@@ -10,10 +10,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import wawer.kamil.beerproject.exceptions.FileProcessingException;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,6 +58,19 @@ class ImageUploadTest {
 
     private byte[] newArrayWithLength(int length) {
         return new byte[length];
+    }
+
+    @Test
+    @DisplayName("Should throw exception when there is an issue with getting bytes from file")
+    void should_throw_exception_when_there_is_an_issue_with_getting_bytes_form_file() {
+        //then
+        assertThrows(FileProcessingException.class, this::callconvertImageToByteArrayWithIOException);
+    }
+
+    private void callconvertImageToByteArrayWithIOException() throws IOException {
+        //when
+        doThrow(new IOException()).when(file).getBytes();
+        upload.convertImageToByteArray(file);
     }
 
     @Test

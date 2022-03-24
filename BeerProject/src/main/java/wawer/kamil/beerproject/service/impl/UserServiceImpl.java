@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserResponse findUserByUserId(Long userId) throws ElementNotFoundException {
+    public UserResponse findUserByUserId(Long userId) {
         return userRepository.findById(userId)
                 .map(userMapper::mapUserEntityToUserResponse)
                 .orElseThrow(ElementNotFoundException::new);
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public UserResponse addNewUser(UserRequest userRequest) throws UsernameAlreadyExistsException {
+    public UserResponse addNewUser(UserRequest userRequest) {
         if (isUsernameExistInDatabase(userRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public UserResponse updateUser(Long userId, UserRequest userRequest) throws ElementNotFoundException {
+    public UserResponse updateUser(Long userId, UserRequest userRequest) {
         return userRepository.findById(userId)
                 .map(fetchedUser -> userMapper.mapUserRequestToUserEntity(userRequest, fetchedUser))
                 .map(userMapper::mapUserEntityToUserResponse)
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void permanentDeleteUser(Long userId) throws ElementNotFoundException {
+    public void permanentDeleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
         userRepository.delete(user);
     }

@@ -18,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.request.BeerRequest;
 import wawer.kamil.beerproject.dto.response.BeerResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
-import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -95,7 +93,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok with response body when controller returns some beer page base on brewery id")
-    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() throws ElementNotFoundException {
+    void should_return_status_ok_with_response_body_when_controller_returns_some_beer_page_base_on_brewery_id() {
         //given
         when(service.findAllBeersByBreweryIdPage(breweryID, pageable)).thenReturn(beerResponsesPage);
 
@@ -153,7 +151,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok with response body when controller returns some single beer base on beer id")
-    void should_return_status_ok_with_response_body_when_controller_returns_some_single_beer_base_on_beer_id() throws ElementNotFoundException {
+    void should_return_status_ok_with_response_body_when_controller_returns_some_single_beer_base_on_beer_id() {
         //given
         when(service.findBeerById(breweryID)).thenReturn(beerResponse);
 
@@ -172,7 +170,7 @@ class BeerControllerTest {
         assertThrows(ElementNotFoundException.class, this::callFindProperBeerByBeerIdWithException);
     }
 
-    private void callFindProperBeerByBeerIdWithException() throws ElementNotFoundException {
+    private void callFindProperBeerByBeerIdWithException() {
         //given
         when(service.findBeerById(beerID)).thenThrow(ElementNotFoundException.class);
 
@@ -185,7 +183,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status created with response body when controller returns just created beer")
-    void should_return_status_created_with_response_body_when_controller_returns_just_created_beer() throws URISyntaxException, ElementNotFoundException {
+    void should_return_status_created_with_response_body_when_controller_returns_just_created_beer() throws URISyntaxException {
         //given
         when(service.addNewBeerAssignedToBreweryByBreweryId(breweryID, beerRequest)).thenReturn(beerResponse);
 
@@ -204,7 +202,7 @@ class BeerControllerTest {
         assertThrows(ElementNotFoundException.class, this::callAddBeerToBreweryByBreweryIdWithException);
     }
 
-    private void callAddBeerToBreweryByBreweryIdWithException() throws ElementNotFoundException, URISyntaxException {
+    private void callAddBeerToBreweryByBreweryIdWithException() throws URISyntaxException {
         //given
         when(service.addNewBeerAssignedToBreweryByBreweryId(beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
@@ -216,7 +214,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok with response body when controller returns just updated beer base on beer id and new version of beer")
-    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_beer_id_and_new_version_of_beer() throws ElementNotFoundException {
+    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_beer_id_and_new_version_of_beer() {
         //given
         when(service.updateBeerByBeerId(beerID, beerRequest)).thenReturn(beerResponse);
 
@@ -235,7 +233,7 @@ class BeerControllerTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBeerBeerIdWithException);
     }
 
-    private void callUpdateBeerBeerIdWithException() throws ElementNotFoundException {
+    private void callUpdateBeerBeerIdWithException() {
         //given
         when(service.updateBeerByBeerId(beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
@@ -245,7 +243,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("should return status ok with response body when controller returns just updated beer base on existing brewery id and beer id")
-    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_existing_brewery_id_and_beer_id() throws ElementNotFoundException {
+    void should_return_status_ok_with_response_body_when_controller_returns_just_updated_beer_base_on_existing_brewery_id_and_beer_id() {
         //given
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest)).thenReturn(beerResponse);
 
@@ -264,7 +262,7 @@ class BeerControllerTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBeerBaseOnBreweryIdAndBeerId);
     }
 
-    private void callUpdateBeerBaseOnBreweryIdAndBeerId() throws ElementNotFoundException {
+    private void callUpdateBeerBaseOnBreweryIdAndBeerId() {
         //given
         when(service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequest)).thenThrow(ElementNotFoundException.class);
 
@@ -276,7 +274,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status no content when deleting beer base on beer id")
-    void Should_return_status_no_content_when_deleting_beer_base_on_beer_id() throws ElementNotFoundException {
+    void Should_return_status_no_content_when_deleting_beer_base_on_beer_id() {
         assertEquals(ResponseEntity.noContent().build(), beerController.deleteBeerByBeerId(beerID));
     }
 
@@ -297,7 +295,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok and response message when controller successfully add image for brewery")
-    void should_return_status_ok_and_response_message_when_controller_successfully_add_image_for_brewery() throws IOException, ElementNotFoundException, InvalidImageParameters {
+    void should_return_status_ok_and_response_message_when_controller_successfully_add_image_for_brewery() {
         //given
         ResponseEntity<String> file_is_uploaded_successfully = ResponseEntity.status(HttpStatus.OK).body("File is uploaded successfully");
 
@@ -310,7 +308,7 @@ class BeerControllerTest {
 
     @Test
     @DisplayName("Should return status ok when controller successfully getting image for beer")
-    void should_return_status_ok_when_controller_successfully_getting_image_for_beer() throws ElementNotFoundException {
+    void should_return_status_ok_when_controller_successfully_getting_image_for_beer() {
         //given
         when(service.getBeerImageBaseOnBeerId(beerID)).thenReturn(newArrayForBeerImage());
         HttpHeaders headers = new HttpHeaders();

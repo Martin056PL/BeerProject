@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.request.BreweryRequest;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
-import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
-import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 import wawer.kamil.beerproject.service.BreweryService;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -49,7 +46,7 @@ public class BreweryController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id) throws ElementNotFoundException {
+    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id) {
         BreweryResponse breweryResponse = service.findBreweryById(id);
         return ok().body(breweryResponse);
     }
@@ -63,21 +60,21 @@ public class BreweryController {
 
     @PutMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest) throws ElementNotFoundException {
+    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest) {
         BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
         return ok().body(updatedBrewery);
     }
 
     @DeleteMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id) {
         service.deleteBreweryById(id);
         return noContent().build();
     }
 
     @GetMapping(value = "/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id) throws ElementNotFoundException {
+    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id) {
         byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
@@ -86,7 +83,7 @@ public class BreweryController {
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(id, file);
         return ok().body("File is uploaded successfully");
     }

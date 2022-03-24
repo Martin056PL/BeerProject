@@ -22,12 +22,13 @@ import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
 import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static wawer.kamil.beerproject.helpers.BeerTestHelper.*;
 import static wawer.kamil.beerproject.helpers.BreweryTestHelper.getSingleBreweryBeforeSave;
 
@@ -108,7 +109,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if find beer by beer id is called when id exists")
-    void verify_find_beer_by_beer_id_when_id_exists() throws ElementNotFoundException {
+    void verify_find_beer_by_beer_id_when_id_exists() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
         when(beerMapper.mapBeerToBeerResponse(beer)).thenReturn(beerResponse);
@@ -127,7 +128,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callFindByIdWhichDoesNotExist);
     }
 
-    private void callFindByIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callFindByIdWhichDoesNotExist() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
 
@@ -137,7 +138,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if find brewery by brewery id and find all beers with PAGEABLE are called when brewery id exists")
-    void verify_find_brewery_by_brewery_id_and_find_all_beers_with_pageable_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_find_brewery_by_brewery_id_and_find_all_beers_with_pageable_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
         when(beerRepository.findAllByBreweryId(brewery.getBreweryId(), pageable)).thenReturn(beerPage);
@@ -157,7 +158,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdPageWhichDoesNotExist);
     }
 
-    private void callFindAllBeersByBreweryIdPageWhichDoesNotExist() throws ElementNotFoundException {
+    private void callFindAllBeersByBreweryIdPageWhichDoesNotExist() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
 
@@ -167,7 +168,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if find brewery by brewery id and find all beers with LIST are called when brewery id exists")
-    void verify_if_find_brewery_by_brewery_id_and_find_all_beers_with_LIST_are_called_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_if_find_brewery_by_brewery_id_and_find_all_beers_with_LIST_are_called_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
         when(beerRepository.findAllByBreweryId(brewery.getBreweryId())).thenReturn(beerList);
@@ -187,7 +188,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callFindAllBeersByBreweryIdListWhichDoesNotExist);
     }
 
-    private void callFindAllBeersByBreweryIdListWhichDoesNotExist() throws ElementNotFoundException {
+    private void callFindAllBeersByBreweryIdListWhichDoesNotExist() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
 
@@ -197,7 +198,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if save beer is called when brewery id exists")
-    void verify_save_beer_when_brewery_id_exists() throws ElementNotFoundException {
+    void verify_save_beer_when_brewery_id_exists() {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
@@ -219,7 +220,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist);
     }
 
-    private void callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callAddNewBeerAssignedToBreweryByBreweryIdWhichDoesNotExist() {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beer);
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.empty());
@@ -231,7 +232,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if updated beer has the same properties as on request during beer update with beer id")
-    void verify_if_updated_beer_has_the_same_properties_as_on_request_during_beer_update_with_beer_id() throws ElementNotFoundException {
+    void verify_if_updated_beer_has_the_same_properties_as_on_request_during_beer_update_with_beer_id() {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
@@ -255,7 +256,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBeerByBeerIdWhichDoesNotExist);
     }
 
-    private void callUpdateBeerByBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callUpdateBeerByBeerIdWhichDoesNotExist() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
 
@@ -265,7 +266,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if updated beer has the same properties as on request beer during beer update with brewery and beer id")
-    void verify_if_updated_beer_has_the_same_properties_as_on_request_beer_during_beer_update_with_brewery_and_beer_id() throws ElementNotFoundException {
+    void verify_if_updated_beer_has_the_same_properties_as_on_request_beer_during_beer_update_with_brewery_and_beer_id() {
         //given
         when(beerMapper.mapBeerRequestToBeerEntity(beerRequest)).thenReturn(beerBeforeUpdate);
         when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.of(beer));
@@ -289,7 +290,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBeerByBreweryIdAndBeerIdWhichDoesNotExist);
     }
 
-    private void callUpdateBeerByBreweryIdAndBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callUpdateBeerByBreweryIdAndBeerIdWhichDoesNotExist() {
         //given
         when(beerRepository.findBeerByBreweryAndBeerId(breweryID, beerID)).thenReturn(Optional.empty());
 
@@ -299,7 +300,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if delete beer is called when beer id exists")
-    void verify_delete_beer_when_beer_id_exists() throws ElementNotFoundException {
+    void verify_delete_beer_when_beer_id_exists() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.ofNullable(beer));
 
@@ -317,7 +318,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callDeleteBeerByIdWhichDoesNotExist);
     }
 
-    private void callDeleteBeerByIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callDeleteBeerByIdWhichDoesNotExist() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.empty());
 
@@ -327,7 +328,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if findBeerImageByBeerId brewery is called when image base on brewery id")
-    void verify_get_brewery_image_base_on_brewery_id() throws ElementNotFoundException {
+    void verify_get_brewery_image_base_on_brewery_id() {
         //given
         byte[] byteArray = new byte[10];
         when(beerRepository.findBeerImageByBeerId(beerID)).thenReturn(byteArray);
@@ -346,7 +347,7 @@ class BeerServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callGetBeerImageBaseOnBeerIdWhichDoesNotExist);
     }
 
-    private void callGetBeerImageBaseOnBeerIdWhichDoesNotExist() throws ElementNotFoundException {
+    private void callGetBeerImageBaseOnBeerIdWhichDoesNotExist() {
         //given
         when(beerRepository.findBeerImageByBeerId(beerID)).thenReturn(null);
 
@@ -356,7 +357,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called when setting image to existing beer")
-    void verify_findById_when_setting_image_to_existing_beer() throws ElementNotFoundException, IOException, InvalidImageParameters {
+    void verify_findById_when_setting_image_to_existing_beer() {
         //given
         byte[] byteArray = new byte[10];
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
@@ -377,7 +378,7 @@ class BeerServiceImplTest {
         assertThrows(InvalidImageParameters.class, this::callSetBeerImageToBeerByBeerIdWhichHasInvalidFile);
     }
 
-    private void callSetBeerImageToBeerByBeerIdWhichHasInvalidFile() throws ElementNotFoundException, InvalidImageParameters, IOException {
+    private void callSetBeerImageToBeerByBeerIdWhichHasInvalidFile() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
         when(imageUpload.validateFile(file)).thenReturn(false);

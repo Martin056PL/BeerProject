@@ -19,7 +19,6 @@ import wawer.kamil.beerproject.service.BreweryService;
 import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +56,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
-    public BreweryResponse findBreweryById(Long id) throws ElementNotFoundException {
+    public BreweryResponse findBreweryById(Long id) {
         return breweryRepository.findById(id)
                 .map(breweryMapper::mapBreweryToBreweryResponse)
                 .orElseThrow(ElementNotFoundException::new);
@@ -73,7 +72,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     @Transactional
-    public BreweryResponse updateBreweryById(Long id, BreweryRequest breweryRequest) throws ElementNotFoundException {
+    public BreweryResponse updateBreweryById(Long id, BreweryRequest breweryRequest) {
         Brewery mappedBrewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
         Brewery fetchedBrewery = breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
         mapBreweryProperties(fetchedBrewery, mappedBrewery);
@@ -82,14 +81,14 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     @Transactional
-    public void deleteBreweryById(Long id) throws ElementNotFoundException {
+    public void deleteBreweryById(Long id) {
         Brewery fetchedBrewery = breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
         breweryRepository.delete(fetchedBrewery);
     }
 
     @Override
     @Transactional
-    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException, ElementNotFoundException, InvalidImageParameters {
+    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
@@ -100,7 +99,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
-    public byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) throws ElementNotFoundException {
+    public byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return brewery.getBreweryImage();
     }

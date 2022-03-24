@@ -2,7 +2,7 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Setup & Run](#setup&run)
+* [Setup&Run](#setup&run)
 * [Status](#status)
 
 ## General info
@@ -46,15 +46,16 @@ To run this application you need to first clone this repository. Then you can ru
 
 Use docker-compose to run app. Make sure you have installed docker and docker-compose on you local environment. 
 When you clone this repository you need to provide '.env' file with basic configuration. 
-Reuse existing file '.env.template' and provide your values or leave it as default. Then, open terminal in project directory, and run command:
+Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from file name.
+Then, open terminal in project directory, and run command:
 
     "docker-compose up"
 
-This will trigger creating containers with beer API and MySQL database including your values. The app will be available at localhost:8081/api/v1/ (if you keep default values).
+This will trigger creating containers with beer API and MySQL database including your values. DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you keep default values).
 
 #### RUN WITH TEST PROFILE
 
-You can also run this app with 'test' profile. This mode has embedded H2 database with sample data. First you need to configure credentials to DB.
+You can also run this app with 'test' profile via classic java -jar command. This mode has embedded H2 database with sample data. First you need to configure credentials to DB.
 The template of credentials and instruction are placed in './credentials/credentials.yml.template'.
 
 After that, build package using maven tool. To build app use the following command:
@@ -65,7 +66,7 @@ Then, go to just generated 'target' directory and run app using command line:
 
     "java -jar beer-project-1.0.jar --spring.profiles.active=test"
 
-The full list of endpoints you can see here: [/localhost:8081/api/v1/swagger-ui/index.html](/localhost:8081/api/v1/swagger-ui/index.html)
+The full list of endpoints you can see here(if you keep default config values): [http://localhost:8081/api/v1/swagger-ui/index.html](/localhost:8081/api/v1/swagger-ui/index.html)
 
 
 ### Status
