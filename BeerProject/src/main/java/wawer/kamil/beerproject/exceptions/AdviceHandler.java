@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
@@ -87,7 +88,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
                                                                        HttpStatus status,
                                                                        WebRequest request) {
         handleException(
-                String.format("Request has not required parameter: %s", ex.getMessage()),
+                format("Request has not required parameter: %s", ex.getMessage()),
                 BAD_REQUEST
         );
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
@@ -96,7 +97,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<Object> invalidRequestParameterException(PropertyReferenceException ex) {
         handleException(
-                String.format("Request Parameters are invalid: %s", ex.getMessage()),
+                format("Request Parameters are invalid: %s", ex.getMessage()),
                 BAD_REQUEST
         );
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

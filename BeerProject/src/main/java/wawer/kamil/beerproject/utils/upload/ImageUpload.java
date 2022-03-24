@@ -9,6 +9,8 @@ import wawer.kamil.beerproject.exceptions.FileProcessingException;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static java.lang.String.format;
+
 @Service
 @Slf4j(topic = "application.logger")
 public class ImageUpload {
@@ -24,7 +26,7 @@ public class ImageUpload {
         try {
             return copyAndGetBytesFromFileToArray(file);
         } catch (IOException ex) {
-            log.error(String.format("Something goes wrong with delivered file: %s", Arrays.toString(ex.getStackTrace())));
+            log.error(format("Something goes wrong with delivered file: %s", Arrays.toString(ex.getStackTrace())));
             throw new FileProcessingException();
         }
     }
