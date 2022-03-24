@@ -5,10 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.request.BeerRequest;
 import wawer.kamil.beerproject.dto.response.BeerResponse;
-import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
-import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface BeerService {
@@ -17,21 +14,21 @@ public interface BeerService {
 
     List<BeerResponse> findAllBeersList();
 
-    BeerResponse findBeerById(Long beerId) ;
+    BeerResponse findBeerById(Long beerId);
 
-    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) ;
+    Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable);
 
-    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) ;
+    BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest);
 
-    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest) ;
+    BeerResponse updateBeerByBeerId(Long beerId, BeerRequest beerRequest);
 
-    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) ;
+    BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest);
 
-    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) ;
+    List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId);
 
-    void deleteBeerById(Long id) ;
+    void deleteBeerById(Long id);
 
     void setBeerImageToBeerByBeerId(Long id, MultipartFile file);
 
-    byte[] getBeerImageBaseOnBeerId(Long id) ;
+    byte[] getBeerImageBaseOnBeerId(Long id);
 }

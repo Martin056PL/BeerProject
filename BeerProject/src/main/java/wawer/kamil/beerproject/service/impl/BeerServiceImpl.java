@@ -20,7 +20,6 @@ import wawer.kamil.beerproject.service.BeerService;
 import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

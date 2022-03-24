@@ -19,7 +19,6 @@ import wawer.kamil.beerproject.service.BreweryService;
 import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +88,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     @Transactional
-    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file){
+    public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);

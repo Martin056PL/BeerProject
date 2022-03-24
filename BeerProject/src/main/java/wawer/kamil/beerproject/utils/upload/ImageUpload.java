@@ -24,7 +24,7 @@ public class ImageUpload {
         try {
             return copyAndGetBytesFromFileToArray(file);
         } catch (IOException ex) {
-            log.error(String.format("Something goes wrong with delivered file: \n%s", Arrays.toString(ex.getStackTrace())));
+            log.error(String.format("Something goes wrong with delivered file: \n %s", Arrays.toString(ex.getStackTrace())));
             throw new FileProcessingException();
         }
     }
