@@ -48,11 +48,6 @@ public class ImageUpload {
     }
 
     private byte[] copyAndGetBytesFromFileToArray(MultipartFile file) throws IOException {
-        byte[] byteArray = new byte[file.getBytes().length];
-        int i = 0;
-        for (byte b : file.getBytes()) {
-            byteArray[i++] = b;
-        }
-        return byteArray;
+        return Arrays.copyOf(file.getBytes(), file.getBytes().length);
     }
 }

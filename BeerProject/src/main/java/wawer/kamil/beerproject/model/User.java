@@ -31,7 +31,10 @@ public class User extends DataAudit implements UserDetails {
     private String email;
 
     @ElementCollection(targetClass = String.class)
-    @CollectionTable(name = "USER_GRANTED_AUTHORITIES")
+    @CollectionTable(
+            name = "USER_GRANTED_AUTHORITIES",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
     @Column(name = "granted_authorities")
     private Set<String> grantedAuthorities;
 
