@@ -25,7 +25,7 @@ public interface BreweryService {
 
     void deleteBreweryById(Long breweryId) ;
 
-    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) throws IOException;
+    void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file);
 
     byte[] getBreweryImageFromDbBaseOnBreweryId(Long breweryId) ;
 }

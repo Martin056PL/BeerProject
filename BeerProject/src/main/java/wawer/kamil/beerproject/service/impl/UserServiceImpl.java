@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserResponse findUserByUserId(Long userId)  {
+    public UserResponse findUserByUserId(Long userId) {
         return userRepository.findById(userId)
                 .map(userMapper::mapUserEntityToUserResponse)
                 .orElseThrow(ElementNotFoundException::new);
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public UserResponse updateUser(Long userId, UserRequest userRequest)  {
+    public UserResponse updateUser(Long userId, UserRequest userRequest) {
         return userRepository.findById(userId)
                 .map(fetchedUser -> userMapper.mapUserRequestToUserEntity(userRequest, fetchedUser))
                 .map(userMapper::mapUserEntityToUserResponse)
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void permanentDeleteUser(Long userId)  {
+    public void permanentDeleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(ElementNotFoundException::new);
         userRepository.delete(user);
     }

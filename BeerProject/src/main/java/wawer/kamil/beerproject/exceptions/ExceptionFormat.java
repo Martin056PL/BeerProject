@@ -23,5 +23,5 @@ public class ExceptionFormat {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss[.SSSS]")
     private LocalDateTime timestamp;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Map<String, String> error_message;
+    private Map<String, String> errorMessage;
 }

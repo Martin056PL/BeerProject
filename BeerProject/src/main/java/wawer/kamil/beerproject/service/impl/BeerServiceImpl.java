@@ -56,21 +56,21 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerResponse findBeerById(Long id)  {
+    public BeerResponse findBeerById(Long id) {
         return beerRepository.findById(id)
                 .map(beerMapper::mapBeerToBeerResponse)
                 .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override
-    public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable)  {
+    public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) {
         Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return beerRepository.findAllByBreweryId(fetchedBrewery.getBreweryId(), pageable)
                 .map(beerMapper::mapBeerToBeerResponse);
     }
 
     @Override
-    public List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId)  {
+    public List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return beerRepository.findAllByBreweryId(brewery.getBreweryId())
                 .stream()
@@ -82,20 +82,19 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     @Transactional
-    public BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest)  {
+    public BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) {
         Beer requestedBeerEntity = beerMapper.mapBeerRequestToBeerEntity(beerRequest);
         Brewery brewery = breweryRepository.findById(breweryID).orElseThrow(ElementNotFoundException::new);
         requestedBeerEntity.setBrewery(brewery);
         Beer savedBeer = beerRepository.save(requestedBeerEntity);
         return beerMapper.mapBeerToBeerResponse(savedBeer);
-
     }
 
     //put beers
 
     @Override
     @Transactional
-    public BeerResponse updateBeerByBeerId(Long beerId, BeerRequest updatedBeerRequest)  {
+    public BeerResponse updateBeerByBeerId(Long beerId, BeerRequest updatedBeerRequest) {
         Beer mappedBeer = beerMapper.mapBeerRequestToBeerEntity(updatedBeerRequest);
         Beer fetchedBeer = beerRepository.findById(beerId).orElseThrow(ElementNotFoundException::new);
         mapBeerProperties(fetchedBeer, mappedBeer);
@@ -104,7 +103,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     @Transactional
-    public BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest)  {
+    public BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) {
         Beer mappedBeer = beerMapper.mapBeerRequestToBeerEntity(updatedBeerRequest);
         Beer fetchedBeer = beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId).orElseThrow(ElementNotFoundException::new);
         mapBeerProperties(fetchedBeer, mappedBeer);
@@ -115,14 +114,14 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     @Transactional
-    public void deleteBeerById(Long id)  {
+    public void deleteBeerById(Long id) {
         Beer fetchedBeer = beerRepository.findById(id).orElseThrow(ElementNotFoundException::new);
         beerRepository.delete(fetchedBeer);
     }
 
     @Override
     @Transactional
-    public void setBeerImageToBeerByBeerId(Long beerId, MultipartFile file) throws IOException {
+    public void setBeerImageToBeerByBeerId(Long beerId, MultipartFile file) {
         Beer beer = beerRepository.findById(beerId).orElseThrow(ElementNotFoundException::new);
         if (imageUpload.validateFile(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
@@ -133,7 +132,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public byte[] getBeerImageBaseOnBeerId(Long id)  {
+    public byte[] getBeerImageBaseOnBeerId(Long id) {
         return Optional.ofNullable(beerRepository.findBeerImageByBeerId(id)).orElseThrow(ElementNotFoundException::new);
     }
 }

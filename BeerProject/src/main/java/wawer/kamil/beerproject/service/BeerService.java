@@ -31,7 +31,7 @@ public interface BeerService {
 
     void deleteBeerById(Long id) ;
 
-    void setBeerImageToBeerByBeerId(Long id, MultipartFile file) throws IOException;
+    void setBeerImageToBeerByBeerId(Long id, MultipartFile file);
 
     byte[] getBeerImageBaseOnBeerId(Long id) ;
 }
