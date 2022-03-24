@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import wawer.kamil.beerproject.dto.request.BreweryRequest;
-import wawer.kamil.beerproject.dto.response.BeerResponse;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.InvalidImageParameters;
@@ -23,7 +22,6 @@ import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
 import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +110,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById method is called during getting single brewery by id")
-    void verify_get_brewery_by_brewery_id_when_brewery_id_exists()  {
+    void verify_get_brewery_by_brewery_id_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
@@ -141,7 +139,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify update brewery by brewery id when brewery id does not exists")
-    void verify_update_brewery_by_brewery_id_when_brewery_id_exists()  {
+    void verify_update_brewery_by_brewery_id_when_brewery_id_exists() {
         //given
         when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
@@ -160,7 +158,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callUpdateBreweryByIdWhichDoesNotExist);
     }
 
-    private void callUpdateBreweryByIdWhichDoesNotExist()  {
+    private void callUpdateBreweryByIdWhichDoesNotExist() {
         when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
         service.updateBreweryById(ID, getSingleBreweryRequest());
@@ -168,7 +166,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify if delete method is called during brewery deletion")
-    void verify_delete_brewery_by_brewery_id_when_brewery_id_exists()  {
+    void verify_delete_brewery_by_brewery_id_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.ofNullable(singleSavedBrewery));
 
@@ -186,7 +184,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callDeleteBreweryByIdWhichDoesNotExist);
     }
 
-    private void callDeleteBreweryByIdWhichDoesNotExist()  {
+    private void callDeleteBreweryByIdWhichDoesNotExist() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -197,7 +195,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify get brewery image from db base on brewery id")
-    void verify_get_brewery_image_from_db_base_on_brewery_id()  {
+    void verify_get_brewery_image_from_db_base_on_brewery_id() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
 
@@ -210,7 +208,7 @@ class BreweryServiceImplTest {
 
     @Test
     @DisplayName("Verify set brewery image to proper brewery base on brewery id")
-    void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() throws IOException {
+    void verify_set_brewery_image_to_proper_brewery_base_on_brewery_id() {
         //given
         byte[] byteArray = new byte[10];
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
@@ -231,7 +229,7 @@ class BreweryServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callSetBreweryImageBreweryByIdWhichDoesNotExist);
     }
 
-    private void callSetBreweryImageBreweryByIdWhichDoesNotExist() throws IOException {
+    private void callSetBreweryImageBreweryByIdWhichDoesNotExist() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -246,7 +244,7 @@ class BreweryServiceImplTest {
         assertThrows(InvalidImageParameters.class, this::callSetBreweryImageBreweryByIdWhichHasInvalidImage);
     }
 
-    private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() throws IOException {
+    private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
         when(imageUpload.validateFile(file)).thenReturn(false);

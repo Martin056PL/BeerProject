@@ -22,7 +22,6 @@ import wawer.kamil.beerproject.service.impl.BeerServiceImpl;
 import wawer.kamil.beerproject.utils.mapper.BeerMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -358,7 +357,7 @@ class BeerServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called when setting image to existing beer")
-    void verify_findById_when_setting_image_to_existing_beer() throws IOException {
+    void verify_findById_when_setting_image_to_existing_beer() {
         //given
         byte[] byteArray = new byte[10];
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
@@ -379,7 +378,7 @@ class BeerServiceImplTest {
         assertThrows(InvalidImageParameters.class, this::callSetBeerImageToBeerByBeerIdWhichHasInvalidFile);
     }
 
-    private void callSetBeerImageToBeerByBeerIdWhichHasInvalidFile() throws IOException {
+    private void callSetBeerImageToBeerByBeerIdWhichHasInvalidFile() {
         //given
         when(beerRepository.findById(beerID)).thenReturn(Optional.of(beer));
         when(imageUpload.validateFile(file)).thenReturn(false);

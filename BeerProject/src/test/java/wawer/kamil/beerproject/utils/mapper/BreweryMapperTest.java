@@ -90,7 +90,6 @@ class BreweryMapperTest {
         assertEquals(breweryRequest.getAddress().getParcelNumber(), brewery.getAddress().getParcelNumber());
         assertEquals(breweryRequest.getPhoneNumber(), brewery.getPhoneNumber());
         assertEquals(breweryRequest.getWebsite(), brewery.getWebsite());
-        assertEquals(breweryRequest.getBeerList(), brewery.getBeerList());
     }
 
 }

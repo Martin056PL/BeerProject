@@ -68,7 +68,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findAll is called during getting Page<UserResponse>")
-    void verify_get_all_users_page(){
+    void verify_get_all_users_page() {
         //when
         service.findAllUsersPage(pageable);
 
@@ -78,7 +78,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findAll is called during getting List<UserResponse>")
-    void verify_get_all_users_list(){
+    void verify_get_all_users_list() {
         //when
         service.findAllUsersList();
 
@@ -88,7 +88,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called during finding User by ID")
-    void verify_findById_while_calling_findUserByUserId ()  {
+    void verify_findById_while_calling_findUserByUserId() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
         when(mapper.mapUserEntityToUserResponse(user)).thenReturn(userResponse);
@@ -132,7 +132,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called during updating user")
-    void verify_findById_is_called_when_user_id_exists()  {
+    void verify_findById_is_called_when_user_id_exists() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
         when(mapper.mapUserRequestToUserEntity(userRequest, user)).thenReturn(user);
@@ -152,7 +152,7 @@ class UserServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callFindByIdWhichDoesNotExistDuringUpdate);
     }
 
-    private void callFindByIdWhichDoesNotExistDuringUpdate()  {
+    private void callFindByIdWhichDoesNotExistDuringUpdate() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.empty());
 
@@ -162,7 +162,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called during deleting user")
-    void verify_delete_user_by_user_id_when_user_id_exists()  {
+    void verify_delete_user_by_user_id_when_user_id_exists() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
 
@@ -180,7 +180,7 @@ class UserServiceImplTest {
         assertThrows(ElementNotFoundException.class, this::callPermanentDeleteUserByIdWhichDoesNotExist);
     }
 
-    private void callPermanentDeleteUserByIdWhichDoesNotExist()  {
+    private void callPermanentDeleteUserByIdWhichDoesNotExist() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.empty());
 

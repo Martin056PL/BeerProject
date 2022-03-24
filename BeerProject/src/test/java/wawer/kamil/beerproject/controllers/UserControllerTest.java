@@ -102,7 +102,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with proper user base on id body")
-    void should_return_response_entity_with_proper_user_base_on_id_body()  {
+    void should_return_response_entity_with_proper_user_base_on_id_body() {
         //given
         when(userService.findUserByUserId(USER_ID)).thenReturn(userResponse);
 
@@ -123,7 +123,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found")
-    void should_throw_exception_when_user_not_found()  {
+    void should_throw_exception_when_user_not_found() {
         //given
         when(userService.findUserByUserId(USER_ID)).thenThrow(ElementNotFoundException.class);
 
@@ -169,7 +169,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when username is unavailable during create")
-    void should_throw_exception_when_username_is_unavailable_during_create() throws UsernameAlreadyExistsException {
+    void should_throw_exception_when_username_is_unavailable_during_create() {
         //given
         when(userService.addNewUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
 
@@ -179,7 +179,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity with updated user")
-    void should_return_response_entity_with_updated_user()  {
+    void should_return_response_entity_with_updated_user() {
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenAnswer(invocation -> {
             UserRequest argument = invocation.getArgument(1, UserRequest.class);
@@ -215,7 +215,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found during update")
-    void should_throw_exception_when_user_not_found_during_update()  {
+    void should_throw_exception_when_user_not_found_during_update() {
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenThrow(ElementNotFoundException.class);
 
@@ -225,7 +225,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should return response entity when deleting user permanently")
-    void should_return_response_entity_when_deleting_user_permanently()  {
+    void should_return_response_entity_when_deleting_user_permanently() {
         //when
         ResponseEntity<?> responseEntity = controller.deleteUserPermanently(USER_ID);
 
@@ -237,7 +237,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test - should throw exception when user not found during deleting user permanently")
-    void should_throw_exception_when_user_not_found_during_deleting_user_permanently()  {
+    void should_throw_exception_when_user_not_found_during_deleting_user_permanently() {
         //given
         when(controller.deleteUserPermanently(USER_ID)).thenThrow(ElementNotFoundException.class);
 
