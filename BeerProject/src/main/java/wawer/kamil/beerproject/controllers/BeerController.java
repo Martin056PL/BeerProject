@@ -108,7 +108,7 @@ public class BeerController {
 
     @PostMapping(value = "beers/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) throws IOException {
+    public ResponseEntity<Object> uploadImage(@PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) {
         service.setBeerImageToBeerByBeerId(beerId, file);
         return ok().body("File is uploaded successfully");
     }
