@@ -29,8 +29,3 @@ server:
 
 logging:
   config: classpath:logback/logback.xml
-
-jasypt:
-  encryptor:
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
