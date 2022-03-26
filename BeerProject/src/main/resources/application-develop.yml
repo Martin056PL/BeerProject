@@ -17,12 +17,8 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-
-
   liquibase:
     change-log: classpath:db/master.xml
-
-
 
   h2:
     console:
@@ -38,9 +34,3 @@ server:
 
 logging:
   config: classpath:logback/logback.xml
-
-jasypt:
-  encryptor:
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
-

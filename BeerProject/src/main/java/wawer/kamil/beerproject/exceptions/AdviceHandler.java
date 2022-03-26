@@ -18,10 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.persistence.RollbackException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.*;
@@ -31,14 +28,17 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j(topic = "application.logger")
 public class AdviceHandler extends ResponseEntityExceptionHandler {
 
+    public static final String ERROR_MESSAGE_KEY = "error_message";
+
     private final ExceptionFormat exceptionFormat;
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
         Map<String, String> validationMap = new HashMap<>();
-        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        for (FieldError error : fieldErrors) {
             validationMap.put(error.getField(), error.getDefaultMessage());
         }
 
@@ -47,8 +47,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ElementNotFoundException.class)
-    public ResponseEntity<Object> notFoundHandler() {
-        handleException(
+    public ResponseEntity<Object> handleElementNotFoundException() {
+        setExceptionProperties(
                 "Your item hasn't been found! Check request params!",
                 NOT_FOUND
         );
@@ -56,8 +56,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidImageParameters.class)
-    public ResponseEntity<Object> badImageParameters() {
-        handleException(
+    public ResponseEntity<Object> handleBadImageParameters() {
+        setExceptionProperties(
                 "Your image has unhanded file type or it is over 10MB. Check again your image!",
                 BAD_REQUEST
         );
@@ -65,8 +65,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RollbackException.class)
-    public ResponseEntity<Object> rollbackException(RollbackException ex) {
-        handleException(
+    public ResponseEntity<Object> handleRollbackException(RollbackException ex) {
+        setExceptionProperties(
                 ex.getLocalizedMessage(),
                 BAD_REQUEST
         );
@@ -74,8 +74,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<Object> usernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
-        handleException(
+    public ResponseEntity<Object> handleUsernameAlreadyExistsException() {
+        setExceptionProperties(
                 "Username is unavailable",
                 BAD_REQUEST
         );
@@ -87,7 +87,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
                                                                        HttpHeaders headers,
                                                                        HttpStatus status,
                                                                        WebRequest request) {
-        handleException(
+        setExceptionProperties(
                 format("Request has not required parameter: %s", ex.getMessage()),
                 BAD_REQUEST
         );
@@ -95,8 +95,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseEntity<Object> invalidRequestParameterException(PropertyReferenceException ex) {
-        handleException(
+    public ResponseEntity<Object> handleInvalidRequestParameterException(PropertyReferenceException ex) {
+        setExceptionProperties(
                 format("Request Parameters are invalid: %s", ex.getMessage()),
                 BAD_REQUEST
         );
@@ -104,8 +104,8 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> AccessDeniedException(AccessDeniedException ex) {
-        handleException(
+    public ResponseEntity<Object> handleAccessDeniedException() {
+        setExceptionProperties(
                 "You have not sufficient grants to call this endpoint",
                 FORBIDDEN
         );
@@ -113,9 +113,10 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> unknownException(Exception e, HttpServletRequest request) {
+    public ResponseEntity<Object> handleUnknownException(Exception e, HttpServletRequest request) {
         log.error("APPLICATION THROWS EXCEPTION WITH ID: " + exceptionFormat.getUuid()
-                + " AND " + e.getClass() + ",\n CAUSE OF EXCEPTION: " + e.getCause().toString()
+                + " AND " + e.getClass() +
+                ",\n CAUSE OF EXCEPTION: " + e.getCause().toString()
                 + ",\n EXCEPTION MESSAGE: " + e.getMessage()
                 + ",\n EXCEPTION STACK TRACE: " + Arrays.toString(e.getStackTrace())
                 + ",\n REQUEST ADDRESS: " + request.getRequestURL());
@@ -125,13 +126,9 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
-    private void handleException(String errorMessage, HttpStatus httpStatus) {
-        setExceptionProperties(errorMessage, httpStatus);
-        log.debug("Method throws this exception: {}", exceptionFormat);
-    }
-
     private void setExceptionProperties(String errorMessage, HttpStatus httpStatus) {
         generateExceptionFormatProperties(getSingleErrorMessageMap(errorMessage), httpStatus);
+        log.debug("Method throws this exception: {}", exceptionFormat);
     }
 
     private void generateExceptionFormatProperties(Map<String, String> errorsMessageMap, HttpStatus httpStatus) {
@@ -143,7 +140,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
 
     private Map<String, String> getSingleErrorMessageMap(String message) {
         Map<String, String> map = new HashMap<>();
-        map.put("error_message", message);
+        map.put(ERROR_MESSAGE_KEY, message);
         return map;
     }
 }
