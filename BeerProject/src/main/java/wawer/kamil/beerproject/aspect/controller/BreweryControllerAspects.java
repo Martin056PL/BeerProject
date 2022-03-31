@@ -56,11 +56,11 @@ public class BreweryControllerAspects {
 
     @Before(value = "execution(* wawer.kamil.beerproject.controllers.BreweryController.uploadImage(..)) && args(id, multipartFile)", argNames = "id, multipartFile")
     public void logUploadImage(Long id, MultipartFile multipartFile) {
-        log.debug("Endpoint address: 'brewery/{id}/image' with POST method, request parameter - id: {}, multipartFile: name: {}, contentType: {} , size: {}"
-                , id
-                , multipartFile.getName()
-                , multipartFile.getContentType()
-                , multipartFile.getSize());
+        log.debug("Endpoint address: 'brewery/{id}/image' with POST method, request parameter - id: {}, multipartFile: name: {}, contentType: {} , size: {}",
+                id,
+                multipartFile.getName(),
+                multipartFile.getContentType(),
+                multipartFile.getSize());
     }
 
 }

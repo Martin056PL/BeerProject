@@ -105,13 +105,6 @@ public class BeerController {
         return noContent().build();
     }
 
-    @PostMapping(value = "beers/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) {
-        service.setBeerImageToBeerByBeerId(beerId, file);
-        return ok().body("File is uploaded successfully");
-    }
-
     @GetMapping(value = "beers/{beerId}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
     public ResponseEntity<byte[]> downloadImage(@PathVariable Long beerId) {
@@ -119,5 +112,12 @@ public class BeerController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return ok().headers(headers).body(image);
+    }
+
+    @PostMapping(value = "beers/{beerId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
+    public ResponseEntity<Object> uploadImage(@PathVariable Long beerId, @RequestParam(name = "image") MultipartFile file) {
+        service.setBeerImageToBeerByBeerId(beerId, file);
+        return ok().body("File is uploaded successfully");
     }
 }

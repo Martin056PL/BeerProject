@@ -20,12 +20,11 @@
         <sonar.jdbc.username>admin</sonar.jdbc.username>
         <sonar.jdbc.password>user</sonar.jdbc.password>
         <sonar.exclusions>
-            **/aspect/**/*.java,
             **/configuration/**/*.java,
             **/dto/**/*.java,
-            **/exceptions/**/*.java,
+            **/exceptions/ExceptionFormat.java,
             **/generators/*.java
-            **/model/*.java,
+            **/model/**/*.java,
             **/BeerProjectApplication.java,
         </sonar.exclusions>
         <sonar.dynamic>reuseReports</sonar.dynamic>
