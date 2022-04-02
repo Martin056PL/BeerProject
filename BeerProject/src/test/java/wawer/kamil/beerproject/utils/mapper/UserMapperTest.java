@@ -31,8 +31,8 @@ class UserMapperTest {
     void setUp() {
         this.user = getUserEntity();
         this.userRequest = getUserRequest();
-        this.userPage = createUserPage();
-        this.userList = createListOfUser();
+        this.userPage = getUsersPage();
+        this.userList = getUsers();
     }
 
     @Test

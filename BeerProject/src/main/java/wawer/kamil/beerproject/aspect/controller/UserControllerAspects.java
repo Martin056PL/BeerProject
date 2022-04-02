@@ -35,7 +35,7 @@ public class UserControllerAspects {
                 , userRequest.getGrantedAuthorities());
     }
 
-    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.updateUser(..)) && args(userId, userRequest)")
+    @Before(value = "execution(* wawer.kamil.beerproject.controllers.UserController.updateUser(..)) && args(userId, userRequest)", argNames = "userId, userRequest")
     public void logUpdateUser(Long userId, UserRequest userRequest) {
         log.debug("Endpoint address: 'user/{userId}' with PUT method, request parameter - userId: {};  user data: {}; {}; {}"
                 , userId

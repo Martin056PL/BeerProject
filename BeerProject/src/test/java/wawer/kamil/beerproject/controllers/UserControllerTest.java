@@ -47,10 +47,10 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        this.userResponse = createUserResponse();
-        this.userResponsePage = createUserResponsePage();
-        this.userResponseList = createListOfUsersResponse();
-        this.pageable = createPageable(PAGE_PAGE, PAGE_SIZE);
+        this.userResponse = getUserResponse();
+        this.userResponsePage = getUserResponsePage();
+        this.userResponseList = getUsersListResponse();
+        this.pageable = getPageable(PAGE_PAGE, PAGE_SIZE);
         this.userRequest = getUserRequest();
     }
 

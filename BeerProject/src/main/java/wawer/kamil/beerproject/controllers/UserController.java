@@ -9,8 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
-import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
@@ -46,25 +44,25 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws ElementNotFoundException {
+    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUserByUserId(userId));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) throws UsernameAlreadyExistsException {
+    public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
     }
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) throws ElementNotFoundException {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
     }
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws ElementNotFoundException {
+    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) {
         userService.permanentDeleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

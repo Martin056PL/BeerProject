@@ -16,23 +16,23 @@ import java.util.stream.Stream;
 
 public class UserTestHelper {
 
-    public static Pageable createPageable(int page, int size) {
+    public static Pageable getPageable(int page, int size) {
         return PageRequest.of(page, size);
     }
 
-    public static Page<UserResponse> createUserResponsePage() {
-        return new PageImpl<>(createListOfUsersResponse());
+    public static Page<UserResponse> getUserResponsePage() {
+        return new PageImpl<>(getUsersListResponse());
     }
 
-    public static List<UserResponse> createListOfUsersResponse() {
-        return Collections.singletonList(createUserResponse());
+    public static List<UserResponse> getUsersListResponse() {
+        return Collections.singletonList(getUserResponse());
     }
 
-    public static Page<User> createUserPage() {
-        return new PageImpl<>(createListOfUser());
+    public static Page<User> getUsersPage() {
+        return new PageImpl<>(getUsers());
     }
 
-    public static List<User> createListOfUser(){
+    public static List<User> getUsers(){
         return List.of(getUserEntity());
     }
 
@@ -42,7 +42,7 @@ public class UserTestHelper {
         user.setUsername("user");
         user.setEmail("user@email.com");
         user.setPassword("user");
-        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setGrantedAuthorities(getGrantedAuthorities());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
@@ -50,13 +50,13 @@ public class UserTestHelper {
         return user;
     }
 
-    public static UserResponse createUserResponse() {
+    public static UserResponse getUserResponse() {
         UserResponse user = new UserResponse();
         user.setId(1L);
         user.setUsername("user");
         user.setEmail("user@email.com");
         user.setPassword("user");
-        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setGrantedAuthorities(getGrantedAuthorities());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
@@ -64,7 +64,7 @@ public class UserTestHelper {
         return user;
     }
 
-    public static Set<String> crateGrantedAuthorities() {
+    public static Set<String> getGrantedAuthorities() {
         return Stream.of("USER_ROLE", "user:read").collect(Collectors.toSet());
     }
 
@@ -73,7 +73,7 @@ public class UserTestHelper {
         userRequest.setUsername("user");
         userRequest.setPassword("user");
         userRequest.setEmail("test@email.com");
-        userRequest.setGrantedAuthorities(crateGrantedAuthorities());
+        userRequest.setGrantedAuthorities(getGrantedAuthorities());
         return userRequest;
     }
 
