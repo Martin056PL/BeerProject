@@ -20,11 +20,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_PORT: ${DATABASE_PORT}
       DB_USERNAME: ${DATABASE_USER}
       DB_PASSWORD: ${DATABASE_PASSWORD}
       DB_SCHEMA: ${DATABASE_SCHEMA}
-      WAIT_BEFORE_HOSTS: 15
-    links:
-      - db:db
     restart: always
