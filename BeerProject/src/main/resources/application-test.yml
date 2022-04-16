@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:credentials-test.yml
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
