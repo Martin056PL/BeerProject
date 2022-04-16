@@ -1,6 +1,6 @@
 spring:
   config:
-    import: file:credentials/credentials-development.yml
+    import: classpath:credentials-development.yml
   jpa:
     database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
     hibernate:

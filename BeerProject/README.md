@@ -46,17 +46,19 @@ To run this application you need to first clone this repository. Then you can ru
 
 Use docker-compose to run app. Make sure you have installed docker and docker-compose on you local environment. 
 When you clone this repository you need to provide '.env' file with basic configuration. 
-Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from file name.
+Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from file name. If you need help, follow by additional instructions in the .env.template file.
 Then, open terminal in project directory, and run command:
 
     "docker-compose up"
 
-This will trigger creating containers with beer API and MySQL database including your values. DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you keep default values).
+This will trigger creating containers with API (beerproject-api-1) and MySQL database (beerproject-db-1). DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you keep default port).
 
-#### RUN WITH TEST PROFILE
+#### JAVA -JAR (TEST PROFILE)
 
-You can also run this app with 'test' profile via classic java -jar command. This mode has embedded H2 database with sample data. First you need to configure credentials to DB.
-The template of credentials and instruction are placed in './credentials/credentials.yml.template'.
+You can also run this app with 'test' profile via classic java -jar command. This mode has embedded H2 database with sample data. 
+Optionally, you can configure credentials to H2 DB. If you don't want to provide your custom values, skip this step.
+In other case: the template of credentials and instruction, how to prepare config file, is placed in 'src/main/resources/credentials-xxx.yml.template'.
+Follow the instructions.
 
 After that, build package using maven tool. To build app use the following command:
     
