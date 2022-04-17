@@ -1,9 +1,12 @@
 package wawer.kamil.beerproject.service.impl;
 
+import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRequest;
@@ -20,15 +23,14 @@ import java.util.List;
 import static wawer.kamil.beerproject.generators.Generator.createUser;
 
 @Service(value = "UserServiceImpl")
+@AllArgsConstructor
+@AutoConfigureAfter(PasswordEncoder.class)
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
