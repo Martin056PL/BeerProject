@@ -9,8 +9,8 @@ spring:
   datasource:
       driverClassName: org.h2.Driver
       # username and password is getting from credentials directory from credentials-test.yml
-      username:
-      password:
+      username: user
+      password: password
 
   liquibase:
     change-log: classpath:db/test.xml
