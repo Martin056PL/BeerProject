@@ -3,7 +3,7 @@ package wawer.kamil.beerproject.utils.mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.model.User;
@@ -11,7 +11,7 @@ import wawer.kamil.beerproject.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class UserMapper {
 
     private final ModelMapper modelMapper;

@@ -11,7 +11,6 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
-import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
@@ -20,16 +19,9 @@ import java.util.List;
 @RequestMapping("users")
 @Slf4j(topic = "application.logger")
 public class UserController {
-
     private final UserService userService;
-
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @PostMapping("/generate")
-    public ResponseEntity<User> generateUser() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.generateDefaultUserToDatabase());
     }
 
     @GetMapping

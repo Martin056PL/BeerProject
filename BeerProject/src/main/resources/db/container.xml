@@ -11,5 +11,5 @@
     <include file="version/006-AddSampleBreweriesToBreweriesTable.xml" relativeToChangelogFile="true"/>
     <include file="version/007-AddSampleBeersToBeerTable.xml" relativeToChangelogFile="true"/>
     <include file="version/008-AddSampleUsersToUserTable.xml" relativeToChangelogFile="true"/>
-
+    <include file="version/009-CreateUserRegistrationTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

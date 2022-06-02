@@ -55,6 +55,15 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
+    @ExceptionHandler(InternalException.class)
+    public ResponseEntity<Object> handleInternalException() {
+        setExceptionProperties(
+                "Something went wrong! Please contact administrator!",
+                INTERNAL_SERVER_ERROR
+        );
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
     @ExceptionHandler(InvalidImageParameters.class)
     public ResponseEntity<Object> handleBadImageParameters() {
         setExceptionProperties(
@@ -108,6 +117,33 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         setExceptionProperties(
                 "You have not sufficient grants to call this endpoint",
                 FORBIDDEN
+        );
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(UserAlreadyConfirmedException.class)
+    public ResponseEntity<Object> handleUserAlreadyConfirmedException() {
+        setExceptionProperties(
+                "User has been already confirmed",
+                BAD_REQUEST
+        );
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(InvalidRegistrationTokenException.class)
+    public ResponseEntity<Object> handleInvalidRegistrationTokenException() {
+        setExceptionProperties(
+                "The registration token is not valid",
+                BAD_REQUEST
+        );
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
+    @ExceptionHandler(ExpiredRegistrationTokenException.class)
+    public ResponseEntity<Object> handleExpiredRegistrationTokenException() {
+        setExceptionProperties(
+                "The token has been expired",
+                UNAUTHORIZED
         );
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }

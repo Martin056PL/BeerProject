@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
 
     @Override
-    @Query("select distinct u from User u join fetch u.grantedAuthorities where u.id =?1")
+    @Query("select distinct u from User u join fetch u.grantedAuthorities join fetch u.userRegistrationData where u.id =?1")
     Optional<User> findById(Long id);
 
     boolean existsUserByUsername(String username);

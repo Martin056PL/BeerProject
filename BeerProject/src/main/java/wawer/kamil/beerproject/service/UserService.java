@@ -2,15 +2,15 @@ package wawer.kamil.beerproject.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User generateDefaultUserToDatabase();
+    UserDetails loadUserByUsername(String username);
 
     Page<UserResponse> findAllUsersPage(Pageable pageable);
 

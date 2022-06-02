@@ -55,18 +55,6 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Test - should return response entity with generated user")
-    void should_return_response_entity_with_generated_user() {
-        //when
-        ResponseEntity<User> userResponseEntity = controller.generateUser();
-
-        //than
-        assertThat(userResponseEntity).isNotNull();
-        assertThat(userResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(userResponseEntity.getBody()).isNull();
-    }
-
-    @Test
     @DisplayName("Test - should return response entity with page body")
     void should_return_response_entity_with_page_body() {
         //given

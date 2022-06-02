@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Entity
 @Data
 @Builder
@@ -35,7 +34,7 @@ public class Brewery implements Serializable {
     @Column(nullable = false)
     private String email;
 
-    @Column(name = "phone_number",nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private Long phoneNumber;
 
     @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
@@ -56,16 +55,7 @@ public class Brewery implements Serializable {
     @Column(name = "brewery_image", columnDefinition = "mediumblob")
     private byte[] breweryImage;
 
-    public Beer addBeer(Beer beer) {
-        if (beerList == null) {
-            beerList = new ArrayList<>();
-        }
-        beerList.add(beer);
-        beer.setBrewery(this);
-        return beer;
-    }
-
-    public void assignBreweryToAllBeersOnBrewerysList(){
+    public void assignBreweryToAllBeersOnBreweriesList() {
         Optional.ofNullable(this.getBeerList()).ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
     }
 }

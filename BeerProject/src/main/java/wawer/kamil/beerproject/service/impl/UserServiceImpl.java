@@ -1,9 +1,11 @@
 package wawer.kamil.beerproject.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRequest;
@@ -17,27 +19,17 @@ import wawer.kamil.beerproject.utils.mapper.UserMapper;
 
 import java.util.List;
 
-import static wawer.kamil.beerproject.generators.Generator.createUser;
-
 @Service(value = "UserServiceImpl")
+@AllArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
-
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
+    private static final String USER_NOT_FOUND = "User with email %s not found";
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(ElementNotFoundException::new);
-    }
-
-    @Override
-    public User generateDefaultUserToDatabase() {
-        return userRepository.save(createUser());
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
     }
 
     @Override

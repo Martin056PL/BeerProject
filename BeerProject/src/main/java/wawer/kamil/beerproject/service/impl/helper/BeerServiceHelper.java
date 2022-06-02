@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.service.impl;
+package wawer.kamil.beerproject.service.impl.helper;
 
 
 import lombok.AccessLevel;

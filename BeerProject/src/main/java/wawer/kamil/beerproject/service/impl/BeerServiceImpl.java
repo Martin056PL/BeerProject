@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static wawer.kamil.beerproject.service.impl.BeerServiceHelper.mapBeerProperties;
+import static wawer.kamil.beerproject.service.impl.helper.BeerServiceHelper.mapBeerProperties;
 
 
 @Service
