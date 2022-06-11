@@ -18,16 +18,17 @@
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.jdbc.username>admin</sonar.jdbc.username>
-        <sonar.jdbc.password>user</sonar.jdbc.password>
-        <sonar.exclusions>
-            **/aspect/**/*.java,
-            **/configuration/**/*.java,
-            **/dto/**/*.java,
-            **/generators/Generator.java
+        <sonar.coverage.exclusions>
+            **/aspect/**,
+            **/configuration/**,
+            **/dto/**,
             **/model/*.java,
+            **/model/email/*.java,
+            **/model/registration/*.java,
+            **/model/user/*.java,
+            **/utils/UuidGenerator.java,
             **/BeerProjectApplication.java,
-        </sonar.exclusions>
+        </sonar.coverage.exclusions>
         <sonar.dynamic>reuseReports</sonar.dynamic>
     </properties>
 

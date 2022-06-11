@@ -227,5 +227,73 @@ class AdviceHandlerTest {
         assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
     }
 
+    @Test
+    @DisplayName("Should return response entity with exception format relevant for InternalException")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_internal_exception() {
+        //given
+        when(exception.getCause()).thenReturn(new InternalException());
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleInternalException();
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return response entity with exception format relevant for UserAlreadyConfirmedException")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_user_already_confirmed_exception() {
+        //given
+        when(exception.getCause()).thenReturn(new UserAlreadyConfirmedException());
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleUserAlreadyConfirmedException();
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.BAD_REQUEST, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return response entity with exception format relevant for UserAlreadyConfirmedException")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_invalid_registration_token_exception() {
+        //given
+        when(exception.getCause()).thenReturn(new InvalidRegistrationTokenException());
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleInvalidRegistrationTokenException();
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.BAD_REQUEST, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return response entity with exception format relevant for UserAlreadyConfirmedException")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_expired_registration_token_exception() {
+        //given
+        when(exception.getCause()).thenReturn(new ExpiredRegistrationTokenException());
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleExpiredRegistrationTokenException();
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.UNAUTHORIZED, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
 
 }
