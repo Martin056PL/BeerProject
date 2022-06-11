@@ -83,7 +83,7 @@ class UserControllerTest {
         assertThat(allUsersListResponseEntity).isNotNull();
         assertThat(allUsersListResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(allUsersListResponseEntity.getBody()).isNotNull();
-        assertThat(allUsersListResponseEntity.getBody().size()).isEqualTo(1);
+        assertThat(allUsersListResponseEntity.getBody()).hasSize(1);
     }
 
 
@@ -105,7 +105,7 @@ class UserControllerTest {
         assertThat(userByUserIdResponseEntity.getBody().getUsername()).isEqualTo("user");
         assertThat(userByUserIdResponseEntity.getBody().getPassword()).isEqualTo("user");
         assertThat(userByUserIdResponseEntity.getBody().getEmail()).isEqualTo("user@email.com");
-        assertThat(userByUserIdResponseEntity.getBody().getGrantedAuthorities().size()).isEqualTo(2);
+        assertThat(userByUserIdResponseEntity.getBody().getGrantedAuthorities()).hasSize(2);
     }
 
     @Test
