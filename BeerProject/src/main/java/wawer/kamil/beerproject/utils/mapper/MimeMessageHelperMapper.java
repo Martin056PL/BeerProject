@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import wawer.kamil.beerproject.email.Email;
+import wawer.kamil.beerproject.model.email.Email;
 import wawer.kamil.beerproject.exceptions.InternalException;
 
 import javax.mail.MessagingException;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Slf4j
 public class MimeMessageHelperMapper {
 
-    public static MimeMessageHelper map(Email email, MimeMessageHelper helper){
+    public static MimeMessageHelper map(Email email, MimeMessageHelper helper) {
         try {
             helper.setText(email.getContent(), true);
             helper.setTo(email.getReceiver());

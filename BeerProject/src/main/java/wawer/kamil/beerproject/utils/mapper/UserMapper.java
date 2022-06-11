@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 import java.util.List;
 import java.util.stream.Collectors;

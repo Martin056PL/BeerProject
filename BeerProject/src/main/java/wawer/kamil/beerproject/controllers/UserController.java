@@ -39,13 +39,13 @@ public class UserController {
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws ElementNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findUserByUserId(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createNewUser(@RequestBody UserRequest userRequest) throws UsernameAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userRequest));
     }
 
     @PutMapping("/{userId}")

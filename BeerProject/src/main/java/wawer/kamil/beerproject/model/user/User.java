@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.model;
+package wawer.kamil.beerproject.model.user;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import wawer.kamil.beerproject.model.helpers.UserDetailsHelper;
+import wawer.kamil.beerproject.model.DataAudit;
+import wawer.kamil.beerproject.model.registration.UserRegistrationData;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -50,7 +51,11 @@ public class User extends DataAudit implements UserDetails {
     @Column(name = "is_enabled")
     private boolean isEnabled;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
     private UserRegistrationData userRegistrationData;
 
     public User(

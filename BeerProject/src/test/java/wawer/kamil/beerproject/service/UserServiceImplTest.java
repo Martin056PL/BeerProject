@@ -12,7 +12,7 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 import wawer.kamil.beerproject.utils.mapper.UserMapper;
@@ -93,7 +93,7 @@ class UserServiceImplTest {
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
         when(mapper.mapUserEntityToUserResponse(user)).thenReturn(userResponse);
         //when
-        service.findUserByUserId(ID);
+        service.getUserById(ID);
 
         //then
         verify(repository).findById(ID);
@@ -107,7 +107,7 @@ class UserServiceImplTest {
         when(mapper.mapUserRequestToUserEntity(userRequest)).thenReturn(user);
 
         //when
-        service.addNewUser(userRequest);
+        service.saveUser(userRequest);
 
         //then
         verify(repository).existsUserByUsername(user.getUsername());
@@ -127,7 +127,7 @@ class UserServiceImplTest {
         when(repository.existsUserByUsername(userRequest.getUsername())).thenReturn(true);
 
         //when
-        service.addNewUser(userRequest);
+        service.saveUser(userRequest);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.model.helpers;
+package wawer.kamil.beerproject.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

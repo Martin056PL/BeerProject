@@ -4,7 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
 import wawer.kamil.beerproject.dto.response.UserRegistrationResponse;
 
-public interface RegistrationService {
+public interface RegistrationUserService {
     @Transactional
     UserRegistrationResponse registerNewUser(UserRegistrationRequest request);
 

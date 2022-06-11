@@ -1,11 +1,11 @@
-package wawer.kamil.beerproject.email;
+package wawer.kamil.beerproject.model.email;
 
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.files.Files;
 
-public class UpdateRegistrationTokenEmail extends Email {
+public class UpdateRegistrationUserTokenEmail extends Email {
 
-    public UpdateRegistrationTokenEmail(User user) {
+    public UpdateRegistrationUserTokenEmail(User user) {
         setReceiver(user.getEmail());
         setSubject("Refresh confirmation link");
         setSender("no-reply@beerapp.com");

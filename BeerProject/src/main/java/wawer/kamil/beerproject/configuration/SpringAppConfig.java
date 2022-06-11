@@ -5,10 +5,8 @@ import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;

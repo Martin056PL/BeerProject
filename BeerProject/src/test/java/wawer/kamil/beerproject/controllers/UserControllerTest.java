@@ -16,7 +16,6 @@ import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
-import wawer.kamil.beerproject.model.User;
 import wawer.kamil.beerproject.service.UserService;
 
 import java.util.List;
@@ -92,7 +91,7 @@ class UserControllerTest {
     @DisplayName("Test - should return response entity with proper user base on id body")
     void should_return_response_entity_with_proper_user_base_on_id_body() {
         //given
-        when(userService.findUserByUserId(USER_ID)).thenReturn(userResponse);
+        when(userService.getUserById(USER_ID)).thenReturn(userResponse);
 
         //when
         ResponseEntity<UserResponse> userByUserIdResponseEntity = controller.findUserByUserId(USER_ID);
@@ -113,7 +112,7 @@ class UserControllerTest {
     @DisplayName("Test - should throw exception when user not found")
     void should_throw_exception_when_user_not_found() {
         //given
-        when(userService.findUserByUserId(USER_ID)).thenThrow(ElementNotFoundException.class);
+        when(userService.getUserById(USER_ID)).thenThrow(ElementNotFoundException.class);
 
         //when
         assertThatThrownBy(() -> controller.findUserByUserId(USER_ID));
@@ -123,7 +122,7 @@ class UserControllerTest {
     @DisplayName("Test - should return response entity with saved user")
     void should_return_response_entity_with_saved_user() {
         //given
-        when(userService.addNewUser(userRequest)).thenAnswer(invocation -> {
+        when(userService.saveUser(userRequest)).thenAnswer(invocation -> {
             UserRequest argument = invocation.getArgument(0, UserRequest.class);
             UserResponse userResponse = new UserResponse();
             userResponse.setId(2L);
@@ -159,7 +158,7 @@ class UserControllerTest {
     @DisplayName("Test - should throw exception when username is unavailable during create")
     void should_throw_exception_when_username_is_unavailable_during_create() {
         //given
-        when(userService.addNewUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
+        when(userService.saveUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
 
         //when
         assertThatThrownBy(() -> controller.createNewUser(userRequest));

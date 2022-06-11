@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 import java.util.Collections;
 import java.util.List;

@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import wawer.kamil.beerproject.email.Email;
+import wawer.kamil.beerproject.model.email.Email;
 import wawer.kamil.beerproject.service.EmailService;
 import wawer.kamil.beerproject.utils.mapper.MimeMessageHelperMapper;
 

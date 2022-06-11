@@ -1,12 +1,11 @@
-package wawer.kamil.beerproject.email;
+package wawer.kamil.beerproject.model.email;
 
-
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.files.Files;
 
-public class RegistrationConfirmationEmail extends Email {
+public class RegistrationUserConfirmationEmail extends Email {
 
-    public RegistrationConfirmationEmail(User user) {
+    public RegistrationUserConfirmationEmail(User user) {
         setReceiver(user.getEmail());
         setSubject("Registration confirmation");
         setSender("no-reply@beerapp.com");

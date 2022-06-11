@@ -1,8 +1,8 @@
-package wawer.kamil.beerproject.email;
+package wawer.kamil.beerproject.model.email;
 
 import lombok.Getter;
 import lombok.Setter;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 @Getter
 @Setter

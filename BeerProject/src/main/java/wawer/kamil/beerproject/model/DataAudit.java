@@ -23,8 +23,4 @@ public abstract class DataAudit {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-    protected DataAudit(LocalDateTime updatedAt) {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = updatedAt;
-    }
 }
