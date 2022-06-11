@@ -1,9 +1,6 @@
 package wawer.kamil.beerproject.model.registration;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import wawer.kamil.beerproject.model.DataAudit;
 import wawer.kamil.beerproject.model.user.User;
 
@@ -48,5 +45,9 @@ public class UserRegistrationData extends DataAudit implements Serializable {
         this.confirmationToken = generateConfirmationToken();
         this.expiryDate = now().plusMinutes(timeToTokenExpire);
         this.isConfirmed = false;
+    }
+
+    public void extendExpiryDate(int extendTimeInMinutes){
+        this.expiryDate = now().plusMinutes(extendTimeInMinutes);
     }
 }

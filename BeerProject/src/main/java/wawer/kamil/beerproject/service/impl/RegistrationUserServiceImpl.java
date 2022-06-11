@@ -31,7 +31,6 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
         User savedUser = userService.saveUser(newUserWithRegistrationData);
         emailFacade.sendRegistrationEmail(savedUser);
         return mapper.mapUserRegistrationEntityToUserRegistrationResponse(savedUser);
-        // TODO add aspect as logs
     }
 
     @Transactional
@@ -41,7 +40,7 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
         String refreshedConfirmationToken = userRegistrationFacade.refreshUserRegistrationToken(user.getUserRegistrationData());
         emailFacade.sendEmailWithUpdatedToken(user);
         return refreshedConfirmationToken;
-        // TODO add aspect as logs
+
     }
 
     @Transactional
@@ -51,6 +50,5 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
         if (isTokenValid(user.getUserRegistrationData(), uuidTokenFromRequest)) {
             userService.enableUserAccount(user);
         }
-        // TODO add aspect as logs
     }
 }
