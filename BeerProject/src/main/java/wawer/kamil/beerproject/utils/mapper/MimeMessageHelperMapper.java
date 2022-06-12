@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import java.util.Arrays;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Slf4j
+@Slf4j(topic = "application.logger")
 public class MimeMessageHelperMapper {
 
     public static MimeMessageHelper map(Email email, MimeMessageHelper helper) {
@@ -21,7 +21,7 @@ public class MimeMessageHelperMapper {
             helper.setFrom(email.getSender());
             helper.setSubject(email.getSubject());
         } catch (MessagingException e) {
-            log.error(String.format("There is an issue with creating and email, stacktrace: %s", Arrays.toString(e.getStackTrace())));
+            log.warn(String.format("There is an issue with creating and email, stacktrace: %s", Arrays.toString(e.getStackTrace())));
             throw new InternalException();
         }
         return helper;

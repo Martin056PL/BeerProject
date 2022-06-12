@@ -27,7 +27,7 @@ spring:
       enabled: false
 
   mail:
-    host: localhost
+    host: email
     port: 1025
     username: hello
     password: hello

@@ -12,7 +12,7 @@ public abstract class Email {
     String subject;
     String content;
 
-    protected static final String FILE_PATH = "src/main/resources/static/";
+    protected static final String FILE_PATH = "/static/";
 
     public abstract String generateEmailContent(User user);
 }

@@ -15,7 +15,7 @@ public class UpdateRegistrationUserTokenEmail extends Email {
     @Override
     public String generateEmailContent(User user) {
         String link = "http://localhost:8086/api/v1/registration/confirmRegistration?id=" + user.getId() + "&token=" + user.getUserRegistrationData().getConfirmationToken();
-        String emailContent = Files.getEmailContent(FILE_PATH + "updateRegistrationTokenEmail.html");
+        String emailContent = Files.getEmailContent( "updateRegistrationTokenEmail.html");
         return String.format(emailContent, user.getUsername(), link);
     }
 }

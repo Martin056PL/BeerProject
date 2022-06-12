@@ -13,7 +13,7 @@ class FilesTest {
     @DisplayName("Should return content from file")
     void should_return_content_from_file(){
         //given
-        String path = "src/test/resources/text.txt";
+        String path = "text.txt";
 
         //when
         String emailContent = Files.getEmailContent(path);
@@ -31,7 +31,7 @@ class FilesTest {
 
     private void callFileWhichDoesNotExist() {
         //given
-        String path = "src/test/resources/FileNotExist.txt";
+        String path = "FileNotExist.txt";
 
         //when
         Files.getEmailContent(path);

@@ -18,7 +18,6 @@ import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole
 public class UserFactory {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final UserRegistrationDataFactory userRegistrationDataFactory;
 
     public User createNewUser(UserRegistrationRequest request, ApplicationUserRole role) {

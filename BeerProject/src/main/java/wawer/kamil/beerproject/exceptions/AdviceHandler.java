@@ -148,6 +148,15 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
     }
 
+    @ExceptionHandler(FileProcessingException.class)
+    public ResponseEntity<Object> handleFileProcessingException() {
+        setExceptionProperties(
+                "There is a problem with internal file procession",
+                INTERNAL_SERVER_ERROR
+        );
+        return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUnknownException(Exception e, HttpServletRequest request) {
         log.error("APPLICATION THROWS EXCEPTION WITH ID: " + exceptionFormat.getUuid()

@@ -10,14 +10,14 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserRegistrationValidatorClient {
-    public static boolean isUserRegistrationTokenHasBeenAlreadyConfirmed(UserRegistrationData userRegistrationData) {
+    public static boolean validateIfUserRegistrationTokenHasBeenAlreadyConfirmed(UserRegistrationData userRegistrationData) {
         UserRegistrationValidator.ValidationResult validationResult = UserRegistrationValidator.isTokenConfirmed().apply(userRegistrationData);
 
         if (validationResult == UserRegistrationValidator.ValidationResult.TOKEN_ALREADY_CONFIRMED) {
             throw new UserAlreadyConfirmedException();
         }
 
-        return true;
+        return false;
     }
 
     public static boolean isTokenValid(UserRegistrationData userRegistrationData, String uuidToken) {
