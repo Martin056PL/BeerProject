@@ -22,7 +22,7 @@ public class MimeMessageHelperMapper {
             helper.setSubject(email.getSubject());
         } catch (MessagingException e) {
             log.warn(String.format("There is an issue with creating and email, stacktrace: %s", Arrays.toString(e.getStackTrace())));
-            throw new InternalException();
+            throw new InternalException(e.getMessage());
         }
         return helper;
     }

@@ -1,10 +1,8 @@
 package wawer.kamil.beerproject.dto.request;
 
 import lombok.*;
-import wawer.kamil.beerproject.model.Brewery;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 

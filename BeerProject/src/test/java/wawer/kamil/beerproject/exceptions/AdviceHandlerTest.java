@@ -17,7 +17,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.context.request.WebRequest;
-import wawer.kamil.beerproject.helpers.UnknownException;
 
 import javax.persistence.RollbackException;
 import javax.servlet.http.HttpServletRequest;
@@ -211,27 +210,10 @@ class AdviceHandlerTest {
     }
 
     @Test
-    @DisplayName("Should return response entity with exception format relevant for UnknownException")
-    void should_return_response_entity_with_exception_format_relevant_for_handle_unknown_exception() {
-        //given
-        when(exception.getCause()).thenReturn(new UnknownException());
-
-        //when
-        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleUnknownException(exception, request);
-        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
-
-        //then
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, objectResponseEntity.getStatusCode());
-        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
-        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
-        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
-    }
-
-    @Test
     @DisplayName("Should return response entity with exception format relevant for InternalException")
     void should_return_response_entity_with_exception_format_relevant_for_handle_internal_exception() {
         //given
-        when(exception.getCause()).thenReturn(new InternalException());
+        when(exception.getCause()).thenReturn(new InternalException("error"));
 
         //when
         ResponseEntity<Object> objectResponseEntity = adviceHandler.handleInternalException();

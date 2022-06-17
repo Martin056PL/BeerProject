@@ -1,7 +1,6 @@
 package wawer.kamil.beerproject.dto.response;
 
 import lombok.*;
-import wawer.kamil.beerproject.model.Address;
 import wawer.kamil.beerproject.model.Beer;
 
 import java.util.List;

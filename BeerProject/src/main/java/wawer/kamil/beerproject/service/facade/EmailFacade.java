@@ -2,13 +2,15 @@ package wawer.kamil.beerproject.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.model.email.Email;
+import wawer.kamil.beerproject.model.email.EmailType;
 import wawer.kamil.beerproject.model.email.factory.EmailFactory;
+import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.service.impl.EmailServiceImpl;
 
-import static wawer.kamil.beerproject.model.email.factory.EmailFactory.EmailType.REGISTRATION_CONFIRMATION;
-import static wawer.kamil.beerproject.model.email.factory.EmailFactory.EmailType.UPDATE_REGISTRATION_TOKEN;
+import static wawer.kamil.beerproject.model.email.EmailType.REGISTRATION_CONFIRMATION;
+import static wawer.kamil.beerproject.model.email.EmailType.UPDATE_REGISTRATION_TOKEN;
+
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class EmailFacade {
         sendEmail(UPDATE_REGISTRATION_TOKEN, user);
     }
 
-    private void sendEmail(EmailFactory.EmailType emailType, User user) {
+    private void sendEmail(EmailType emailType, User user) {
         Email email = emailFactory.getEmail(emailType, user);
         emailService.send(email);
     }
