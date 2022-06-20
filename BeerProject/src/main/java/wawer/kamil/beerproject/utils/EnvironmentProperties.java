@@ -26,6 +26,7 @@ public class EnvironmentProperties {
     }
 
     public String getHostname() throws UnknownHostException {
+        // TODO There is something wrong with getting this hostname. It returns ip address which is not the same as localhost. INVESTIGATE IT!
         if (hostname == null) hostname = InetAddress.getLocalHost().getHostAddress();
         return hostname;
     }

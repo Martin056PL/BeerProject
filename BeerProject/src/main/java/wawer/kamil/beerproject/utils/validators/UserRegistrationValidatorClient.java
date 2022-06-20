@@ -27,14 +27,15 @@ public class UserRegistrationValidatorClient {
                         .and(UserRegistrationValidator.isTokenMatches(uuidToken))
                         .apply(userRegistrationData);
 
-        if (validationResult == UserRegistrationValidator.ValidationResult.TOKEN_DOES_NOT_MATCH) {
-            throw new InvalidRegistrationTokenException();
+        switch (validationResult){
+            case TOKEN_DOES_NOT_MATCH:
+                throw new InvalidRegistrationTokenException();
+            case TOKEN_ALREADY_CONFIRMED:
+                throw new UserAlreadyConfirmedException();
+            case TOKEN_EXPIRED:
+                throw new ExpiredRegistrationTokenException();
+            default:
+                return true;
         }
-
-        if (validationResult == UserRegistrationValidator.ValidationResult.TOKEN_ALREADY_CONFIRMED || validationResult == UserRegistrationValidator.ValidationResult.TOKEN_EXPIRED) {
-            throw new ExpiredRegistrationTokenException();
-        }
-
-        return true;
     }
 }

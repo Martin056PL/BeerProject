@@ -8,20 +8,25 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
+import wawer.kamil.beerproject.configuration.security.ApplicationUserRole;
+import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.exceptions.ElementNotFoundException;
 import wawer.kamil.beerproject.exceptions.UsernameAlreadyExistsException;
 import wawer.kamil.beerproject.model.user.User;
+import wawer.kamil.beerproject.model.user.factory.UserFactory;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 import wawer.kamil.beerproject.utils.mapper.UserMapper;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.USER;
+import static wawer.kamil.beerproject.helpers.UserRegistrationHelper.getUserRegistrationRequest;
 import static wawer.kamil.beerproject.helpers.UserTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,23 +39,29 @@ class UserServiceImplTest {
     UserMapper mapper;
 
     @Mock
+    UserFactory factory;
+
+    @Mock
     Pageable pageable;
 
     @InjectMocks
     UserServiceImpl service;
 
     private User user;
+    private User disabledUser;
     private UserRequest userRequest;
     private UserResponse userResponse;
-
+    private UserRegistrationRequest userRegistrationRequest;
     private final static Long ID = 1L;
-    private final static String USERNAME = "SomePreDefinedUsername";
+    private final static String USERNAME = "user";
 
     @BeforeEach
     void setUp() {
         this.user = getUserEntity();
         this.userRequest = getUserRequest();
         this.userResponse = createUserResponse();
+        this.userRegistrationRequest = getUserRegistrationRequest();
+        this.disabledUser = getDisabledUserEntity();
     }
 
     @Test
@@ -88,12 +99,64 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Verify if findById is called during finding User by ID")
-    void verify_findById_while_calling_findUserByUserId() {
+    void verify_findById_while_calling_getUserByUserId() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
         when(mapper.mapUserEntityToUserResponse(user)).thenReturn(userResponse);
         //when
         service.getUserById(ID);
+
+        //then
+        verify(repository).findById(ID);
+    }
+
+    @Test
+    @DisplayName("verify save when calling saveUser")
+    void verify_save_when_calling_saveUser(){
+        //when
+        service.saveUser(user);
+
+        //then
+        verify(repository).save(user);
+    }
+
+    @Test
+    @DisplayName("should return user with registration data base on registration request")
+    void should_return_user_with_registration_data_base_on_registration_request(){
+        //given
+        when(repository.findByUsername(USERNAME)).thenReturn(Optional.empty());
+        when(factory.createNewUser(userRegistrationRequest, USER)).thenReturn(user);
+
+        //when
+        User userWithUserRegistrationData = service.getUserWithUserRegistrationData(userRegistrationRequest, USER);
+
+        //then
+        assertEquals("user", userWithUserRegistrationData.getUsername());
+    }
+
+    @Test
+    @DisplayName("Should throw usernameAlreadyExistException when username already exist")
+    void should_throw_username_already_exist_exception_when_username_already_exist() {
+        //then
+        assertThrows(UsernameAlreadyExistsException.class, this::callGetUserWithUserRegistrationDataWithUsernameWhichAlreadyExist);
+    }
+
+    private void callGetUserWithUserRegistrationDataWithUsernameWhichAlreadyExist() throws UsernameAlreadyExistsException {
+        //given
+        when(repository.findByUsername(USERNAME)).thenReturn(Optional.of(user));
+
+        //when
+        service.getUserWithUserRegistrationData(userRegistrationRequest, USER);
+    }
+
+    @Test
+    @DisplayName("verify findById when calling findUserById")
+    void verify_findById_when_calling_findUserById(){
+        //given
+        when(repository.findById(ID)).thenReturn(Optional.of(user));
+
+        //when
+        service.findUserById(ID);
 
         //then
         verify(repository).findById(ID);
@@ -112,6 +175,21 @@ class UserServiceImplTest {
         //then
         verify(repository).existsUserByUsername(user.getUsername());
         verify(repository).save(user);
+    }
+
+    @Test
+    @DisplayName("Verify if existsUserByUsername and save during creating new user")
+    void should_update_and_update_user_account() {
+        //given
+        assertFalse(disabledUser.isEnabled());
+        assertFalse(disabledUser.getUserRegistrationData().isConfirmed());
+
+        //when
+        service.enableUserAccount(disabledUser);
+
+        //then
+        assertTrue(disabledUser.isEnabled());
+        assertTrue(disabledUser.getUserRegistrationData().isConfirmed());
     }
 
 

@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static wawer.kamil.beerproject.helpers.UserRegistrationHelper.getValidUserRegistrationData;
+
 public class UserTestHelper {
 
     public static Pageable createPageable(int page, int size) {
@@ -43,10 +45,26 @@ public class UserTestHelper {
         user.setEmail("user@email.com");
         user.setPassword("user");
         user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setUserRegistrationData(getValidUserRegistrationData());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
+        return user;
+    }
+
+    public static User getDisabledUserEntity(){
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("user");
+        user.setEmail("user@email.com");
+        user.setPassword("user");
+        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setUserRegistrationData(getValidUserRegistrationData());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(false);
         return user;
     }
 

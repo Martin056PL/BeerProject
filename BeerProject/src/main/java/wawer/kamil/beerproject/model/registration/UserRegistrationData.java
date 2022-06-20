@@ -1,6 +1,9 @@
 package wawer.kamil.beerproject.model.registration;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import wawer.kamil.beerproject.model.DataAudit;
 import wawer.kamil.beerproject.model.user.User;
 
