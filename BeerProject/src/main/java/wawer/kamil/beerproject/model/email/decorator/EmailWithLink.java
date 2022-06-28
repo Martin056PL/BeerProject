@@ -1,14 +1,15 @@
-package wawer.kamil.beerproject.model.email;
+package wawer.kamil.beerproject.model.email.decorator;
 
+import wawer.kamil.beerproject.model.email.Email;
 import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.link.LinkProvider;
 
-public class WithLinkEmail extends Email {
+public class EmailWithLink extends Email {
 
     private final Email email;
     private final LinkProvider linkProvider;
 
-    public WithLinkEmail(Email email, User user, LinkProvider linkProvider) {
+    public EmailWithLink(Email email, User user, LinkProvider linkProvider) {
         this.email = email;
         this.linkProvider = linkProvider;
         bindProperties(email, user);

@@ -29,7 +29,7 @@ class UserMapperTest {
 
     @BeforeEach
     void setUp() {
-        this.user = getUserEntity();
+        this.user = getUserEntityWithUserRole();
         this.userRequest = getUserRequest();
         this.userPage = createUserPage();
         this.userList = createListOfUser();

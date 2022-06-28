@@ -11,9 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static java.time.LocalDateTime.now;
 import static javax.persistence.GenerationType.IDENTITY;
-import static wawer.kamil.beerproject.utils.UuidGenerator.generateConfirmationToken;
 
 @Entity
 @AllArgsConstructor
@@ -43,14 +41,14 @@ public class UserRegistrationData extends DataAudit implements Serializable {
     @Column(name = "is_confirmed")
     private boolean isConfirmed;
 
-    public UserRegistrationData(int timeToTokenExpire) {
+    public UserRegistrationData(LocalDateTime now, int timeToTokenExpire, String uuid) {
         super();
-        this.confirmationToken = generateConfirmationToken();
-        this.expiryDate = now().plusMinutes(timeToTokenExpire);
+        this.expiryDate = now.plusMinutes(timeToTokenExpire);
+        this.confirmationToken = uuid;
         this.isConfirmed = false;
     }
 
-    public void extendExpiryDate(int extendTimeInMinutes){
-        this.expiryDate = now().plusMinutes(extendTimeInMinutes);
+    public void extendExpiryDate(int extendTimeInMinutes, LocalDateTime now){
+        this.expiryDate = now.plusMinutes(extendTimeInMinutes);
     }
 }

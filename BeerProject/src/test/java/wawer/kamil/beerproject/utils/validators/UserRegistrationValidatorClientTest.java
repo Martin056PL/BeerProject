@@ -9,6 +9,10 @@ import wawer.kamil.beerproject.exceptions.InvalidRegistrationTokenException;
 import wawer.kamil.beerproject.exceptions.UserAlreadyConfirmedException;
 import wawer.kamil.beerproject.model.registration.UserRegistrationData;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static wawer.kamil.beerproject.helpers.UserRegistrationHelper.*;
 import static wawer.kamil.beerproject.utils.validators.UserRegistrationValidatorClient.isTokenValid;
@@ -18,6 +22,8 @@ class UserRegistrationValidatorClientTest {
 
     private static final String VALID_UUID_TOKEN = "9280d346-e9af-11ec-8fea-0242ac120002";
     private static final String INVALID_UUID_TOKEN = "1f5cae4f-c64c-4e1e-bdff-0b4696eb9889";
+
+    private static final Clock clock = Clock.fixed(Instant.parse("2022-01-01T20:20:20.000Z"), ZoneId.systemDefault());
 
     private UserRegistrationData validUserRegistrationData;
 
@@ -54,7 +60,10 @@ class UserRegistrationValidatorClientTest {
     @Test
     @DisplayName("Should return true when token is valid")
     void should_return_true_when_token_is_valid(){
-        boolean userRegistrationTokenIsValid = isTokenValid(validUserRegistrationData, VALID_UUID_TOKEN);
+        //when
+        boolean userRegistrationTokenIsValid = isTokenValid(validUserRegistrationData, clock, VALID_UUID_TOKEN);
+
+        //then
         Assertions.assertTrue(userRegistrationTokenIsValid);
     }
 
@@ -67,7 +76,7 @@ class UserRegistrationValidatorClientTest {
 
     private void callValidationForRegistrationDataWhereTokenIsAlreadyConfirmed() {
         //when
-        isTokenValid(userRegistrationDataWithConfirmedToken, VALID_UUID_TOKEN);
+        isTokenValid(userRegistrationDataWithConfirmedToken, clock, VALID_UUID_TOKEN);
     }
 
     @Test
@@ -79,7 +88,7 @@ class UserRegistrationValidatorClientTest {
 
     private void callValidationForRegistrationDataWhereTokenDoesNotMatchToProvideToken() {
         //when
-        isTokenValid(validUserRegistrationData, INVALID_UUID_TOKEN);
+        isTokenValid(validUserRegistrationData, clock, INVALID_UUID_TOKEN);
     }
 
     @Test
@@ -91,6 +100,6 @@ class UserRegistrationValidatorClientTest {
 
     private void callValidationForRegistrationDataWithExpiredToken() {
         //when
-        isTokenValid(userRegistrationDataWithExpiredToken, VALID_UUID_TOKEN);
+        isTokenValid(userRegistrationDataWithExpiredToken, clock, VALID_UUID_TOKEN);
     }
 }

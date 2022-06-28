@@ -6,6 +6,8 @@ import wawer.kamil.beerproject.exceptions.InvalidRegistrationTokenException;
 import wawer.kamil.beerproject.exceptions.UserAlreadyConfirmedException;
 import wawer.kamil.beerproject.model.registration.UserRegistrationData;
 
+import java.time.Clock;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -20,10 +22,10 @@ public class UserRegistrationValidatorClient {
         return false;
     }
 
-    public static boolean isTokenValid(UserRegistrationData userRegistrationData, String uuidToken) {
+    public static boolean isTokenValid(UserRegistrationData userRegistrationData, Clock clock, String uuidToken) {
         UserRegistrationValidator.ValidationResult validationResult =
                 UserRegistrationValidator.isTokenConfirmed()
-                        .and(UserRegistrationValidator.isTokenExpired())
+                        .and(UserRegistrationValidator.isTokenExpired(clock))
                         .and(UserRegistrationValidator.isTokenMatches(uuidToken))
                         .apply(userRegistrationData);
 

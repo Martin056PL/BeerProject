@@ -29,7 +29,7 @@ public class UserFactory {
             case EXHIBITOR:
                 return createNewUserWithRegistrationData(request, EXHIBITOR);
             default:
-                throw new InternalException("The user can't be created!");
+                throw new InternalException("Provided user must have his own logic for creation!");
         }
     }
 

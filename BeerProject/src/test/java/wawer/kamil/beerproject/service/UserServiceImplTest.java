@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
-import wawer.kamil.beerproject.configuration.security.ApplicationUserRole;
 import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
@@ -57,7 +56,7 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        this.user = getUserEntity();
+        this.user = getUserEntityWithUserRole();
         this.userRequest = getUserRequest();
         this.userResponse = createUserResponse();
         this.userRegistrationRequest = getUserRegistrationRequest();

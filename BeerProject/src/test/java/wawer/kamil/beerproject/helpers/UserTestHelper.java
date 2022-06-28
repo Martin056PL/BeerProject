@@ -34,17 +34,17 @@ public class UserTestHelper {
         return new PageImpl<>(createListOfUser());
     }
 
-    public static List<User> createListOfUser(){
-        return List.of(getUserEntity());
+    public static List<User> createListOfUser() {
+        return List.of(getUserEntityWithUserRole());
     }
 
-    public static User getUserEntity(){
+    public static User getUserEntityWithUserRole() {
         User user = new User();
         user.setId(1L);
         user.setUsername("user");
         user.setEmail("user@email.com");
         user.setPassword("user");
-        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
         user.setUserRegistrationData(getValidUserRegistrationData());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
@@ -53,13 +53,58 @@ public class UserTestHelper {
         return user;
     }
 
-    public static User getDisabledUserEntity(){
+    public static User getUserEntityWithHashedPassword() {
+        User user = new User();
+        user.setId(0L);
+        user.setUsername("user");
+        user.setEmail("user@email.com");
+        user.setPassword("hashed.password");
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
+        user.setUserRegistrationData(getValidUserRegistrationData());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(false);
+        return user;
+    }
+
+    public static User getUserEntityWithHashedPasswordAndExhibitorRole() {
+        User user = new User();
+        user.setId(0L);
+        user.setUsername("user");
+        user.setEmail("user@email.com");
+        user.setPassword("hashed.password");
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithExhibitorRole());
+        user.setUserRegistrationData(getValidUserRegistrationData());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(false);
+        return user;
+    }
+
+    public static User getUserEntityWithHashedPasswordAndAdminRole() {
+        User user = new User();
+        user.setId(0L);
+        user.setUsername("user");
+        user.setEmail("user@email.com");
+        user.setPassword("hashed.password");
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithAdminRole());
+        user.setUserRegistrationData(getValidUserRegistrationData());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(false);
+        return user;
+    }
+
+    public static User getDisabledUserEntity() {
         User user = new User();
         user.setId(1L);
         user.setUsername("user");
         user.setEmail("user@email.com");
         user.setPassword("user");
-        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
         user.setUserRegistrationData(getValidUserRegistrationData());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
@@ -74,7 +119,7 @@ public class UserTestHelper {
         user.setUsername("user");
         user.setEmail("user@email.com");
         user.setPassword("user");
-        user.setGrantedAuthorities(crateGrantedAuthorities());
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
@@ -82,8 +127,28 @@ public class UserTestHelper {
         return user;
     }
 
-    public static Set<String> crateGrantedAuthorities() {
-        return Stream.of("USER_ROLE", "user:read").collect(Collectors.toSet());
+    public static Set<String> crateGrantedAuthoritiesWithUserRole() {
+        return Stream.of("user:read", "ROLE_USER").collect(Collectors.toSet());
+    }
+
+    public static Set<String> crateGrantedAuthoritiesWithExhibitorRole() {
+        return Stream.of(
+                "ROLE_EXHIBITOR",
+                "exhibitor:read",
+                "exhibitor:create",
+                "exhibitor:update",
+                "exhibitor:delete"
+        ).collect(Collectors.toSet());
+    }
+
+    public static Set<String> crateGrantedAuthoritiesWithAdminRole() {
+        return Stream.of(
+                "ROLE_ADMIN",
+                "admin:read",
+                "admin:create",
+                "admin:update",
+                "admin:delete"
+        ).collect(Collectors.toSet());
     }
 
     public static UserRequest getUserRequest() {
@@ -91,7 +156,7 @@ public class UserTestHelper {
         userRequest.setUsername("user");
         userRequest.setPassword("user");
         userRequest.setEmail("test@email.com");
-        userRequest.setGrantedAuthorities(crateGrantedAuthorities());
+        userRequest.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
         return userRequest;
     }
 

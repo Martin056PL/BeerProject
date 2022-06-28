@@ -12,6 +12,8 @@ import wawer.kamil.beerproject.service.facade.EmailFacade;
 import wawer.kamil.beerproject.service.facade.UserRegistrationFacade;
 import wawer.kamil.beerproject.utils.mapper.UserRegistrationMapper;
 
+import java.time.Clock;
+
 import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.USER;
 import static wawer.kamil.beerproject.utils.validators.UserRegistrationValidatorClient.isTokenValid;
 
@@ -23,6 +25,8 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
     private final UserRegistrationFacade userRegistrationFacade;
     private final EmailFacade emailFacade;
     private final UserRegistrationMapper mapper;
+
+    private final Clock clock;
 
     @Transactional
     @Override
@@ -47,7 +51,7 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
     @Override
     public void confirmCredentials(Long userId, String uuidTokenFromRequest) {
         User user = userService.findUserById(userId);
-        if (isTokenValid(user.getUserRegistrationData(), uuidTokenFromRequest)) {
+        if (isTokenValid(user.getUserRegistrationData(), clock, uuidTokenFromRequest)) {
             userService.enableUserAccount(user);
         }
     }

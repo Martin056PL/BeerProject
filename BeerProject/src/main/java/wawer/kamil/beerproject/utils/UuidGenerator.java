@@ -1,14 +1,14 @@
 package wawer.kamil.beerproject.utils;
 
-import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-import static lombok.AccessLevel.PRIVATE;
+@Component
+public class UuidGenerator implements UuidProvider {
 
-@NoArgsConstructor(access = PRIVATE)
-public class UuidGenerator {
-    public static String generateConfirmationToken() {
-        return UUID.randomUUID().toString();
+    @Override
+    public UUID getUuid() {
+        return UUID.randomUUID();
     }
 }
