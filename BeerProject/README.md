@@ -10,7 +10,7 @@
 ## General info
 This is project to manage and support participants during beer day fest!
 
-The current state of the application is as follows:
+The current code statistics of the application looks like as follows:
 
 ![status.png](status.png)
 
