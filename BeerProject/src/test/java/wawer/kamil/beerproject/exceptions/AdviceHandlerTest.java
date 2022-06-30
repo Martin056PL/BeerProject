@@ -227,6 +227,41 @@ class AdviceHandlerTest {
     }
 
     @Test
+    @DisplayName("Should return response entity with exception format relevant for FileProcessingException")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_file_processing_exception() {
+        //given
+        when(exception.getCause()).thenReturn(new FileProcessingException());
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleFileProcessingException();
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return response entity with exception format relevant for Exception")
+    void should_return_response_entity_with_exception_format_relevant_for_handle_exception() {
+        //given
+        Exception throwable = new Exception("asd", new Exception());
+//        when(throwable.getCause()).thenReturn(throwable);
+
+        //when
+        ResponseEntity<Object> objectResponseEntity = adviceHandler.handleUnknownException(throwable, request);
+        ExceptionFormat body = (ExceptionFormat) objectResponseEntity.getBody();
+
+        //then
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, objectResponseEntity.getStatusCode());
+        assertEquals(objectResponseEntity.getStatusCode(), body.getStatus());
+        assertTrue(body.getErrorMessage().containsKey(ERROR_MESSAGE_KEY));
+        assertFalse(body.getErrorMessage().get(ERROR_MESSAGE_KEY).isEmpty());
+    }
+
+    @Test
     @DisplayName("Should return response entity with exception format relevant for UserAlreadyConfirmedException")
     void should_return_response_entity_with_exception_format_relevant_for_handle_user_already_confirmed_exception() {
         //given
