@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static wawer.kamil.beerproject.helpers.UserTestHelper.*;
 
@@ -62,7 +63,7 @@ class UserControllerTest {
         //when
         ResponseEntity<Page<UserResponse>> allUsersPageResponseEntity = controller.findAllUsersPage(pageable);
 
-        //than
+        //then
         assertThat(allUsersPageResponseEntity).isNotNull();
         assertThat(allUsersPageResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(allUsersPageResponseEntity.getBody()).isEqualTo(userResponsePage);
@@ -79,7 +80,7 @@ class UserControllerTest {
         //when
         ResponseEntity<List<UserResponse>> allUsersListResponseEntity = controller.findAllUsersList();
 
-        //than
+        //then
         assertThat(allUsersListResponseEntity).isNotNull();
         assertThat(allUsersListResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(allUsersListResponseEntity.getBody()).isNotNull();
@@ -96,7 +97,7 @@ class UserControllerTest {
         //when
         ResponseEntity<UserResponse> userByUserIdResponseEntity = controller.findUserByUserId(USER_ID);
 
-        //than
+        //then
         assertThat(userByUserIdResponseEntity).isNotNull();
         assertThat(userByUserIdResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(userByUserIdResponseEntity.getBody()).isEqualTo(userResponse);
@@ -111,11 +112,16 @@ class UserControllerTest {
     @Test
     @DisplayName("Test - should throw exception when user not found")
     void should_throw_exception_when_user_not_found() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callFindUserByUserId);
+    }
+
+    void callFindUserByUserId(){
         //given
         when(userService.getUserById(USER_ID)).thenThrow(ElementNotFoundException.class);
 
         //when
-        assertThatThrownBy(() -> controller.findUserByUserId(USER_ID));
+        controller.findUserByUserId(USER_ID);
     }
 
     @Test
@@ -140,7 +146,7 @@ class UserControllerTest {
         //when
         ResponseEntity<UserResponse> newUserResponseEntity = controller.createNewUser(userRequest);
 
-        //than
+        //then
         assertThat(newUserResponseEntity).isNotNull();
         assertThat(newUserResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(newUserResponseEntity.getBody()).isNotNull();
@@ -157,11 +163,16 @@ class UserControllerTest {
     @Test
     @DisplayName("Test - should throw exception when username is unavailable during create")
     void should_throw_exception_when_username_is_unavailable_during_create() {
+        //then
+        assertThrows(UsernameAlreadyExistsException.class, this::callCreateNewUser);
+    }
+
+    void callCreateNewUser(){
         //given
         when(userService.saveUser(userRequest)).thenThrow(UsernameAlreadyExistsException.class);
 
         //when
-        assertThatThrownBy(() -> controller.createNewUser(userRequest));
+        controller.createNewUser(userRequest);
     }
 
     @Test
@@ -186,7 +197,7 @@ class UserControllerTest {
         //when
         ResponseEntity<UserResponse> newUserResponseEntity = controller.updateUser(USER_ID, userRequest);
 
-        //than
+        //then
         assertThat(newUserResponseEntity).isNotNull();
         assertThat(newUserResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(newUserResponseEntity.getBody()).isNotNull();
@@ -203,11 +214,16 @@ class UserControllerTest {
     @Test
     @DisplayName("Test - should throw exception when user not found during update")
     void should_throw_exception_when_user_not_found_during_update() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callUpdateUser);
+    }
+
+    void callUpdateUser(){
         //given
         when(userService.updateUser(USER_ID, userRequest)).thenThrow(ElementNotFoundException.class);
 
         //when
-        assertThatThrownBy(() -> controller.updateUser(USER_ID, userRequest));
+        controller.updateUser(USER_ID, userRequest);
     }
 
     @Test
@@ -225,10 +241,15 @@ class UserControllerTest {
     @Test
     @DisplayName("Test - should throw exception when user not found during deleting user permanently")
     void should_throw_exception_when_user_not_found_during_deleting_user_permanently() {
+        //then
+        assertThrows(ElementNotFoundException.class, this::callDeleteUserPermanently);
+    }
+
+    void callDeleteUserPermanently(){
         //given
         when(controller.deleteUserPermanently(USER_ID)).thenThrow(ElementNotFoundException.class);
 
         //when
-        assertThatThrownBy(() -> controller.deleteUserPermanently(USER_ID));
+        controller.deleteUserPermanently(USER_ID);
     }
 }
