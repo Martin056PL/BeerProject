@@ -10,18 +10,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wawer.kamil.beerproject.model.email.Email;
 import wawer.kamil.beerproject.model.email.RegistrationUserConfirmationEmail;
+import wawer.kamil.beerproject.model.email.UpdateRegistrationUserTokenEmail;
 import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.EnvironmentProperties;
-import wawer.kamil.beerproject.utils.link.LinkFactory;
 
 import static wawer.kamil.beerproject.helpers.UserTestHelper.getUserEntityWithUserRole;
 import static wawer.kamil.beerproject.model.email.EmailType.REGISTRATION_CONFIRMATION;
+import static wawer.kamil.beerproject.model.email.EmailType.UPDATE_REGISTRATION_TOKEN;
 
 @ExtendWith(MockitoExtension.class)
 class EmailFactoryTest {
-
-    @Mock
-    LinkFactory factory;
 
     @Mock
     EnvironmentProperties environmentProperties;
@@ -34,7 +32,17 @@ class EmailFactoryTest {
     @BeforeEach
     void setUp() {
         this.user = getUserEntityWithUserRole();
+    }
 
+    @Test
+    @DisplayName("Should return registration base email")
+    void should_return_registration_email() {
+        //given
+        //when
+        Email email = emailFactory.getSpecificEmail(REGISTRATION_CONFIRMATION, user);
+
+        //then
+        Assertions.assertEquals(RegistrationUserConfirmationEmail.class, email.getClass());
     }
 
     @Test
@@ -42,13 +50,10 @@ class EmailFactoryTest {
     void should_return_registration_base_email() {
         //given
         //when
-        Email email = emailFactory.getBasicEmail(REGISTRATION_CONFIRMATION, user);
+        Email email = emailFactory.getSpecificEmail(UPDATE_REGISTRATION_TOKEN, user);
 
         //then
-        Assertions.assertEquals(RegistrationUserConfirmationEmail.class, email.getClass());
-        Assertions.assertEquals("Registration confirmation", email.getSubject());
-        Assertions.assertEquals("no-reply@beerapp.com", email.getSender());
-        Assertions.assertEquals(user.getEmail(), email.getReceiver());
+        Assertions.assertEquals(UpdateRegistrationUserTokenEmail.class, email.getClass());
 
     }
 

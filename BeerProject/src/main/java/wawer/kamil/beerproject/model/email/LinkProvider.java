@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.utils.link;
+package wawer.kamil.beerproject.model.email;
 
 public interface LinkProvider {
 

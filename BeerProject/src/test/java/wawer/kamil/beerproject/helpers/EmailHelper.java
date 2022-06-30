@@ -10,8 +10,8 @@ public class EmailHelper {
 
     private static final User user = getUserEntityWithUserRole();
 
-    private static Email registrationNewUserEmail(){
-        return new RegistrationUserConfirmationEmail(user);
+    public static Email registrationNewUserEmail(){
+        return new TestEmail(user);
     }
 
 }

@@ -24,7 +24,7 @@ services:
     build: .
     hostname: beerApp
     ports:
-      - ${API_PORT}:8081
+      - ${API_PORT}:${API_PORT}
     depends_on:
       - db
     environment:
@@ -32,4 +32,5 @@ services:
       DB_PASSWORD: ${DATABASE_PASSWORD}
       DB_SCHEMA: ${DATABASE_SCHEMA}
       EMAIL_SMTP_SERVER_PORT: ${EMAIL_SMTP_SERVER_PORT}
+      API_PORT: ${API_PORT}
     restart: always

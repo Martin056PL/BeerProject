@@ -20,7 +20,6 @@ public interface UserService {
 
     List<UserResponse> findAllUsersList();
 
-
     UserResponse getUserById(Long userId);
 
     User findUserById(Long userId);

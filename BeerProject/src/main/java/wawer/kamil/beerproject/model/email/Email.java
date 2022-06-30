@@ -14,12 +14,5 @@ public abstract class Email {
 
     protected static final String FILE_PATH = "/static/";
 
-    protected void bindProperties(Email email, User user){
-        this.receiver = email.receiver;
-        this.sender = email.sender;
-        this.subject = email.subject;
-        this.content = generateEmailContent(user);
-    }
-
     public abstract String generateEmailContent(User user);
 }
