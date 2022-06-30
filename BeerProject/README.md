@@ -10,6 +10,10 @@
 ## General info
 This is project to manage and support participants during beer day fest!
 
+The current state of the application is as follows:
+
+![status.png](status.png)
+
 ## Features
 Current technical features:
 1. Ability to register new user

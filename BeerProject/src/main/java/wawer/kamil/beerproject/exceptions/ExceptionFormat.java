@@ -1,8 +1,9 @@
 package wawer.kamil.beerproject.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,8 @@ import java.util.Map;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-@Data
+@Getter
+@Setter
 @Component
 public class ExceptionFormat {
 
