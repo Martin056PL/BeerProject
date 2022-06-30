@@ -1,9 +1,9 @@
 # Beer Application
 ## Table of contents
 * [General info](#general-info)
-* [Featues](#Featues)
-* [current TODO list for FUNCTIONAL features](current-TODO-list-for-FUNCTIONAL-features)
-* [current TODO list for TECHNICAL features](current-TODO-list-for-TECHNICAL-features)
+* [Features](#features)
+* [Current TODO list for FUNCTIONAL features](current-TODO-list-for-FUNCTIONAL-features)
+* [Current TODO list for TECHNICAL features](Current-TODO-list-for-TECHNICAL-features)
 * [Technologies](#technologies)
 * [Setup & Run](#setup-&-run)
 
