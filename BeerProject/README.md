@@ -2,8 +2,8 @@
 ## Table of contents
 * [General info](#general-info)
 * [Features](#features)
-* [Current TODO list for FUNCTIONAL features](current-TODO-list-for-FUNCTIONAL-features)
-* [Current TODO list for TECHNICAL features](Current-TODO-list-for-TECHNICAL-features)
+* [Current TODO list for FUNCTIONAL features](current-todo-list-for-functional-features)
+* [Current TODO list for TECHNICAL features](current-todo-list-for-techncal-features)
 * [Technologies](#technologies)
 * [Setup & Run](#setup-&-run)
 
@@ -71,7 +71,7 @@ When you clone this repository you need to provide '.env' file with basic config
 Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from file name. If you need help, follow by additional instructions in the .env.template file.
 Then, open terminal in project directory, and run command:
 
-    "docker-compose up"
+    docker-compose up
 
 This will trigger creating containers with API (beerproject-api-1), MySQL database (beerproject-db-1) and developer mailbox(beerproject-email-1). DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you leave default port).
 
@@ -86,10 +86,10 @@ Follow the instructions inside. Please, be aware of in this case you need to pro
 
 After that, build package using maven tool. To build app use the following command:
     
-    "mvn package"
+    mvn package
 
 Then, go to just generated 'target' directory and run app using command line:
 
-    "java -jar beer-project-1.0.jar --spring.profiles.active=test"
+    java -jar beer-project-1.0.jar --spring.profiles.active=test
 
 The full list of endpoints you can see here(if you keep default config values): [http://localhost:8081/api/v1/swagger-ui/index.html](/localhost:8081/api/v1/swagger-ui/index.html)
