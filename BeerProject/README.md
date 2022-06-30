@@ -5,7 +5,7 @@
 * [Current TODO list for FUNCTIONAL features](#current-todo-list-for-functional-features)
 * [Current TODO list for TECHNICAL features](#current-todo-list-for-technical-features)
 * [Technologies](#technologies)
-* [Setup & Run](#setup-&-run)
+* [Setup & Run](#setup-and-run)
 
 ## General info
 This is project to manage and support participants during beer day fest!
@@ -60,7 +60,7 @@ List of used technologies and tools:
 * JUnit 5
 * SonarQube
 
-## Setup & Run
+## Setup and Run
 
 To run this application you need to first clone this repository. Then you can run this app in two ways:
 
