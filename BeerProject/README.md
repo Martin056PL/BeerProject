@@ -3,7 +3,7 @@
 * [General info](#general-info)
 * [Features](#features)
 * [Current TODO list for FUNCTIONAL features](#current-todo-list-for-functional-features)
-* [Current TODO list for TECHNICAL features](#current-todo-list-for-techncal-features)
+* [Current TODO list for TECHNICAL features](#current-todo-list-for-technical-features)
 * [Technologies](#technologies)
 * [Setup & Run](#setup-&-run)
 
