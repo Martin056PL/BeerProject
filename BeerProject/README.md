@@ -6,6 +6,7 @@
 * [Current TODO list for TECHNICAL features](#current-todo-list-for-technical-features)
 * [Technologies](#technologies)
 * [Setup & Run](#setup-and-run)
+* [Current Status Of Project](#current-status-of-project)
 
 ## General info
 This is project to manage and support participants during beer day fest!
