@@ -10,10 +10,6 @@
 ## General info
 This is project to manage and support participants during beer day fest!
 
-The current code statistics of the application looks like as follows:
-
-![status.png](status.png)
-
 ## Features
 Current technical features:
 1. Ability to register new user
@@ -97,3 +93,16 @@ Then, go to just generated 'target' directory and run app using command line:
     java -jar beer-project-1.0.jar --spring.profiles.active=test
 
 The full list of endpoints you can see here(if you keep default config values): [http://localhost:8081/api/v1/swagger-ui/index.html](/localhost:8081/api/v1/swagger-ui/index.html)
+
+## Current Status Of Project
+
+The general code statistics of the application looks like as follows:
+
+![status.png](readme_screenshots/status.png)
+
+The list of current codesmells is looks like as follows:
+
+![codesmells.png](readme_screenshots/codesmells.png)
+
+Detected security hotspot vulnerability is due to way of logging to the service.
+It will be enabled again when JWT will be implemented.
