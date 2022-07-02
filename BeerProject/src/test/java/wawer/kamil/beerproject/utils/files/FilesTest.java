@@ -1,10 +1,10 @@
 package wawer.kamil.beerproject.utils.files;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wawer.kamil.beerproject.exceptions.FileProcessingException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FilesTest {
@@ -13,13 +13,13 @@ class FilesTest {
     @DisplayName("Should return content from file")
     void should_return_content_from_file(){
         //given
-        String path = "text.txt";
+        String file = "text.html";
 
         //when
-        String emailContent = Files.getEmailContent(path);
+        String emailContent = Files.getEmailContent(file);
 
         //then
-        Assertions.assertEquals("test content", emailContent);
+        assertEquals("test content", emailContent);
     }
 
     @Test

@@ -1,36 +1,38 @@
 package wawer.kamil.beerproject.model.email;
 
-import lombok.NoArgsConstructor;
 import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.EnvironmentProperties;
-import wawer.kamil.beerproject.utils.files.Files;
 
 import static java.lang.String.format;
 
-@NoArgsConstructor
 public class RegistrationUserConfirmationEmail extends Email implements LinkProvider {
 
-    private EnvironmentProperties env;
-    private User user;
+    private final EnvironmentProperties env;
 
     public RegistrationUserConfirmationEmail(User user, EnvironmentProperties env) {
-        this.user = user;
+        super(user, "Registration confirmation", "no-reply@beerapp.com");
         this.env = env;
-        setReceiver(user.getEmail());
-        setSubject("Registration confirmation");
-        setSender("no-reply@beerapp.com");
-        setContent(generateEmailContent(user));
+        this.content = generateEmailContent(user);
     }
 
     @Override
     public String generateEmailContent(User user) {
-        String emailContent = Files.getEmailContent(FILE_PATH + "confirmRegistrationEmail.html");
-        return format(emailContent, user.getUsername(), getLink());
+        String emailContent = getEmailTemplate("confirmRegistrationEmail.html");
+        return format(
+                emailContent,
+                user.getUsername(),
+                getLink(
+                        String.valueOf(user.getId()),
+                        user.getUserRegistrationData().getConfirmationToken()
+                )
+        );
     }
 
     @Override
-    public String getLink() {
-        String baseLink = env.getServerUrlPrefix() + env.getContextPath() + "registration/confirmRegistration?id=%s&token=%s";
-        return format(baseLink, user.getId(), user.getUserRegistrationData().getConfirmationToken());
+    public String getLink(String... params) {
+        String userId = params[0];
+        String userConfirmationToken = params[1];
+        String baseLink = env.getFullPathToApi() + "registration/confirmRegistration?id=%s&token=%s";
+        return format(baseLink, userId, userConfirmationToken);
     }
 }

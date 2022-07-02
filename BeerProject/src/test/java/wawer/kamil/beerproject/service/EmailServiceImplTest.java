@@ -46,7 +46,7 @@ class EmailServiceImplTest {
         assertEquals(1, messages.length);
         assertEquals("test subject", messages[0].getSubject());
         assertEquals("sender@email.com", messages[0].getFrom()[0].toString());
-        assertEquals("receiver@email.com", messages[0].getAllRecipients()[0].toString());
+        assertEquals("user@email.com", messages[0].getAllRecipients()[0].toString());
 
         String content = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
         assertEquals("test content", content);

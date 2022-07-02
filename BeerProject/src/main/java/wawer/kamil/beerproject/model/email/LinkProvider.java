@@ -2,5 +2,5 @@ package wawer.kamil.beerproject.model.email;
 
 public interface LinkProvider {
 
-    String getLink();
+    String getLink(String... params);
 }

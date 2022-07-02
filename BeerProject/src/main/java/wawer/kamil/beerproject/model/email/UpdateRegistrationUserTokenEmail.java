@@ -2,33 +2,33 @@ package wawer.kamil.beerproject.model.email;
 
 import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.EnvironmentProperties;
-import wawer.kamil.beerproject.utils.files.Files;
 
 import static java.lang.String.format;
 
 public class UpdateRegistrationUserTokenEmail extends Email implements LinkProvider {
 
     private final EnvironmentProperties env;
-    private final User user;
 
     public UpdateRegistrationUserTokenEmail(User user, EnvironmentProperties env) {
+        super(user, "Refresh confirmation link", "no-reply@beerapp.com");
         this.env = env;
-        this.user = user;
-        setReceiver(user.getEmail());
-        setSubject("Refresh confirmation link");
-        setSender("no-reply@beerapp.com");
-        setContent(generateEmailContent(user));
+        this.content = generateEmailContent(user);
     }
 
     @Override
     public String generateEmailContent(User user) {
-        String emailContent = Files.getEmailContent(FILE_PATH + "updateRegistrationTokenEmail.html");
-        return format(emailContent, user.getUsername(), getLink());
+        String emailContent = getEmailTemplate("updateRegistrationTokenEmail.html");
+        return format(
+                emailContent,
+                user.getUsername(),
+                getLink(user.getUserRegistrationData().getConfirmationToken())
+        );
     }
 
     @Override
-    public String getLink() {
-        String baseLink = env.getServerUrlPrefix() + env.getContextPath() + "registration/refreshToken?id=%s";
-        return format(baseLink, user.getId());
+    public String getLink(String... prams) {
+        String userId = prams[0];
+        String baseLink = env.getFullPathToApi() + "registration/refreshToken?id=%s";
+        return format(baseLink, userId);
     }
 }

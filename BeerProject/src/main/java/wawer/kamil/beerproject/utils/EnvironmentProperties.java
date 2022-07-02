@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import wawer.kamil.beerproject.exceptions.InternalException;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -17,29 +15,27 @@ public class EnvironmentProperties {
     private String contextPath;
     private final Environment environment;
     private String port;
-    private String hostname;
+
+    private static final String DEFAULT_LOCALHOST = "127.0.0.1";
 
     public String getPort() {
-        if (port == null)
-            port = environment.getProperty("local.server.port");
-        return port;
+        return Optional.ofNullable(port).orElse(environment.getProperty("local.server.port"));
     }
 
-    public String getHostname() throws UnknownHostException {
+    public String getHostname() {
         // TODO There is something wrong with getting this hostname. It returns ip address which is not the same as localhost. INVESTIGATE IT!
-        if (hostname == null) hostname = InetAddress.getLocalHost().getHostAddress();
-        return hostname;
+        return DEFAULT_LOCALHOST;
     }
 
     public String getServerUrlPrefix() {
-        try {
-            return "http://" + getHostname() + ":" + getPort();
-        } catch (UnknownHostException e) {
-            throw new InternalException(e.getMessage());
-        }
+        return "http://" + getHostname() + ":" + getPort();
     }
 
-    public String getContextPath(){
+    public String getContextPath() {
         return this.contextPath;
+    }
+
+    public String getFullPathToApi() {
+        return getServerUrlPrefix() + getContextPath();
     }
 }
