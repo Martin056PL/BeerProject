@@ -173,7 +173,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
 
     private void setExceptionProperties(String errorMessage, HttpStatus httpStatus) {
         generateExceptionFormatProperties(getSingleErrorMessageMap(errorMessage), httpStatus);
-        log.debug("Method throws this exception: {}", exceptionFormat);
+        log.debug("Method throws this exception: {}", errorMessage);
     }
 
     private void generateExceptionFormatProperties(Map<String, String> errorsMessageMap, HttpStatus httpStatus) {
