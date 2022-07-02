@@ -23,3 +23,7 @@ image:
   requirements:
     standard-type: image/jpeg, image/jpg, image/png, image/bpm
     max-file-size: 5242880
+
+registration:
+  token:
+    expire-time: 15

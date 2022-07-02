@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import wawer.kamil.beerproject.configuration.SpringAppConfig;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ class UserMapperTest {
 
     @BeforeEach
     void setUp() {
-        this.user = getUserEntity();
+        this.user = getUserEntityWithUserRole();
         this.userRequest = getUserRequest();
         this.userPage = createUserPage();
         this.userList = createListOfUser();

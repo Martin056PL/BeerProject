@@ -3,7 +3,7 @@ package wawer.kamil.beerproject.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import wawer.kamil.beerproject.model.User;
+import wawer.kamil.beerproject.model.user.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
 
     @Override
-    @Query("select distinct u from User u join fetch u.grantedAuthorities where u.id =?1")
+    @Query("select distinct u from User u join fetch u.grantedAuthorities join fetch u.userRegistrationData where u.id =?1")
     Optional<User> findById(Long id);
 
     boolean existsUserByUsername(String username);

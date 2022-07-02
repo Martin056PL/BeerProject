@@ -15,24 +15,26 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "application.logger")
 public class BeerServiceAspects {
 
+    private static final String BEER_LOG = "List of returned beerId: {}";
+
     @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.BeerServiceImpl.findAllBeersPage(..))", returning = "beerResponsePage")
     public void logFindAllBeersPage(Page<BeerResponse> beerResponsePage) {
-        log.debug("List of returned beerId: {}", beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
+        log.debug(BEER_LOG, beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
     }
 
     @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.BeerServiceImpl.findAllBeersList(..))", returning = "beerResponsePage")
     public void logFindAllBeersList(List<BeerResponse> beerResponsePage) {
-        log.debug("List of returned beerId: {}", beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
+        log.debug(BEER_LOG, beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
     }
 
     @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.BeerServiceImpl.findBeerById(..))", returning = "beerResponse")
     public void logFindBeerById(BeerResponse beerResponse) {
-        log.debug("List of returned beerId: {}", beerResponse.getId());
+        log.debug(BEER_LOG, beerResponse.getId());
     }
 
     @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.BeerServiceImpl.findAllBeersByBreweryIdPage(..))", returning = "beerResponsePage")
     public void logGetAllBreweryPage(Page<BeerResponse> beerResponsePage) {
-        log.debug("List of returned beerId: {}", beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
+        log.debug(BEER_LOG, beerResponsePage.stream().map(BeerResponse::getId).collect(Collectors.toList()));
     }
 
     @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.BeerServiceImpl.findAllBeersByBreweryIdList(..))", returning = "beerResponseList")
@@ -54,10 +56,6 @@ public class BeerServiceAspects {
     public void logUpdateBeerByBreweryIdAndBeerId(BeerResponse beerResponse) {
         log.debug("Updated beer with Id: {}", beerResponse.getId());
     }
-
-
-
-
 
 
 }

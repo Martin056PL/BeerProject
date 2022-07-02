@@ -22,7 +22,7 @@ import wawer.kamil.beerproject.utils.upload.ImageUpload;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static wawer.kamil.beerproject.service.impl.BreweryServiceHelper.*;
+import static wawer.kamil.beerproject.service.impl.helper.BreweryServiceHelper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +65,7 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     public BreweryResponse createNewBrewery(BreweryRequest breweryRequest) {
         Brewery brewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
-        brewery.assignBreweryToAllBeersOnBrewerysList();
+        brewery.assignBreweryToAllBeersOnBreweriesList();
         Brewery savedBrewery = breweryRepository.save(brewery);
         return breweryMapper.mapBreweryToBreweryResponse(savedBrewery);
     }

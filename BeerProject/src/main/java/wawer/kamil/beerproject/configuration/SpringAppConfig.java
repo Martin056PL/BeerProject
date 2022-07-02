@@ -5,9 +5,11 @@ import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import wawer.kamil.beerproject.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import wawer.kamil.beerproject.model.user.User;
 
 import javax.annotation.PostConstruct;
+import java.time.Clock;
 import java.util.TimeZone;
 
 @Configuration
@@ -42,5 +44,15 @@ public class SpringAppConfig {
             }
         });
         return modelMapper;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Clock getClock(){
+        return Clock.systemDefaultZone();
     }
 }

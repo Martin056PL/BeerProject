@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.model;
+package wawer.kamil.beerproject.model.user;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -6,9 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import wawer.kamil.beerproject.model.DataAudit;
+import wawer.kamil.beerproject.model.registration.UserRegistrationData;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,25 +51,28 @@ public class User extends DataAudit implements UserDetails {
     @Column(name = "is_enabled")
     private boolean isEnabled;
 
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            mappedBy = "user",
+            fetch = FetchType.LAZY
+    )
+    private UserRegistrationData userRegistrationData;
 
-    public User(LocalDateTime updateDateTime,
-                String username,
-                String password,
-                String email,
-                Set<String> grantedAuthorities,
-                boolean isAccountNonExpired,
-                boolean isAccountNonLocked,
-                boolean isCredentialsNonExpired,
-                boolean isEnabled) {
-        super(updateDateTime);
+    public User(
+            String username,
+            String password,
+            String email,
+            UserDetailsHelper userDetailsHelper
+    ) {
+        super();
         this.username = username;
         this.password = password;
         this.email = email;
-        this.grantedAuthorities = grantedAuthorities;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
+        this.grantedAuthorities = userDetailsHelper.getGrantedAuthorities();
+        this.isAccountNonExpired = userDetailsHelper.isAccountNonExpired();
+        this.isAccountNonLocked = userDetailsHelper.isAccountNonLocked();
+        this.isCredentialsNonExpired = userDetailsHelper.isCredentialsNonExpired();
+        this.isEnabled = userDetailsHelper.isEnabled();
     }
 
     @Override
@@ -106,5 +110,11 @@ public class User extends DataAudit implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public User withRegistrationData(UserRegistrationData userRegistrationData) {
+        this.userRegistrationData = userRegistrationData;
+        userRegistrationData.setUser(this);
+        return this;
     }
 }

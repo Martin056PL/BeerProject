@@ -26,12 +26,12 @@ public class UserServiceAspects {
         log.debug("List of returned Id: {}", resultList.stream().map(UserResponse::getId).collect(Collectors.toList()));
     }
 
-    @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.findUserByUserId(..))", returning = "user")
+    @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.getUserById(..))", returning = "user")
     public void logFoundUserById(UserResponse user) {
         log.debug("Found user with id: {}", user.getId());
     }
 
-    @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.addNewUser(..))", returning = "user")
+    @AfterReturning(value = "execution(* wawer.kamil.beerproject.service.impl.UserServiceImpl.saveUser(..))", returning = "user")
     public void logAddNewUser(UserResponse user) {
         log.debug("Add new user with Id: {}", user.getId());
     }
