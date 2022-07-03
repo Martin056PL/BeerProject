@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    tools{
+    tools {
         maven "M3"
     }
 
@@ -12,6 +12,7 @@ pipeline {
                 steps {
                     echo 'Compiling..'
                     sh 'mvn clean compile'
+                }
             }
             stage('Test') {
                 steps {
@@ -26,6 +27,6 @@ pipeline {
                     sh 'mvn package'
                 }
             }
-       }
+        }
     }
 }
