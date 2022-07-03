@@ -7,31 +7,33 @@ pipeline {
 
 
     stages {
+    dir('BeerProject') {
        stage('Build') {
             steps {
-                dir('BeerProject') {
+
                  echo 'Compiling..'
                  sh 'mvn clean compile'
-                }
+
 
             }
         }
         stage('Test') {
             steps {
-                dir('BeerProject') {
+
                     sh "pwd"
                     echo 'Testing..'
                     sh 'mvn test'
-                }
+
             }
         }
         stage('Packaging') {
             steps {
-                dir('BeerProject') {
+
                     echo 'Packaging....'
                     sh 'mvn package'
-                }
+
             }
         }
+       }
     }
 }
