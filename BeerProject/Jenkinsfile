@@ -16,14 +16,14 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('BeerProject') {
-                    echo 'Testing..'
-                    sh 'mvn test'
-                }
-            }
-        }
+//         stage('Test') {
+//             steps {
+//                 dir('BeerProject') {
+//                     echo 'Testing..'
+//                     sh 'mvn test'
+//                 }
+//             }
+//         }
 
         stage('Sonarqube analyze') {
             steps {
