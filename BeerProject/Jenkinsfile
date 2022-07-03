@@ -30,7 +30,7 @@ pipeline {
                 dir('BeerProject') {
                     withCredentials([
                         file(credentialsId: 'maven-settings', variable: 'MAVEN_SETTINGS')
-                    ])
+                    ]){
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
                             sh 'mvn -s $MAVEN_SETTINGS sonar:sonar '
