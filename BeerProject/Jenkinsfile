@@ -29,8 +29,16 @@ pipeline {
             steps {
                 dir('BeerProject') {
                     echo 'run analyze..'
-                    sh 'clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=user -Dsonar.host.url=http://localhost:8080'
+                    withSonarQubeEnv('SonarQube'){
+                        sh 'clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=user -Dsonar.host.url=http://localhost:8080'
+                    }
                 }
+            }
+        }
+
+        stage("Quality gate") {
+            steps {
+                waitForQualityGate abortPipeline: true
             }
         }
 
