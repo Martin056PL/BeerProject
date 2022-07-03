@@ -31,7 +31,7 @@ pipeline {
                     withCredentials([
                         string(credentialsId: 'jenkins_token', variable: 'JENKINS_TOKEN')
                     ]){
-                        echo MAVEN_SETTINGS
+                      //  echo MAVEN_SETTINGS
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
                             sh 'mvn sonar:sonar -Dsonar.login=Jenkins -Dsonar.password=JENKINS_TOKEN'
