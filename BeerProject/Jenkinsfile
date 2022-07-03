@@ -28,7 +28,6 @@ pipeline {
         stage('Sonarqube analyze') {
             steps {
                 dir('BeerProject') {
-                        echo JENKINS_TOKEN
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
                             sh 'mvn clean sonar:sonar'
