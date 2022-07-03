@@ -29,7 +29,7 @@ pipeline {
             steps {
                 dir('BeerProject') {
                     withCredentials([
-                        credentialsId(credentialsId: 'jenkins_token', variable: 'JENKINS_TOKEN')
+                        string(credentialsId: 'jenkins_token', variable: 'JENKINS_TOKEN')
                     ]){
                         echo MAVEN_SETTINGS
                         echo 'run analyze..'
