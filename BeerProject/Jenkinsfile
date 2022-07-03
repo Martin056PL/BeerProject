@@ -29,12 +29,12 @@ pipeline {
             steps {
                 dir('BeerProject') {
                     withCredentials([
-                        file(credentialsId: 'maven-settings', variable: 'MAVEN_SETTINGS')
+                        credentialsId(credentialsId: 'jenkins_token', variable: 'JENKINS_TOKEN')
                     ]){
                         echo MAVEN_SETTINGS
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
-                            sh 'mvn -s $MAVEN_SETTINGS sonar:sonar '
+                            sh 'mvn sonar:sonar -Dsonar.login=Jenkins -Dsonar.password=JENKINS_TOKEN'
                         }
                     }
                 }
