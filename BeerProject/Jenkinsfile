@@ -19,14 +19,20 @@ pipeline {
 
         stage('Build') {
             steps {
+                dir('BeerProject') {
+                  sh "pwd"
+                }
                 echo 'Compiling..'
                 sh 'mvn clean compile'
             }
         }
         stage('Test') {
             steps {
+                dir('BeerProject') {
+                    sh "pwd"
+                }
                 echo 'Testing..'
-                 sh 'mvn test'
+                sh 'mvn test'
             }
         }
         stage('Packaging') {
