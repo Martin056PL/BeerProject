@@ -47,7 +47,7 @@ pipeline {
             steps {
                 dir('BeerProject') {
                     echo 'Packaging....'
-                    sh 'mvn package'
+                    sh 'mvn package -Dmaven.test.skip'
                 }
             }
         }
