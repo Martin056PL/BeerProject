@@ -25,6 +25,15 @@ pipeline {
             }
         }
 
+        stage('Sonarqube analyze') {
+            step{
+                dir('BeerProject') {
+                    echo 'run analyze..'
+                    sh 'clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=user -Dsonar.host.url=http://localhost:8080'
+                }
+            }
+        }
+
         stage('Packaging') {
             steps {
                 dir('BeerProject') {
