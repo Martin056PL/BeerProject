@@ -1,44 +1,36 @@
 pipeline {
     agent any
 
-    tools{
+    tools {
         maven "M3"
     }
 
-
     stages {
-        stage('asd') {
-            steps {
-               sh "pwd"
-                   dir('BeerProject') {
-                     sh "pwd"
-                   }
-                   sh "pwd"
-            }
-        }
-
-        stage('Build') {
+        stage('Compiling') {
             steps {
                 dir('BeerProject') {
-                 echo 'Compiling..'
-                 sh 'mvn clean compile'
+                    echo 'Compiling..'
+                    sh 'mvn clean compile'
                 }
 
             }
         }
+
         stage('Test') {
             steps {
                 dir('BeerProject') {
-                    sh "pwd"
                     echo 'Testing..'
                     sh 'mvn test'
                 }
             }
         }
+
         stage('Packaging') {
             steps {
-                echo 'Packaging....'
-                  sh 'mvn package'
+                dir('BeerProject') {
+                    echo 'Packaging....'
+                    sh 'mvn package'
+                }
             }
         }
     }
