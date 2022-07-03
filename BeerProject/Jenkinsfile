@@ -28,9 +28,13 @@ pipeline {
         stage('Sonarqube analyze') {
             steps {
                 dir('BeerProject') {
-                    echo 'run analyze..'
-                    withSonarQubeEnv('SonarQube'){
-                        sh 'mvn sonar:sonar'
+                    withCredentials([
+                        file(credentialsId: 'maven-settings', variable: 'MAVEN_SETTINGS')
+                    ])
+                        echo 'run analyze..'
+                        withSonarQubeEnv('SonarQube'){
+                            sh 'mvn -s $MAVEN_SETTINGS sonar:sonar '
+                        }
                     }
                 }
             }
