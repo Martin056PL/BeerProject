@@ -28,15 +28,12 @@ pipeline {
         stage('Sonarqube analyze') {
             steps {
                 dir('BeerProject') {
-                    withCredentials([
-                        string(credentialsId: 'jenkins_token', variable: 'JENKINS_TOKEN')
-                    ]){
                         echo JENKINS_TOKEN
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
-                            sh 'mvn sonar:sonar -Dsonar.login=Jenkins -Dsonar.password=JENKINS_TOKEN'
+                            sh 'mvn clean sonar:sonar -Dsonar.password=JENKINS_TOKEN'
                         }
-                    }
+
                 }
             }
         }
