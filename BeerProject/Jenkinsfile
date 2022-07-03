@@ -30,7 +30,7 @@ pipeline {
                 dir('BeerProject') {
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
-                            sh 'mvn -d sonar:sonar'
+                            sh 'mvn -e sonar:sonar'
                         }
 
                 }
