@@ -7,6 +7,13 @@ pipeline {
 
 
     stages {
+        stage('asd') {
+            steps {
+                echo 'enter to project folder'
+                sh 'cd BeerProject'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Compiling..'
