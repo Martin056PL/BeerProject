@@ -16,21 +16,21 @@ pipeline {
             }
         }
 
-//         stage('Test') {
-//             steps {
-//                 dir('BeerProject') {
-//                     echo 'Testing..'
-//                     sh 'mvn test'
-//                 }
-//             }
-//         }
+        stage('Test') {
+            steps {
+                dir('BeerProject') {
+                    echo 'Testing..'
+                    sh 'mvn test'
+                }
+            }
+        }
 
         stage('Sonarqube analyze') {
             steps {
                 dir('BeerProject') {
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
-                            sh 'mvn -e sonar:sonar'
+                            sh 'mvn clean install sonar:sonar'
                         }
 
                 }
