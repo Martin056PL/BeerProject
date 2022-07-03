@@ -31,7 +31,7 @@ pipeline {
                         echo JENKINS_TOKEN
                         echo 'run analyze..'
                         withSonarQubeEnv('SonarQube'){
-                            sh 'mvn clean sonar:sonar -Dsonar.password=JENKINS_TOKEN'
+                            sh 'mvn clean sonar:sonar'
                         }
 
                 }
