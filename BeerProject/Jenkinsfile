@@ -8,18 +8,16 @@ pipeline {
     stages {
         stage('verify tooling') {
             steps {
-                sh '''
-                docker info
-                docker version
-                docker compose version
-                curl --version
-                jq --version
-                '''
+                 sh '''
+                 docker info
+                 docker version
+                 docker compose version
+                 curl --version
+                 jq --version
+                 '''
             }
         }
-    }
 
-    stages {
         stage('Compiling') {
             steps {
                 dir('BeerProject') {
