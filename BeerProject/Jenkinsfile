@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('verify tooling') {
         agent {
-            docker
+            docker any
         }
             steps {
                  sh '''
