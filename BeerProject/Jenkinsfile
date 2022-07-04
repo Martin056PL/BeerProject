@@ -1,5 +1,9 @@
 pipeline {
-    agent {dockerfile true}
+    agent {
+        dir('BeerProject') {
+            dockerfile true
+        }
+    }
 
     tools {
         maven "M3"
