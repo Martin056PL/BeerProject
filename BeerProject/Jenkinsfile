@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        dir('BeerProject') {
-            dockerfile true
-        }
+        any
     }
 
     tools {
