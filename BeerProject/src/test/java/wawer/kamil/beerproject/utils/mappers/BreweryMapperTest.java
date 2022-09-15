@@ -1,9 +1,8 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import wawer.kamil.beerproject.dto.request.BreweryRequest;
 import wawer.kamil.beerproject.dto.response.BreweryResponse;
@@ -16,7 +15,7 @@ import static wawer.kamil.beerproject.helpers.BreweryTestHelper.*;
 
 class BreweryMapperTest {
 
-    private final BreweryMapper mapper = new BreweryMapper(new ModelMapper());
+    private final EntityMapper<Brewery, BreweryRequest, BreweryResponse> mapper = new EntityMapper<>(Brewery.class, BreweryResponse.class);
     private Brewery brewery;
     private BreweryRequest breweryRequest;
     private List<Brewery> breweryList;
@@ -34,7 +33,7 @@ class BreweryMapperTest {
     @DisplayName("Should map brewery to BreweryResponse keeping all values the same")
     void should_map_brewery_to_brewery_response_keeping_all_values_the_same() {
         //when
-        BreweryResponse breweryResponse = mapper.mapBreweryToBreweryResponse(brewery);
+        BreweryResponse breweryResponse = mapper.mapEntityToResponse(brewery);
 
         //then
         assertEquals(brewery.getBreweryId(), breweryResponse.getId());
@@ -53,7 +52,7 @@ class BreweryMapperTest {
     @DisplayName("Should map List<Brewery> to List<BreweryResponse> keeping all values the same")
     void should_map_brewery_list_to_brewery_response_list_keeping_all_values_the_same() {
         //when
-        List<BreweryResponse> breweryResponseList = mapper.mapListOfBreweryEntityToListBreweryResponse(breweryList);
+        List<BreweryResponse> breweryResponseList = mapper.mapEntitiesToEntitiesResponse(breweryList);
 
         //then
         assertEquals(breweryList.size(), breweryResponseList.size());
@@ -64,7 +63,7 @@ class BreweryMapperTest {
     @DisplayName("Should map Page<Brewery> to Page<BreweryResponse> keeping all values the same")
     void should_map_brewery_page_to_brewery_response_page_keeping_all_values_the_same() {
         //when
-        Page<BreweryResponse> breweryResponsePage = mapper.mapBreweryEntityPageToBreweryResponsePage(breweryPage);
+        Page<BreweryResponse> breweryResponsePage = mapper.mapEntityPageToResponsePage(breweryPage);
 
         //then
         assertEquals(breweryPage.getTotalPages(), breweryResponsePage.getTotalPages());
@@ -79,7 +78,7 @@ class BreweryMapperTest {
     @DisplayName("Should map breweryRequest to Brewery Entity keeping all values the same")
     void should_map_brewery_request_to_brewery_entity_keeping_all_values_the_same() {
         //when
-        Brewery brewery = mapper.mapBreweryRequestToBreweryEntity(breweryRequest);
+        Brewery brewery = mapper.mapRequestEntityToEntity(breweryRequest);
 
         //then
         assertEquals(breweryRequest.getName(), brewery.getName());

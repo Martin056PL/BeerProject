@@ -1,4 +1,4 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

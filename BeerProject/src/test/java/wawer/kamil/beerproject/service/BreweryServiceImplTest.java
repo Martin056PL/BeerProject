@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.impl.BreweryServiceImpl;
-import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
+import wawer.kamil.beerproject.utils.mappers.EntityMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.util.List;
@@ -42,9 +43,6 @@ class BreweryServiceImplTest {
     BeerRepository beerRepository;
 
     @Mock
-    BreweryMapper breweryMapper;
-
-    @Mock
     Pageable pageable;
 
     @Mock
@@ -52,6 +50,9 @@ class BreweryServiceImplTest {
 
     @Mock
     ImageUpload imageUpload;
+
+    @Spy
+    EntityMapper<Brewery, BreweryRequest, BreweryResponse> entityMapper = new EntityMapper<>(Brewery.class, BreweryResponse.class);
 
     @InjectMocks
     BreweryServiceImpl service;
@@ -62,7 +63,6 @@ class BreweryServiceImplTest {
     private List<Brewery> breweryList;
     private Brewery singleSavedBrewery;
     private Brewery singleBreweryBeforeSave;
-    private BreweryResponse breweryResponse;
     private BreweryRequest breweryRequest;
 
     private final static Long ID = 1L;
@@ -75,7 +75,6 @@ class BreweryServiceImplTest {
         this.breweryList = getBreweryList();
         this.singleSavedBrewery = getSingleBrewery();
         this.singleBreweryBeforeSave = getSingleBreweryBeforeSave();
-        this.breweryResponse = getSingleBreweryResponse();
         this.breweryRequest = getSingleBreweryRequest();
     }
 
@@ -113,7 +112,6 @@ class BreweryServiceImplTest {
     void verify_get_brewery_by_brewery_id_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
-        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
         service.findBreweryById(ID);
@@ -126,9 +124,7 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if save method is called during brewery creation")
     void verify_create_new_brewery() {
         //given
-        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleBreweryBeforeSave);
         when(breweryRepository.save(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
-        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
         service.createNewBrewery(breweryRequest);
@@ -141,9 +137,7 @@ class BreweryServiceImplTest {
     @DisplayName("Verify update brewery by brewery id when brewery id does not exists")
     void verify_update_brewery_by_brewery_id_when_brewery_id_exists() {
         //given
-        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
-        when(breweryMapper.mapBreweryToBreweryResponse(singleSavedBrewery)).thenReturn(breweryResponse);
 
         //when
         service.updateBreweryById(ID, breweryRequest);
@@ -159,7 +153,6 @@ class BreweryServiceImplTest {
     }
 
     private void callUpdateBreweryByIdWhichDoesNotExist() {
-        when(breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest)).thenReturn(singleSavedBrewery);
         when(breweryRepository.findById(ID)).thenReturn(Optional.empty());
         service.updateBreweryById(ID, getSingleBreweryRequest());
     }
@@ -212,7 +205,7 @@ class BreweryServiceImplTest {
         //given
         byte[] byteArray = new byte[10];
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
-        when(imageUpload.validateFile(file)).thenReturn(true);
+        when(imageUpload.isFileValid(file)).thenReturn(true);
         when(imageUpload.convertImageToByteArray(file)).thenReturn(byteArray);
 
         //when
@@ -247,7 +240,7 @@ class BreweryServiceImplTest {
     private void callSetBreweryImageBreweryByIdWhichHasInvalidImage() {
         //given
         when(breweryRepository.findById(ID)).thenReturn(Optional.of(singleSavedBrewery));
-        when(imageUpload.validateFile(file)).thenReturn(false);
+        when(imageUpload.isFileValid(file)).thenReturn(false);
 
         //when
         service.setBreweryImageToProperBreweryBaseOnBreweryId(ID, file);

@@ -17,7 +17,7 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BeerService;
-import wawer.kamil.beerproject.utils.mapper.BeerMapper;
+import wawer.kamil.beerproject.utils.mappers.EntityMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class BeerServiceImpl implements BeerService {
 
     private final BeerRepository beerRepository;
     private final BreweryRepository breweryRepository;
-    private final BeerMapper beerMapper;
+    private final EntityMapper<Beer, BeerRequest, BeerResponse> mapper;
     private final ImageUpload imageUpload;
 
     //get beers
@@ -42,7 +42,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Page<BeerResponse> findAllBeersPage(Pageable pageable) {
         List<BeerResponse> collectAllBeersPages = beerRepository.findAll(pageable).stream()
-                .map(beerMapper::mapBeerToBeerResponse)
+                .map(mapper::mapEntityToResponse)
                 .collect(Collectors.toList());
         return new PageImpl<>(collectAllBeersPages);
     }
@@ -50,14 +50,14 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public List<BeerResponse> findAllBeersList() {
         return beerRepository.findAll().stream()
-                .map(beerMapper::mapBeerToBeerResponse)
+                .map(mapper::mapEntityToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public BeerResponse findBeerById(Long id) {
         return beerRepository.findById(id)
-                .map(beerMapper::mapBeerToBeerResponse)
+                .map(mapper::mapEntityToResponse)
                 .orElseThrow(ElementNotFoundException::new);
     }
 
@@ -65,7 +65,7 @@ public class BeerServiceImpl implements BeerService {
     public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) {
         Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return beerRepository.findAllByBreweryId(fetchedBrewery.getBreweryId(), pageable)
-                .map(beerMapper::mapBeerToBeerResponse);
+                .map(mapper::mapEntityToResponse);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class BeerServiceImpl implements BeerService {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
         return beerRepository.findAllByBreweryId(brewery.getBreweryId())
                 .stream()
-                .map(beerMapper::mapBeerToBeerResponse)
+                .map(mapper::mapEntityToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -82,11 +82,11 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public BeerResponse addNewBeerAssignedToBreweryByBreweryId(Long breweryID, BeerRequest beerRequest) {
-        Beer requestedBeerEntity = beerMapper.mapBeerRequestToBeerEntity(beerRequest);
+        Beer requestedBeerEntity = mapper.mapRequestEntityToEntity(beerRequest);
         Brewery brewery = breweryRepository.findById(breweryID).orElseThrow(ElementNotFoundException::new);
         requestedBeerEntity.setBrewery(brewery);
         Beer savedBeer = beerRepository.save(requestedBeerEntity);
-        return beerMapper.mapBeerToBeerResponse(savedBeer);
+        return mapper.mapEntityToResponse(savedBeer);
     }
 
     //put beers
@@ -94,19 +94,20 @@ public class BeerServiceImpl implements BeerService {
     @Override
     @Transactional
     public BeerResponse updateBeerByBeerId(Long beerId, BeerRequest updatedBeerRequest) {
-        Beer mappedBeer = beerMapper.mapBeerRequestToBeerEntity(updatedBeerRequest);
+        Beer mappedBeer = mapper.mapRequestEntityToEntity(updatedBeerRequest);
         Beer fetchedBeer = beerRepository.findById(beerId).orElseThrow(ElementNotFoundException::new);
         mapBeerProperties(fetchedBeer, mappedBeer);
-        return beerMapper.mapBeerToBeerResponse(fetchedBeer);
+        return mapper.mapEntityToResponse(fetchedBeer);
     }
 
     @Override
     @Transactional
     public BeerResponse updateBeerByBreweryIdAndBeerId(Long breweryId, Long beerId, BeerRequest updatedBeerRequest) {
-        Beer mappedBeer = beerMapper.mapBeerRequestToBeerEntity(updatedBeerRequest);
-        Beer fetchedBeer = beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId).orElseThrow(ElementNotFoundException::new);
+        Beer mappedBeer = mapper.mapRequestEntityToEntity(updatedBeerRequest);
+        Beer fetchedBeer = beerRepository.findBeerByBreweryAndBeerId(breweryId, beerId)
+                .orElseThrow(ElementNotFoundException::new);
         mapBeerProperties(fetchedBeer, mappedBeer);
-        return beerMapper.mapBeerToBeerResponse(fetchedBeer);
+        return mapper.mapEntityToResponse(fetchedBeer);
     }
 
     //delete beers
@@ -122,7 +123,7 @@ public class BeerServiceImpl implements BeerService {
     @Transactional
     public void setBeerImageToBeerByBeerId(Long beerId, MultipartFile file) {
         Beer beer = beerRepository.findById(beerId).orElseThrow(ElementNotFoundException::new);
-        if (imageUpload.validateFile(file)) {
+        if (imageUpload.isFileValid(file)) {
             byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
             beer.setBeerImage(imageAsByteArray);
         } else {

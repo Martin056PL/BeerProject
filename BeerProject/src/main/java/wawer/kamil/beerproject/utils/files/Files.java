@@ -10,7 +10,6 @@ import wawer.kamil.beerproject.exceptions.FileProcessingException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.module.Configuration;
 import java.util.Arrays;
 
 import static java.nio.charset.StandardCharsets.UTF_8;

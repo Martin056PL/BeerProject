@@ -1,11 +1,11 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import wawer.kamil.beerproject.model.email.Email;
 import wawer.kamil.beerproject.exceptions.InternalException;
+import wawer.kamil.beerproject.model.email.Email;
 
 import javax.mail.MessagingException;
 import java.util.Arrays;

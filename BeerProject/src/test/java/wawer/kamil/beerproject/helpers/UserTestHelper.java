@@ -53,6 +53,20 @@ public class UserTestHelper {
         return user;
     }
 
+    public static User getUserEntityWithUserRoleBeforeSave() {
+        User user = new User();
+        user.setId(0L);
+        user.setUsername("user");
+        user.setEmail("user@email.com");
+        user.setPassword("user");
+        user.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
+        user.setAccountNonExpired(false);
+        user.setAccountNonLocked(false);
+        user.setCredentialsNonExpired(false);
+        user.setEnabled(false);
+        return user;
+    }
+
     public static User getUserEntityWithHashedPassword() {
         User user = new User();
         user.setId(0L);
@@ -156,6 +170,15 @@ public class UserTestHelper {
         userRequest.setUsername("user");
         userRequest.setPassword("user");
         userRequest.setEmail("test@email.com");
+        userRequest.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
+        return userRequest;
+    }
+
+    public static UserRequest getUserRequest1() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername("user");
+        userRequest.setPassword("user");
+        userRequest.setEmail("user@email.com");
         userRequest.setGrantedAuthorities(crateGrantedAuthoritiesWithUserRole());
         return userRequest;
     }

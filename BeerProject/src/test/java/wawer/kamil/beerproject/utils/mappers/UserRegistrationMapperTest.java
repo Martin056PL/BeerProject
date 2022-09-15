@@ -1,11 +1,10 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import wawer.kamil.beerproject.dto.response.UserRegistrationResponse;
 import wawer.kamil.beerproject.model.user.User;
 
@@ -16,7 +15,7 @@ import static wawer.kamil.beerproject.helpers.UserTestHelper.getUserEntityWithUs
 @ExtendWith(MockitoExtension.class)
 class UserRegistrationMapperTest {
 
-    private final UserRegistrationMapper userRegistrationMapper = new UserRegistrationMapper(new ModelMapper());
+    private final UserRegistrationMapper userRegistrationMapper = new UserRegistrationMapper();
     private User user;
     private UserRegistrationResponse userRegistrationResponse;
 

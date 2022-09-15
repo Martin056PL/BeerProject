@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
 import wawer.kamil.beerproject.dto.response.UserRegistrationResponse;
 import wawer.kamil.beerproject.model.user.User;
@@ -17,7 +16,7 @@ import wawer.kamil.beerproject.service.facade.UserRegistrationFacade;
 import wawer.kamil.beerproject.service.impl.RegistrationUserServiceImpl;
 import wawer.kamil.beerproject.service.impl.UserServiceImpl;
 import wawer.kamil.beerproject.utils.UuidProvider;
-import wawer.kamil.beerproject.utils.mapper.UserRegistrationMapper;
+import wawer.kamil.beerproject.utils.mappers.UserRegistrationMapper;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -37,27 +36,21 @@ class RegistrationUserServiceImplTest {
 
     @Mock
     UserRegistrationFacade userRegistrationFacade;
-
     @Mock
     EmailFacade emailFacade;
-
-    @Spy
-    UserRegistrationMapper userRegistrationMapper = new UserRegistrationMapper(new ModelMapper());
-
-    UuidProvider uuidProvider = new UuidProvider.FakeUuidForTests();
-
-    @Spy
-    Clock clock;
-
     @Mock
     UserServiceImpl userService;
-
+    @Spy
+    UserRegistrationMapper userRegistrationMapper = new UserRegistrationMapper();
+    @Spy
+    Clock clock;
     @InjectMocks
     RegistrationUserServiceImpl registrationUserService;
 
+    UuidProvider uuidProvider = new UuidProvider.FakeUuidForTests();
+
     private UserRegistrationRequest request;
     private UserRegistrationResponse userRegistrationResponse;
-
     private User userWithRegistrationData;
     private User savedUserWithRegistrationData;
 
