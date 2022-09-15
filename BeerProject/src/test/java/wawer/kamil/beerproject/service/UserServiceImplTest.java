@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
 import wawer.kamil.beerproject.dto.request.UserRequest;
@@ -17,8 +19,9 @@ import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.model.user.factory.UserFactory;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.impl.UserServiceImpl;
-import wawer.kamil.beerproject.utils.mapper.UserMapper;
+import wawer.kamil.beerproject.utils.mappers.EntityMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,23 +36,21 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository repository;
-
-    @Mock
-    UserMapper mapper;
-
     @Mock
     UserFactory factory;
-
     @Mock
     Pageable pageable;
-
+    @Spy
+    EntityMapper<User, UserRequest, UserResponse> mapper = new EntityMapper<>(User.class, UserResponse.class);
     @InjectMocks
     UserServiceImpl service;
 
     private User user;
+    private User savedUser;
+    private User userBeforeSave;
     private User disabledUser;
+    private UserRequest userRequest1;
     private UserRequest userRequest;
-    private UserResponse userResponse;
     private UserRegistrationRequest userRegistrationRequest;
     private final static Long ID = 1L;
     private final static String USERNAME = "user";
@@ -57,8 +58,10 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
         this.user = getUserEntityWithUserRole();
+        this.savedUser = getDisabledUserEntity();
+        this.userBeforeSave = getUserEntityWithUserRoleBeforeSave();
         this.userRequest = getUserRequest();
-        this.userResponse = createUserResponse();
+        this.userRequest1 = getUserRequest1();
         this.userRegistrationRequest = getUserRegistrationRequest();
         this.disabledUser = getDisabledUserEntity();
     }
@@ -79,6 +82,9 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Verify if findAll is called during getting Page<UserResponse>")
     void verify_get_all_users_page() {
+        //given
+        when(repository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(user)));
+
         //when
         service.findAllUsersPage(pageable);
 
@@ -101,7 +107,6 @@ class UserServiceImplTest {
     void verify_findById_while_calling_getUserByUserId() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
-        when(mapper.mapUserEntityToUserResponse(user)).thenReturn(userResponse);
         //when
         service.getUserById(ID);
 
@@ -111,7 +116,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("verify save when calling saveUser")
-    void verify_save_when_calling_saveUser(){
+    void verify_save_when_calling_saveUser() {
         //when
         service.saveUser(user);
 
@@ -121,7 +126,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("should return user with registration data base on registration request")
-    void should_return_user_with_registration_data_base_on_registration_request(){
+    void should_return_user_with_registration_data_base_on_registration_request() {
         //given
         when(repository.findByUsername(USERNAME)).thenReturn(Optional.empty());
         when(factory.createNewUser(userRegistrationRequest, USER)).thenReturn(user);
@@ -150,7 +155,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("verify findById when calling findUserById")
-    void verify_findById_when_calling_findUserById(){
+    void verify_findById_when_calling_findUserById() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.of(user));
 
@@ -165,15 +170,15 @@ class UserServiceImplTest {
     @DisplayName("Verify if existsUserByUsername and save during creating new user")
     void verify_existsUserByUsername_and_save_new_user() {
         //given
-        when(repository.existsUserByUsername(userRequest.getUsername())).thenReturn(false);
-        when(mapper.mapUserRequestToUserEntity(userRequest)).thenReturn(user);
+        when(repository.existsUserByUsername(userRequest1.getUsername())).thenReturn(false);
+        when(repository.save(userBeforeSave)).thenReturn(user);
 
         //when
-        service.saveUser(userRequest);
+        service.saveUser(userRequest1);
 
         //then
         verify(repository).existsUserByUsername(user.getUsername());
-        verify(repository).save(user);
+        verify(repository).save(userBeforeSave);
     }
 
     @Test
@@ -212,8 +217,6 @@ class UserServiceImplTest {
     void verify_findById_is_called_when_user_id_exists() {
         //given
         when(repository.findById(ID)).thenReturn(Optional.ofNullable(user));
-        when(mapper.mapUserRequestToUserEntity(userRequest, user)).thenReturn(user);
-        when(mapper.mapUserEntityToUserResponse(user)).thenReturn(userResponse);
 
         //when
         service.updateUser(ID, userRequest);

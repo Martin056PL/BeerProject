@@ -78,7 +78,7 @@ class ImageUploadTest {
     void should_return_true_if_size_and_type_are_correct() {
         when(file.getSize()).thenReturn(CORRECT_SIZE);
         when(file.getContentType()).thenReturn(CORRECT_TYPE);
-        assertTrue(upload.validateFile(file));
+        assertTrue(upload.isFileValid(file));
     }
 
     @Test
@@ -86,7 +86,7 @@ class ImageUploadTest {
     void should_return_false_if_size_are_correct_and_type_are_incorrect() {
         when(file.getSize()).thenReturn(CORRECT_SIZE);
         when(file.getContentType()).thenReturn(INCORRECT_TYPE);
-        assertFalse(upload.validateFile(file));
+        assertFalse(upload.isFileValid(file));
     }
 
     @Test
@@ -94,7 +94,7 @@ class ImageUploadTest {
     void should_return_false_if_size_are_incorrect_and_type_is_correct() {
         when(file.getSize()).thenReturn(INCORRECT_SIZE);
         when(file.getContentType()).thenReturn(CORRECT_TYPE);
-        assertFalse(upload.validateFile(file));
+        assertFalse(upload.isFileValid(file));
     }
 
     @Test
@@ -102,6 +102,6 @@ class ImageUploadTest {
     void should_return_false_if_size_and_type_are_incorrect() {
         when(file.getSize()).thenReturn(INCORRECT_SIZE);
         when(file.getContentType()).thenReturn(INCORRECT_TYPE);
-        assertFalse(upload.validateFile(file));
+        assertFalse(upload.isFileValid(file));
     }
 }

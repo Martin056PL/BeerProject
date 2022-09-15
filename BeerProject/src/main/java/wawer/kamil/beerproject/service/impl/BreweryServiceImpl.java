@@ -16,7 +16,7 @@ import wawer.kamil.beerproject.model.Brewery;
 import wawer.kamil.beerproject.repositories.BeerRepository;
 import wawer.kamil.beerproject.repositories.BreweryRepository;
 import wawer.kamil.beerproject.service.BreweryService;
-import wawer.kamil.beerproject.utils.mapper.BreweryMapper;
+import wawer.kamil.beerproject.utils.mappers.EntityMapper;
 import wawer.kamil.beerproject.utils.upload.ImageUpload;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository breweryRepository;
     private final BeerRepository beerRepository;
-    private final BreweryMapper breweryMapper;
+    private final EntityMapper<Brewery, BreweryRequest, BreweryResponse> entityMapper;
     private final ImageUpload imageUpload;
 
     @Override
@@ -41,7 +41,7 @@ public class BreweryServiceImpl implements BreweryService {
         List<Long> breweriesIds = getBreweriesIds(brewery);
         List<Beer> beers = beerRepository.findBeersByListOfBreweriesId(breweriesIds);
         Page<Brewery> breweriesWithBeers = getBreweriesWithBeers(brewery, beers);
-        return breweryMapper.mapBreweryEntityPageToBreweryResponsePage(breweriesWithBeers);
+        return entityMapper.mapEntityPageToResponsePage(breweriesWithBeers);
     }
 
     @Override
@@ -51,32 +51,32 @@ public class BreweryServiceImpl implements BreweryService {
         List<Beer> beersByListOfBreweriesId = beerRepository.findBeersByListOfBreweriesId(getBreweriesIds(breweries));
         List<Brewery> breweriesWithBeers = getBreweriesWithBeers(breweries, beersByListOfBreweriesId);
         return breweriesWithBeers.stream()
-                .map(breweryMapper::mapBreweryToBreweryResponse)
+                .map(entityMapper::mapEntityToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public BreweryResponse findBreweryById(Long id) {
         return breweryRepository.findById(id)
-                .map(breweryMapper::mapBreweryToBreweryResponse)
+                .map(entityMapper::mapEntityToResponse)
                 .orElseThrow(ElementNotFoundException::new);
     }
 
     @Override
     public BreweryResponse createNewBrewery(BreweryRequest breweryRequest) {
-        Brewery brewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
+        Brewery brewery = entityMapper.mapRequestEntityToEntity(breweryRequest);
         brewery.assignBreweryToAllBeersOnBreweriesList();
         Brewery savedBrewery = breweryRepository.save(brewery);
-        return breweryMapper.mapBreweryToBreweryResponse(savedBrewery);
+        return entityMapper.mapEntityToResponse(savedBrewery);
     }
 
     @Override
     @Transactional
     public BreweryResponse updateBreweryById(Long id, BreweryRequest breweryRequest) {
-        Brewery mappedBrewery = breweryMapper.mapBreweryRequestToBreweryEntity(breweryRequest);
+        Brewery mappedBrewery = entityMapper.mapRequestEntityToEntity(breweryRequest);
         Brewery fetchedBrewery = breweryRepository.findById(id).orElseThrow(ElementNotFoundException::new);
         mapBreweryProperties(fetchedBrewery, mappedBrewery);
-        return breweryMapper.mapBreweryToBreweryResponse(fetchedBrewery);
+        return entityMapper.mapEntityToResponse(fetchedBrewery);
     }
 
     @Override
@@ -90,12 +90,11 @@ public class BreweryServiceImpl implements BreweryService {
     @Transactional
     public void setBreweryImageToProperBreweryBaseOnBreweryId(Long breweryId, MultipartFile file) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
-        if (imageUpload.validateFile(file)) {
-            byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
-            brewery.setBreweryImage(imageAsByteArray);
-        } else {
+        if (!imageUpload.isFileValid(file)) {
             throw new InvalidImageParameters();
         }
+        byte[] imageAsByteArray = imageUpload.convertImageToByteArray(file);
+        brewery.setBreweryImage(imageAsByteArray);
     }
 
     @Override

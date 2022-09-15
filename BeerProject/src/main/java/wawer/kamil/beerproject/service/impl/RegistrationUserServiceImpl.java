@@ -10,7 +10,7 @@ import wawer.kamil.beerproject.service.RegistrationUserService;
 import wawer.kamil.beerproject.service.UserService;
 import wawer.kamil.beerproject.service.facade.EmailFacade;
 import wawer.kamil.beerproject.service.facade.UserRegistrationFacade;
-import wawer.kamil.beerproject.utils.mapper.UserRegistrationMapper;
+import wawer.kamil.beerproject.utils.mappers.UserRegistrationMapper;
 
 import java.time.Clock;
 

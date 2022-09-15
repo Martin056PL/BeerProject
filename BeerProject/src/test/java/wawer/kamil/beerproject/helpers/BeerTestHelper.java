@@ -37,9 +37,18 @@ public class BeerTestHelper {
                 .build();
     }
 
-    public static Beer getBeerBeforeUpdate() {
+    public static BeerRequest getBeerRequestToUpdate() {
+        return BeerRequest.builder()
+                .name("Nowe piwo testowe")
+                .style("Nowy testowy styl")
+                .alcohol(7.0)
+                .extract(10.0)
+                .build();
+    }
+
+    public static Beer getBeerBeforeSave() {
         return Beer.builder()
-                .beerId(1L)
+                .brewery(getSingleBrewery())
                 .name("Testowe Piwo")
                 .style("Testoy styl")
                 .alcohol(5.6)

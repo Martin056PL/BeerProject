@@ -1,11 +1,9 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import wawer.kamil.beerproject.configuration.SpringAppConfig;
 import wawer.kamil.beerproject.dto.request.UserRequest;
 import wawer.kamil.beerproject.dto.response.UserResponse;
 import wawer.kamil.beerproject.model.user.User;
@@ -17,10 +15,7 @@ import static wawer.kamil.beerproject.helpers.UserTestHelper.*;
 
 class UserMapperTest {
 
-    private final SpringAppConfig springAppConfig = new SpringAppConfig();
-    private final ModelMapper defaultModelMapper = springAppConfig.getModelMapper();
-    private final ModelMapper userModelMapper = springAppConfig.getUserModelMapper();
-    private final UserMapper mapper = new UserMapper(defaultModelMapper, userModelMapper);
+    private final EntityMapper<User, UserRequest, UserResponse> mapper = new EntityMapper<>(User.class, UserResponse.class);
 
     private User user;
     private UserRequest userRequest;
@@ -38,8 +33,8 @@ class UserMapperTest {
     @Test
     @DisplayName("Should map user entity to user response keeping all values the same")
     void should_map_user_entity_to_user_response_keeping_all_values_the_same() {
-        //given
-        UserResponse userResponse = mapper.mapUserEntityToUserResponse(user);
+        //when
+        UserResponse userResponse = mapper.mapEntityToResponse(user);
 
         //when
         assertEquals(user.getId(), userResponse.getId());
@@ -52,8 +47,8 @@ class UserMapperTest {
     @Test
     @DisplayName("Should map Page<User> to user Page<UserResponse> keeping all values the same")
     void should_map_user_entity_page_to_user_response_page_keeping_all_values_the_same() {
-        //given
-        Page<UserResponse> userResponse = mapper.mapUserEntityPageToUserResponsePage(userPage);
+        //when
+        Page<UserResponse> userResponse = mapper.mapEntityPageToResponsePage(userPage);
 
         //when
         assertEquals(userPage.getTotalPages(), userResponse.getTotalPages());
@@ -67,7 +62,7 @@ class UserMapperTest {
     @DisplayName("Should map List<User> to List<UserResponse> keeping all values the same")
     void should_map_list_of_user_entity_to_list_of_user_response_keeping_all_values_the_same() {
         //when
-        List<UserResponse> userResponses = mapper.mapUserEntityListToUserResponseList(userList);
+        List<UserResponse> userResponses = mapper.mapEntitiesToEntitiesResponse(userList);
 
         //then
         assertEquals(userList.size(), userResponses.size());
@@ -78,7 +73,7 @@ class UserMapperTest {
     @DisplayName("Should map UserRequest to User keeping all values the same")
     void should_map_user_request_to_user_keeping_all_values_the_same() {
         //when
-        User user = mapper.mapUserRequestToUserEntity(userRequest);
+        User user = mapper.mapRequestEntityToEntity(userRequest);
 
         //then
         assertEquals(userRequest.getUsername(), user.getUsername());
@@ -91,7 +86,7 @@ class UserMapperTest {
     @DisplayName("Should map UserRequest to User keeping all values the same for update entity")
     void should_map_user_request_to_user_entity_keeping_all_values_the_same() {
         //when
-        User mappedUser = mapper.mapUserRequestToUserEntity(userRequest, user);
+        User mappedUser = mapper.mapRequestEntityToEntity(userRequest);
 
         //then
         assertEquals(userRequest.getUsername(), mappedUser.getUsername());

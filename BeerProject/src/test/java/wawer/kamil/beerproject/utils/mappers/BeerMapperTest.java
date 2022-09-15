@@ -1,9 +1,8 @@
-package wawer.kamil.beerproject.utils.mapper;
+package wawer.kamil.beerproject.utils.mappers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import wawer.kamil.beerproject.dto.request.BeerRequest;
 import wawer.kamil.beerproject.dto.response.BeerResponse;
@@ -16,7 +15,7 @@ import static wawer.kamil.beerproject.helpers.BeerTestHelper.*;
 
 class BeerMapperTest {
 
-    private final BeerMapper beerMapper = new BeerMapper(new ModelMapper());
+    private final EntityMapper<Beer, BeerRequest, BeerResponse> beerMapper = new EntityMapper<>(Beer.class, BeerResponse.class);
     private Beer beer;
     private Page<Beer> beerPage;
     private List<Beer> beerList;
@@ -34,7 +33,7 @@ class BeerMapperTest {
     @DisplayName("Should map beer to BeerResponse keeping all values the same")
     void should_map_beer_to_BeerResponse_keeping_all_values_the_same() {
         //when
-        BeerResponse beerResponse = beerMapper.mapBeerToBeerResponse(beer);
+        BeerResponse beerResponse = beerMapper.mapEntityToResponse(beer);
 
         //then
         assertEquals(beer.getBeerId(), beerResponse.getId());
@@ -48,7 +47,7 @@ class BeerMapperTest {
     @DisplayName("Should map beerPage to BeerResponsePage keeping all values the same")
     void should_map_beer_entity_page_to_beer_response_page_keeping_all_values_the_same() {
         //when
-        Page<BeerResponse> beerResponsePage = beerMapper.mapBeerEntityPageToBeerResponsePage(beerPage);
+        Page<BeerResponse> beerResponsePage = beerMapper.mapEntityPageToResponsePage(beerPage);
 
         //then
         assertEquals(beerPage.getTotalPages(), beerResponsePage.getTotalPages());
@@ -62,7 +61,7 @@ class BeerMapperTest {
     @DisplayName("Should map list of beer to list of BeerResponse keeping all values the same")
     void should_map_list_of_beer_entity_to_list_of_beer_response_keeping_all_values_the_same() {
         //when
-        List<BeerResponse> beerResponsePage = beerMapper.mapListOfBeerEntityToListBeerResponse(beerList);
+        List<BeerResponse> beerResponsePage = beerMapper.mapEntitiesToEntitiesResponse(beerList);
 
         //then
         assertEquals(beerList.size(), beerResponsePage.size());
@@ -73,7 +72,7 @@ class BeerMapperTest {
     @DisplayName("Should map beerRequest to Beer Entity keeping all values the same")
     void should_map_beer_request_to_Beer_entity_keeping_all_values_the_same() {
         //when
-        Beer beer = beerMapper.mapBeerRequestToBeerEntity(beerRequest);
+        Beer beer = beerMapper.mapRequestEntityToEntity(beerRequest);
 
         //then
         assertEquals(beerRequest.getName(), beer.getName());

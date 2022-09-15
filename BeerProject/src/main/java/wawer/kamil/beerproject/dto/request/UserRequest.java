@@ -1,14 +1,12 @@
 package wawer.kamil.beerproject.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 public class UserRequest {

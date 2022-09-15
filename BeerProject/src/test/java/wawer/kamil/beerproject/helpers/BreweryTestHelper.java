@@ -51,7 +51,6 @@ public class BreweryTestHelper {
                 .name("Testowy")
                 .email("testowy@gmail.com")
                 .address(Address.builder()
-                        .addressId(1L)
                         .street("Testowa")
                         .parcelNumber("1")
                         .localNumber("1")

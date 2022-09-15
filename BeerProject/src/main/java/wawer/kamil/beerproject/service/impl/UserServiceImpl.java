@@ -18,7 +18,7 @@ import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.model.user.factory.UserFactory;
 import wawer.kamil.beerproject.repositories.UserRepository;
 import wawer.kamil.beerproject.service.UserService;
-import wawer.kamil.beerproject.utils.mapper.UserMapper;
+import wawer.kamil.beerproject.utils.mappers.EntityMapper;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
     private final UserFactory userFactory;
-    private final UserMapper userMapper;
+    private final EntityMapper<User, UserRequest, UserResponse> userMapper;
     private static final String USER_NOT_FOUND = "User with email %s not found";
 
     @Override
@@ -39,19 +39,19 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public Page<UserResponse> findAllUsersPage(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
-        return userMapper.mapUserEntityPageToUserResponsePage(userPage);
+        return userMapper.mapEntityPageToResponsePage(userPage);
     }
 
     @Override
     public List<UserResponse> findAllUsersList() {
         List<User> userList = userRepository.findAll();
-        return userMapper.mapUserEntityListToUserResponseList(userList);
+        return userMapper.mapEntitiesToEntitiesResponse(userList);
     }
 
     @Override
     public UserResponse getUserById(Long userId) {
         return userRepository.findById(userId)
-                .map(userMapper::mapUserEntityToUserResponse)
+                .map(userMapper::mapEntityToResponse)
                 .orElseThrow(ElementNotFoundException::new);
     }
 
@@ -79,17 +79,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         if (isUsernameExistInDatabase(userRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
-        User user = userMapper.mapUserRequestToUserEntity(userRequest);
+        User user = userMapper.mapRequestEntityToEntity(userRequest);
         User savedUser = userRepository.save(user);
-        return userMapper.mapUserEntityToUserResponse(savedUser);
+        return userMapper.mapEntityToResponse(savedUser);
     }
 
     @Override
     @Transactional
     public UserResponse updateUser(Long userId, UserRequest userRequest) {
         return userRepository.findById(userId)
-                .map(fetchedUser -> userMapper.mapUserRequestToUserEntity(userRequest, fetchedUser))
-                .map(userMapper::mapUserEntityToUserResponse)
+                .map(fetchedUser -> userMapper.mapRequestEntityToEntity(userRequest))
+                .map(userMapper::mapEntityToResponse)
                 .orElseThrow(ElementNotFoundException::new);
     }
 

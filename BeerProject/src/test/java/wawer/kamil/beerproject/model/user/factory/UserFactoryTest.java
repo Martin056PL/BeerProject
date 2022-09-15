@@ -10,9 +10,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
-import wawer.kamil.beerproject.configuration.security.ApplicationUserRole;
 import wawer.kamil.beerproject.dto.request.UserRegistrationRequest;
-import wawer.kamil.beerproject.exceptions.InternalException;
 import wawer.kamil.beerproject.model.registration.factory.UserRegistrationDataFactory;
 import wawer.kamil.beerproject.model.user.User;
 import wawer.kamil.beerproject.utils.TimeSetter;
@@ -23,7 +21,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static wawer.kamil.beerproject.configuration.security.ApplicationUserRole.*;
 import static wawer.kamil.beerproject.helpers.UserRegistrationHelper.getUserRegistrationRequest;

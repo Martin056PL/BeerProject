@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode()
 @Entity
 @Data
 @NoArgsConstructor
@@ -53,8 +53,7 @@ public class User extends DataAudit implements UserDetails {
 
     @OneToOne(
             cascade = CascadeType.ALL,
-            mappedBy = "user",
-            fetch = FetchType.LAZY
+            mappedBy = "user"
     )
     private UserRegistrationData userRegistrationData;
 

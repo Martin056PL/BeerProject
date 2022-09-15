@@ -31,7 +31,7 @@ public class ImageUpload {
         }
     }
 
-    public boolean validateFile(MultipartFile file) {
+    public boolean isFileValid(MultipartFile file) {
         boolean result = isFileTypeValid(file) && isFileSizeValid(file);
         log.debug("Receive files with params: type: {}, size: {}bytes; Does params are correct: {}", isFileTypeValid(file), isFileSizeValid(file), result);
         return result;
