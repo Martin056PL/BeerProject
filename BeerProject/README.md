@@ -125,5 +125,5 @@ The list of current codesmells is looks like as follows:
 
 ![codesmells.png](readme_screenshots/codesmells.png)
 
-Detected security hotspot vulnerability is due to way of logging to the service.
-It will be enabled again when JWT will be implemented.
+Detected security hotspot vulnerability is due to disabled csrf protection.
+Since there is no front end for this solution, it is temporary disabled.
