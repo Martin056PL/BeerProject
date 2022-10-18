@@ -79,6 +79,11 @@ This will trigger creating containers with API (beerproject-api-1), MySQL databa
 mailbox(beerproject-email-1). DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you
 leave default port).
 
+NOTE!
+If the running containers fails due to message: '/usr/bin/env: ‘bash\r’: No such file or directory' it is required to
+change
+Line separator to LF format for wait-for-it.sh script.
+
 * <b>For Amigoscode Rewiew </b>:
   To sign in to the service, it is required to send a request to the endpoint: http://localhost:8888/api/v1/login (if
   you leave default port) with the following request body:
