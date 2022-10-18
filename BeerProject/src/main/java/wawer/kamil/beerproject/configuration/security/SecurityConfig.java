@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable(); // TODO Enable again CSRF protection since login is done by filters
+        http.csrf().disable(); // TODO Enable again CSRF protection when the frontend solution will be provided
         http
                 .authorizeRequests()
                 .antMatchers(
