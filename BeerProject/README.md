@@ -67,21 +67,36 @@ To run this application you need to first clone this repository. Then you can ru
 
 #### DOCKER-COMPOSE (preferred solution)
 
-Use docker-compose to run app. Make sure you have installed docker and docker-compose on you local environment. 
-When you clone this repository you need to provide '.env' file with basic configuration. 
-Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from file name. If you need help, follow by additional instructions in the .env.template file.
+Use docker-compose to run app. Make sure you have installed docker and docker-compose on you local environment.
+When you clone this repository you need to provide '.env' file with basic configuration.
+Reuse existing file '.env.template' and provide your values or leave it as default. Remember to remove '.template' from
+file name. If you need help, follow by additional instructions in the .env.template file.
 Then, open terminal in project directory, and run command:
 
     docker-compose up
 
-This will trigger creating containers with API (beerproject-api-1), MySQL database (beerproject-db-1) and developer mailbox(beerproject-email-1). DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you leave default port).
+This will trigger creating containers with API (beerproject-api-1), MySQL database (beerproject-db-1) and developer
+mailbox(beerproject-email-1). DB contains some sample data. The app will be available at localhost:8081/api/v1/ (if you
+leave default port).
+
+* <b>For Amigoscode Rewiew </b>:
+  To sign in to the service, it is required to send a request to the endpoint: http://localhost:8888/api/v1/login (if
+  you leave default port) with the following request body:
+  {
+  "username":"admin",
+  "password":"admin"
+  }
+* after that you should obtain access to all endpoints.
 
 #### JAVA -JAR (TEST PROFILE)
 
-You can also run this app with 'test' profile via classic java -jar command. This mode has embedded H2 database with sample data. 
+You can also run this app with 'test' profile via classic java -jar command. This mode has embedded H2 database with
+sample data.
 Optionally, you can configure credentials to H2 DB. If you don't want to provide your custom values, skip this step.
-In other case: the template of credentials and instruction, how to prepare config file, is placed in 'src/main/resources/credentials-xxx.yml.template'.
-Follow the instructions inside. Please, be aware of in this case you need to provide test SMTP server to handle emails. It is highly recommended to use docker container with mailbox. You can use the following command:
+In other case: the template of credentials and instruction, how to prepare config file, is placed in '
+src/main/resources/credentials-xxx.yml.template'.
+Follow the instructions inside. Please, be aware of in this case you need to provide test SMTP server to handle emails.
+It is highly recommended to use docker container with mailbox. You can use the following command:
 
     docker run -p 1080:1080 -p 1025:1025 maildev/maildev
 
