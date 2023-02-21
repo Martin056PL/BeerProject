@@ -4,10 +4,25 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="2" author="Kamil Wawer">
+    <changeSet id="2.0" author="Kamil Wawer">
         <createTable tableName="BEER">
             <column name="beer_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdBy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedBy" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="brewery_id" type="bigint"/>
             <column name="name" type="varchar(255)"/>
@@ -18,18 +33,36 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="3" author="Kamil Wawer">
+    <changeSet id="2.1" author="Kamil Wawer">
         <createIndex indexName="index4brewery" tableName="BEER">
             <column name="brewery_id"/>
         </createIndex>
     </changeSet>
 
-    <changeSet id="4" author="Kamil Wawer">
+    <changeSet id="2.2" author="Kamil Wawer">
         <addForeignKeyConstraint constraintName="fk_brewery2beer"
                                  baseTableName="BEER"
                                  baseColumnNames="brewery_id"
                                  referencedTableName="BREWERY"
                                  referencedColumnNames="brewery_id"/>
+    </changeSet>
+
+    <changeSet id="2.3" author="Kamil Wawer">
+        <createTable tableName="BEER_AUD">
+            <column name="beer_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="REV" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="PK_BEER_AUD"/>
+            </column>
+            <column name="REVTYPE" type="tinyint"/>
+            <column name="brewery_id" type="bigint"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="style" type="varchar(255)"/>
+            <column name="extract" type="double"/>
+            <column name="alcohol" type="double"/>
+            <column name="beer_image" type="MEDIUMBLOB"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

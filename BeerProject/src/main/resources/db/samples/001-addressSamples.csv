@@ -1,6 +1,6 @@
-address_id,street,parcel_number,local_number,zip_code,city
-1,Przemyslowa,43,NULL,24-320,Poniatowa
-2,Przemyslowa,81,22,87-100,Toruń
-3,Al. Gen. Wł. Sikorskiego,2,NULL,10-057,Olsztyn
-4,Smoluchowskiego,7,NULL,20-474,Lublin
-5,Na Oklu,22,NULL,34-300,Żywiec
+address_id,version,createdBy,createdDate,lastModifiedDate,lastModifiedBy,street,parcel_number,local_number,zip_code,city
+1,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Przemyslowa,43,NULL,24-320,Poniatowa
+2,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Przemyslowa,81,22,87-100,Toruń
+3,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Al. Gen. Wł. Sikorskiego,2,NULL,10-057,Olsztyn
+4,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Smoluchowskiego,7,NULL,20-474,Lublin
+5,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Na Oklu,22,NULL,34-300,Żywiec

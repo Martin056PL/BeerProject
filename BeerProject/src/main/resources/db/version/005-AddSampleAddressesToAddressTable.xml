@@ -7,12 +7,12 @@
     <changeSet author="Kamil Wawer" id="9">
         <loadData file="classpath:/db/samples/001-addressSamples.csv"
                   tableName="ADDRESS">
-            <column name="address_id" type="numeric" header="address_id"/>
-            <column name="street" type="string" header="street"/>
-            <column name="parcel_number" type="string" header="parcel_number"/>
-            <column name="local_number" type="string" header="local_number"/>
-            <column name="zip_code" type="string" header="zip_code"/>
-            <column name="city" type="string" header="city"/>
+            <!--            <column name="address_id" type="numeric" header="address_id"/>-->
+            <!--            <column name="street" type="string" header="street"/>-->
+            <!--            <column name="parcel_number" type="string" header="parcel_number"/>-->
+            <!--            <column name="local_number" type="string" header="local_number"/>-->
+            <!--            <column name="zip_code" type="string" header="zip_code"/>-->
+            <!--            <column name="city" type="string" header="city"/>-->
         </loadData>
     </changeSet>
 

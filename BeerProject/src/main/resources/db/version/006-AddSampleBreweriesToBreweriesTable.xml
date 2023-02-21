@@ -8,12 +8,12 @@
     <changeSet author="Kamil Wawer" id="11">
         <loadData file="classpath:/db/samples/001-brewerySamples.csv"
                   tableName="BREWERY">
-            <column name="brewery_id" type="numeric" header="brewery_id"/>
-            <column name="name" type="string" header="name"/>
-            <column name="email" type="string" header="email"/>
-            <column name="address_id" type="string" header="address_id"/>
-            <column name="phone_number" type="numeric" header="phone_number"/>
-            <column name="website" type="string" header="website"/>
+            <!--            <column name="brewery_id" type="numeric" header="brewery_id"/>-->
+            <!--            <column name="name" type="string" header="name"/>-->
+            <!--            <column name="email" type="string" header="email"/>-->
+            <!--            <column name="address_id" type="string" header="address_id"/>-->
+            <!--            <column name="phone_number" type="numeric" header="phone_number"/>-->
+            <!--            <column name="website" type="string" header="website"/>-->
         </loadData>
     </changeSet>
 </databaseChangeLog>

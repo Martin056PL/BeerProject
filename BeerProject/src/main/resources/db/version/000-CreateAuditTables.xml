@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="0" author="Kamil Wawer">
+        <createTable tableName="REVISION">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="REVISION_rev_PK"
+                />
+            </column>
+            <column name="changedBy" type="varchar(255)"/>
+            <column name="timestamp" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
