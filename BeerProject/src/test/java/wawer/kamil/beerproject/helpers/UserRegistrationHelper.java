@@ -42,7 +42,7 @@ public class UserRegistrationHelper {
                 user,
                 "9280d346-e9af-11ec-8fea-0242ac120002",
                 now(getClock()).plusMinutes(15),
-                false
+                true
         );
     }
 
@@ -51,7 +51,7 @@ public class UserRegistrationHelper {
                 1L,
                 0L,
                 user,
-                "9280d346-e9af-11ec-8fea-0242ac120002",
+                "1111aaaa-bbbb-2222-3333-bbbbac120002",
                 now(getClock()).plusMinutes(15),
                 false
         );
@@ -63,7 +63,7 @@ public class UserRegistrationHelper {
                 0L,
                 user,
                 "9280d346-e9af-11ec-8fea-0242ac120002",
-                now(getClock()).plusMinutes(15),
+                now(getClock()).minusMinutes(15),
                 false
         );
     }
