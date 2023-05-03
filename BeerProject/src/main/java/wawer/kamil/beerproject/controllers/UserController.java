@@ -36,10 +36,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsersList());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long userId) throws ElementNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
+    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable Long id) throws ElementNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
     }
 
     @PostMapping
@@ -48,16 +48,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userRequest));
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) throws ElementNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequest));
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) throws ElementNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id, userRequest));
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long userId) throws ElementNotFoundException {
-        userService.permanentDeleteUser(userId);
+    public ResponseEntity<Void> deleteUserPermanently(@PathVariable Long id) throws ElementNotFoundException {
+        userService.permanentDeleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
