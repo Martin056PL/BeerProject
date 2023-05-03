@@ -8,9 +8,9 @@
     <include file="version/002-CreateBeerTable.xml" relativeToChangelogFile="true"/>
     <include file="version/003-CreateAddressTable.xml" relativeToChangelogFile="true"/>
     <include file="version/004-CreateUserTable.xml" relativeToChangelogFile="true"/>
-    <include file="version/005-AddSampleAddressesToAddressTable.xml" relativeToChangelogFile="true"/>
-    <include file="version/006-AddSampleBreweriesToBreweriesTable.xml" relativeToChangelogFile="true"/>
-    <include file="version/007-AddSampleBeersToBeerTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/005-AddSampleBreweriesToBreweriesTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/006-AddSampleBeersToBeerTable.xml" relativeToChangelogFile="true"/>
+    <include file="version/007-AddSampleAddressesToAddressTable.xml" relativeToChangelogFile="true"/>
     <include file="version/008-AddSampleUsersToUserTable.xml" relativeToChangelogFile="true"/>
     <include file="version/009-CreateUserRegistrationTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

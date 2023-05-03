@@ -6,7 +6,7 @@
 
     <changeSet id="1.0" author="Kamil Wawer">
         <createTable tableName="BREWERY">
-            <column name="brewery_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="BREWERY_PK" nullable="false"/>
             </column>
             <column name="version" type="bigint">
@@ -26,7 +26,6 @@
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="email" type="varchar(255)"/>
-            <column name="address_id" type="bigint"/>
             <column name="phone_number" type="bigint"/>
             <column name="website" type="varchar(255)"/>
             <column name="brewery_image" type="MEDIUMBLOB"/>
@@ -35,7 +34,7 @@
 
     <changeSet id="1.1" author="Kamil Wawer">
         <createTable tableName="BREWERY_AUD">
-            <column name="brewery_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="REV" type="bigint">
@@ -44,7 +43,6 @@
             <column name="REVTYPE" type="tinyint"/>
             <column name="name" type="varchar(255)"/>
             <column name="email" type="varchar(255)"/>
-            <column name="address_id" type="bigint"/>
             <column name="phone_number" type="bigint"/>
             <column name="website" type="varchar(255)"/>
             <column name="brewery_image" type="MEDIUMBLOB"/>

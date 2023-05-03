@@ -64,14 +64,14 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Page<BeerResponse> findAllBeersByBreweryIdPage(Long breweryId, Pageable pageable) {
         Brewery fetchedBrewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
-        return beerRepository.findAllByBreweryId(fetchedBrewery.getBreweryId(), pageable)
+        return beerRepository.findAllByBreweryId(fetchedBrewery.getId(), pageable)
                 .map(mapper::mapEntityToResponse);
     }
 
     @Override
     public List<BeerResponse> findAllBeersByBreweryIdList(Long breweryId) {
         Brewery brewery = breweryRepository.findById(breweryId).orElseThrow(ElementNotFoundException::new);
-        return beerRepository.findAllByBreweryId(brewery.getBreweryId())
+        return beerRepository.findAllByBreweryId(brewery.getId())
                 .stream()
                 .map(mapper::mapEntityToResponse)
                 .collect(Collectors.toList());

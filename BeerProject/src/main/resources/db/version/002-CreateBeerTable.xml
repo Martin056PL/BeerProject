@@ -6,7 +6,7 @@
 
     <changeSet id="2.0" author="Kamil Wawer">
         <createTable tableName="BEER">
-            <column name="beer_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="version" type="bigint">
@@ -34,7 +34,7 @@
     </changeSet>
 
     <changeSet id="2.1" author="Kamil Wawer">
-        <createIndex indexName="index4brewery" tableName="BEER">
+        <createIndex indexName="index4brewery2beer" tableName="BEER">
             <column name="brewery_id"/>
         </createIndex>
     </changeSet>
@@ -44,12 +44,12 @@
                                  baseTableName="BEER"
                                  baseColumnNames="brewery_id"
                                  referencedTableName="BREWERY"
-                                 referencedColumnNames="brewery_id"/>
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="2.3" author="Kamil Wawer">
         <createTable tableName="BEER_AUD">
-            <column name="beer_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="REV" type="bigint">

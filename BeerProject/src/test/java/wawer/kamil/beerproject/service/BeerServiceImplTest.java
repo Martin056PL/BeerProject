@@ -138,14 +138,14 @@ class BeerServiceImplTest {
     void verify_find_brewery_by_brewery_id_and_find_all_beers_with_pageable_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
-        when(beerRepository.findAllByBreweryId(brewery.getBreweryId(), pageable)).thenReturn(beerPage);
+        when(beerRepository.findAllByBreweryId(brewery.getId(), pageable)).thenReturn(beerPage);
 
         //when
         service.findAllBeersByBreweryIdPage(breweryID, pageable);
 
         //then
         verify(breweryRepository).findById(breweryID);
-        verify(beerRepository).findAllByBreweryId(brewery.getBreweryId(), pageable);
+        verify(beerRepository).findAllByBreweryId(brewery.getId(), pageable);
     }
 
     @Test
@@ -168,14 +168,14 @@ class BeerServiceImplTest {
     void verify_if_find_brewery_by_brewery_id_and_find_all_beers_with_LIST_are_called_when_brewery_id_exists() {
         //given
         when(breweryRepository.findById(breweryID)).thenReturn(Optional.of(brewery));
-        when(beerRepository.findAllByBreweryId(brewery.getBreweryId())).thenReturn(beerList);
+        when(beerRepository.findAllByBreweryId(brewery.getId())).thenReturn(beerList);
 
         //when
         service.findAllBeersByBreweryIdList(breweryID);
 
         //then
         verify(breweryRepository).findById(breweryID);
-        verify(beerRepository).findAllByBreweryId(brewery.getBreweryId());
+        verify(beerRepository).findAllByBreweryId(brewery.getId());
     }
 
     @Test
@@ -234,7 +234,7 @@ class BeerServiceImplTest {
         BeerResponse updatedBeerByService = service.updateBeerByBeerId(beerID, beerRequestToUpdate);
 
         //then
-        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
+        assertEquals(updatedBeer.getId(), updatedBeerByService.getId());
         assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
         assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
         assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());
@@ -266,7 +266,7 @@ class BeerServiceImplTest {
         BeerResponse updatedBeerByService = service.updateBeerByBreweryIdAndBeerId(breweryID, beerID, beerRequestToUpdate);
 
         //then
-        assertEquals(updatedBeer.getBeerId(), updatedBeerByService.getId());
+        assertEquals(updatedBeer.getId(), updatedBeerByService.getId());
         assertEquals(updatedBeer.getName(), updatedBeerByService.getName());
         assertEquals(updatedBeer.getStyle(), updatedBeerByService.getStyle());
         assertEquals(updatedBeer.getExtract(), updatedBeerByService.getExtract());

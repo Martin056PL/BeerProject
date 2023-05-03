@@ -24,22 +24,21 @@ public class BreweryServiceHelper {
     }
 
     public static List<Long> getBreweriesIds(Page<Brewery> breweries) {
-        return breweries.map(Brewery::getBreweryId).toList();
+        return breweries.map(Brewery::getId).toList();
     }
 
     public static List<Long> getBreweriesIds(List<Brewery> breweries) {
-        return breweries.stream().map(Brewery::getBreweryId).collect(toList());
+        return breweries.stream().map(Brewery::getId).collect(toList());
     }
 
     private static Function<Brewery, Brewery> mapBrewery(List<Beer> beersByBreweryId) {
         return brewery ->
                 Brewery.builder()
-                        .breweryId(brewery.getBreweryId())
+                        .id(brewery.getId())
                         .name(brewery.getName())
                         .email(brewery.getEmail())
                         .phoneNumber(brewery.getPhoneNumber())
                         .website(brewery.getWebsite())
-                        .address(brewery.getAddress())
                         .beerList(getBeerListForBrewery(beersByBreweryId, brewery))
                         .build();
     }
@@ -49,22 +48,17 @@ public class BreweryServiceHelper {
     }
 
     private static Predicate<Beer> matchBeerToBreweryByIdPredicate(Brewery bp) {
-        return beer -> getBreweryId(beer).equals(bp.getBreweryId());
+        return beer -> getBreweryId(beer).equals(bp.getId());
     }
 
     private static Long getBreweryId(Beer beer) {
-        return beer.getBrewery().getBreweryId();
+        return beer.getBrewery().getId();
     }
 
     public static void mapBreweryProperties(Brewery breweryToUpdate, Brewery breweryFromRequest) {
         breweryToUpdate.setName(breweryFromRequest.getName());
         breweryToUpdate.setEmail(breweryFromRequest.getEmail());
         breweryToUpdate.setPhoneNumber(breweryFromRequest.getPhoneNumber());
-        breweryToUpdate.getAddress().setCity(breweryFromRequest.getAddress().getCity());
-        breweryToUpdate.getAddress().setLocalNumber(breweryFromRequest.getAddress().getLocalNumber());
-        breweryToUpdate.getAddress().setParcelNumber(breweryFromRequest.getAddress().getParcelNumber());
-        breweryToUpdate.getAddress().setStreet(breweryFromRequest.getAddress().getStreet());
-        breweryToUpdate.getAddress().setZipCode(breweryFromRequest.getAddress().getZipCode());
         breweryToUpdate.setWebsite(breweryFromRequest.getWebsite());
     }
 

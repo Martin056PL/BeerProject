@@ -24,8 +24,8 @@ public class Beer extends JpaAuditedEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "beer_id", nullable = false)
-    private Long beerId;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Version
     private Long version;

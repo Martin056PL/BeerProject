@@ -44,9 +44,9 @@ public class BreweryController {
         return ok().body(listOfBrewery);
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> getBreweryById(@RequestParam Long id) {
+    public ResponseEntity<BreweryResponse> getBreweryById(@PathVariable(name = "id") Long id) {
         BreweryResponse breweryResponse = service.findBreweryById(id);
         return ok().body(breweryResponse);
     }
@@ -58,32 +58,32 @@ public class BreweryController {
         return created(new URI("add-beer/" + savedBrewery.getId())).body(savedBrewery);
     }
 
-    @PutMapping()
+    @PutMapping("{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<BreweryResponse> updateBrewery(@RequestParam(name = "breweryId") Long id, @Valid @RequestBody BreweryRequest breweryRequest) {
+    public ResponseEntity<BreweryResponse> updateBrewery(@PathVariable(name = "id") Long id, @Valid @RequestBody BreweryRequest breweryRequest) {
         BreweryResponse updatedBrewery = service.updateBreweryById(id, breweryRequest);
         return ok().body(updatedBrewery);
     }
 
-    @DeleteMapping()
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> deleteBrewery(@RequestParam(name = "breweryId") Long id) {
+    public ResponseEntity<Object> deleteBrewery(@PathVariable(name = "id") Long id) {
         service.deleteBreweryById(id);
         return noContent().build();
     }
 
-    @GetMapping(value = "/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAnyRole('USER','ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> downloadImage(@RequestParam("breweryId") Long id) {
+    @GetMapping(value = "{id}/image", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('USER','ADMIN','EXHIBITOR')")
+    public ResponseEntity<Object> downloadImage(@PathVariable("id") Long id) {
         byte[] image = service.getBreweryImageFromDbBaseOnBreweryId(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return ok().headers(headers).body(image);
     }
 
-    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN', 'EXHIBITOR')")
-    public ResponseEntity<Object> uploadImage(@RequestParam("breweryId") Long id, @RequestParam(name = "image") MultipartFile file) {
+    public ResponseEntity<Object> uploadImage(@PathVariable("id") Long id, @RequestParam(name = "image") MultipartFile file) {
         service.setBreweryImageToProperBreweryBaseOnBreweryId(id, file);
         return ok().body("File is uploaded successfully");
     }

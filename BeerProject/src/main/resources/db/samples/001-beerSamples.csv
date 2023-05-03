@@ -1,4 +1,4 @@
-beer_id,version,createdBy,createdDate,lastModifiedDate,lastModifiedBy,brewery_id,name,style,extract,alcohol
+id,version,createdBy,createdDate,lastModifiedDate,lastModifiedBy,brewery_id,name,style,extract,alcohol
 1,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Plazowicz,European Fruit & Flavoured,12,4.7
 2,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Jubilat,American India Pale Ale,12,4.4
 3,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Sokowirowka,American India Pale Ale,13,5

@@ -58,7 +58,7 @@ public class BeerTestHelper {
 
     public static Beer getBeer() {
         return Beer.builder()
-                .beerId(1L)
+                .id(1L)
                 .brewery(getSingleBrewery())
                 .name("Testowe Piwo")
                 .style("Testoy styl")
@@ -69,7 +69,7 @@ public class BeerTestHelper {
 
     public static Beer getUpdatedBeer() {
         return Beer.builder()
-                .beerId(1L)
+                .id(1L)
                 .brewery(getSingleBrewery())
                 .name("Nowe piwo testowe")
                 .style("Nowy testowy styl")

@@ -25,8 +25,8 @@ public class Brewery extends JpaAuditedEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brewery_id")
-    private Long breweryId;
+    @Column(name = "id")
+    private Long id;
 
     @Version
     private Long version;
@@ -42,11 +42,10 @@ public class Brewery extends JpaAuditedEntity implements Serializable {
     @Column(name = "phone_number", nullable = false)
     private Long phoneNumber;
 
-    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @OneToOne(targetEntity = Address.class, mappedBy = "breweryId")
     @NotNull
     @NotAudited
-    private Address address;
+    private Address address_id;
 
     private String website;
 
