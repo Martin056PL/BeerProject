@@ -1,8 +1,6 @@
 package wawer.kamil.beerproject.configuration.envers;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -10,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Configuration
@@ -18,12 +15,12 @@ import java.util.Optional;
 @EnableJpaAuditing
 public class EnversConfiguration {
 
-    private final EntityManagerFactory entityManagerFactory;
+    // private final EntityManagerFactory entityManagerFactory;
 
-    @Bean
-    AuditReader auditReader() {
-        return AuditReaderFactory.get(entityManagerFactory.createEntityManager());
-    }
+//    @Bean
+//    AuditReader auditReader() {
+//        return AuditReaderFactory.get(entityManagerFactory.createEntityManager());
+//    }
 
     @Bean
     public AuditorAware<String> auditorProvider() {

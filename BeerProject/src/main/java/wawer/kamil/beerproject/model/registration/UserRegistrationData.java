@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import wawer.kamil.beerproject.model.DataAudit;
+import org.hibernate.envers.Audited;
+import wawer.kamil.beerproject.model.audited.JpaAuditedEntity;
 import wawer.kamil.beerproject.model.user.User;
 
 import javax.persistence.*;
@@ -19,15 +20,17 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "USER_REGISTRATION_DATA")
 @Getter
 @Setter
-public class UserRegistrationData extends DataAudit implements Serializable {
+@Audited
+public class UserRegistrationData extends JpaAuditedEntity implements Serializable {
 
     private static final long serialVersionUID = 5875926697055969280L;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_registration_data_id")
-    private Long userRegistrationDataId;
-
+    @Column(name = "id")
+    private Long id;
+    @Version
+    private Long version;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -42,7 +45,6 @@ public class UserRegistrationData extends DataAudit implements Serializable {
     private boolean isConfirmed;
 
     public UserRegistrationData(LocalDateTime now, int timeToTokenExpire, String uuid) {
-        super();
         this.expiryDate = now.plusMinutes(timeToTokenExpire);
         this.confirmationToken = uuid;
         this.isConfirmed = false;

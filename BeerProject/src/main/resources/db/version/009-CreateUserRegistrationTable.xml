@@ -4,18 +4,30 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-
-    <changeSet id="13" author="Kamil Wawer">
+    <changeSet id="9.0" author="Kamil Wawer">
         <createTable tableName="USER_REGISTRATION_DATA">
-            <column name="user_registration_data_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdBy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedBy" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="user_id" type="bigint"/>
             <column name="confirmation_token" type="varchar(255)"/>
             <column name="expiry_date" type="datetime"/>
             <column name="is_confirmed" type="boolean"/>
-            <column name="created_at" type="datetime"/>
-            <column name="update_date_time" type="datetime"/>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_user2userRegistrationDetails"
@@ -24,5 +36,21 @@
                                  referencedTableName="USER"
                                  referencedColumnNames="id"/>
 
+    </changeSet>
+
+    <changeSet id="9.1" author="Kamil Wawer">
+        <createTable tableName="USER_REGISTRATION_DATA_AUD">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="REV" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="PK_BREWERY_AUD"/>
+            </column>
+            <column name="REVTYPE" type="tinyint"/>
+            <column name="user_id" type="bigint"/>
+            <column name="confirmation_token" type="varchar(255)"/>
+            <column name="expiry_date" type="datetime"/>
+            <column name="is_confirmed" type="boolean"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

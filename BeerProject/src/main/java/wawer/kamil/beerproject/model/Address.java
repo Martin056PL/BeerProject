@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.envers.Audited;
 import wawer.kamil.beerproject.model.audited.JpaAuditedEntity;
 
 import javax.persistence.*;
@@ -16,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ADDRESS")
-@Audited
+// @Audited
 public class Address extends JpaAuditedEntity implements Serializable {
 
     private static final long serialVersionUID = 5341237096226780217L;

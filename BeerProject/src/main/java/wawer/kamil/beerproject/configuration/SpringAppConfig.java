@@ -23,7 +23,18 @@ public class SpringAppConfig {
     @Bean(name = "defaultMapper")
     @Primary
     public ModelMapper getModelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<User, User>() {
+            @Override
+            protected void configure() {
+                skip(destination.getVersion());
+                skip(destination.getCreatedBy());
+                skip(destination.getCreatedDate());
+                skip(destination.getLastModifiedBy());
+                skip(destination.getLastModifiedDate());
+            }
+        });
+        return modelMapper;
     }
 
     @Bean(name = "UserMapper")
