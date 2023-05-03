@@ -9,6 +9,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 
+import static java.time.LocalDateTime.now;
 import static wawer.kamil.beerproject.helpers.UserTestHelper.getUserEntityWithUserRole;
 
 public class UserRegistrationHelper {
@@ -24,19 +25,47 @@ public class UserRegistrationHelper {
     }
 
     public static UserRegistrationData getValidUserRegistrationData() {
-        return null;
+        return new UserRegistrationData(
+                1L,
+                0L,
+                user,
+                "9280d346-e9af-11ec-8fea-0242ac120002",
+                now(getClock()).plusMinutes(15),
+                false
+        );
     }
 
     public static UserRegistrationData getUserRegistrationDataWithoutConfirmedToken() {
-        return null;
+        return new UserRegistrationData(
+                1L,
+                0L,
+                user,
+                "9280d346-e9af-11ec-8fea-0242ac120002",
+                now(getClock()).plusMinutes(15),
+                false
+        );
     }
 
     public static UserRegistrationData getUserRegistrationDataWithoutConfirmedTokenAndDifferentUuid() {
-        return null;
+        return new UserRegistrationData(
+                1L,
+                0L,
+                user,
+                "9280d346-e9af-11ec-8fea-0242ac120002",
+                now(getClock()).plusMinutes(15),
+                false
+        );
     }
 
     public static UserRegistrationData getUserRegistrationDataWithExpiredToken() {
-        return null;
+        return new UserRegistrationData(
+                1L,
+                0L,
+                user,
+                "9280d346-e9af-11ec-8fea-0242ac120002",
+                now(getClock()).plusMinutes(15),
+                false
+        );
     }
 
     private static Clock getClock() {
