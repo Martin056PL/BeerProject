@@ -42,10 +42,10 @@ public class Brewery extends JpaAuditedEntity implements Serializable {
     @Column(name = "phone_number", nullable = false)
     private Long phoneNumber;
 
-    @OneToOne(targetEntity = Address.class, mappedBy = "breweryId")
+    @OneToOne(targetEntity = Address.class, mappedBy = "brewery")
     @NotNull
     @NotAudited
-    private Address address_id;
+    private Address address;
 
     private String website;
 
@@ -65,5 +65,10 @@ public class Brewery extends JpaAuditedEntity implements Serializable {
     public void assignBreweryToAllBeersOnBreweriesList() {
         Optional.ofNullable(this.getBeerList())
                 .ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
+    }
+
+    public void assignAddressToBrewery(){
+        Optional.ofNullable(this.address)
+                .ifPresent(add -> add.setBrewery(this));
     }
 }

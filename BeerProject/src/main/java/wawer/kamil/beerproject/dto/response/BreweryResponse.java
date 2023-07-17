@@ -1,7 +1,6 @@
 package wawer.kamil.beerproject.dto.response;
 
 import lombok.*;
-import wawer.kamil.beerproject.model.Beer;
 
 import java.util.List;
 
@@ -19,5 +18,5 @@ public class BreweryResponse {
     private Long phoneNumber;
     private AddressResponse address;
     private String website;
-    private List<Beer> beerList;
+    private List<BeerResponse> beerList;
 }

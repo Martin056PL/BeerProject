@@ -15,13 +15,6 @@ import java.util.Optional;
 @EnableJpaAuditing
 public class EnversConfiguration {
 
-    // private final EntityManagerFactory entityManagerFactory;
-
-//    @Bean
-//    AuditReader auditReader() {
-//        return AuditReaderFactory.get(entityManagerFactory.createEntityManager());
-//    }
-
     @Bean
     public AuditorAware<String> auditorProvider() {
         return () -> {
