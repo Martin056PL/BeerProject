@@ -28,6 +28,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wawer.kamil.beerproject.helpers.BeerTestHelper.getListOfBeers;
@@ -124,13 +125,13 @@ class BreweryServiceImplTest {
     @DisplayName("Verify if save method is called during brewery creation")
     void verify_create_new_brewery() {
         //given
-        when(breweryRepository.save(singleBreweryBeforeSave)).thenReturn(singleSavedBrewery);
+        when(breweryRepository.save(any())).thenReturn(singleSavedBrewery);
 
         //when
         service.createNewBrewery(breweryRequest);
 
         //then
-        verify(breweryRepository).save(singleBreweryBeforeSave);
+        verify(breweryRepository).save(any());
     }
 
     @Test

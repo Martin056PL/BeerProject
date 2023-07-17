@@ -1,23 +1,23 @@
-beer_id,brewery_id,name,style,extract,alcohol
-1,1,Plazowicz,European Fruit & Flavoured,12,4.7
-2,1,Jubilat,American India Pale Ale,12,4.4
-3,1,Sokowirowka,American India Pale Ale,13,5
-4,1,Pan Porter,American Porter,24,9.7
-5,1,600% normy,American Double/Imperial IPA,19,8
-6,1,Szybki strzał,English Pale Ale,15,5.3
-7,1,Pan Porter,American Porter,24,9.7
-8,1,Pan Kierownik,American Stout,24,9
-9,1,Zadymiarz,Dunkler Bock,18,6.6
-10,1,Kolektyw,American Porter,14,5.8
-11,2,Coffee Break,American Stout,16,6.5
-12,2,Hazy Dreamer,English IPA,16,6.2
-13,2,Let’s Cook,Gose,12.5,4.6
-14,3,Kormoran Ciemny,American Dark Lager,12,4.5
-15,3,Orkiszowe,English IPA,12,5.1
-16,3,Porter Warminski z Wisnią,English Porter,23.5,8.5
-17,4,Czarny Jastrzab,American Black IPA,16,6.5
-18,4,SŁOŃCE PRERII,Cream Ale,12,5
-19,4,HOP RUNNER,American Double/Imperial IPA,18.5,8.5
-20,5,PINTA Hoplaaga,American India Pale Ale,15.5,6.6
-21,5,PINTA Vermont IPA,American India Pale Ale,15.5,6.1
-22,5,PINTA Pierwsza Pomoc,EuropeanPilsner,10.5,4.1
+id,version,createdBy,createdDate,lastModifiedDate,lastModifiedBy,brewery_id,name,style,extract,alcohol
+1,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Plazowicz,European Fruit & Flavoured,12,4.7
+2,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Jubilat,American India Pale Ale,12,4.4
+3,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Sokowirowka,American India Pale Ale,13,5
+4,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Pan Porter,American Porter,24,9.7
+5,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,600% normy,American Double/Imperial IPA,19,8
+6,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Szybki strzał,English Pale Ale,15,5.3
+7,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Pan Porter,American Porter,24,9.7
+8,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Pan Kierownik,American Stout,24,9
+9,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Zadymiarz,Dunkler Bock,18,6.6
+10,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,1,Kolektyw,American Porter,14,5.8
+11,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,2,Coffee Break,American Stout,16,6.5
+12,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,2,Hazy Dreamer,English IPA,16,6.2
+13,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,2,Let’s Cook,Gose,12.5,4.6
+14,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,3,Kormoran Ciemny,American Dark Lager,12,4.5
+15,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,3,Orkiszowe,English IPA,12,5.1
+16,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,3,Porter Warminski z Wisnią,English Porter,23.5,8.5
+17,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,4,Czarny Jastrzab,American Black IPA,16,6.5
+18,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,4,SŁOŃCE PRERII,Cream Ale,12,5
+19,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,4,HOP RUNNER,American Double/Imperial IPA,18.5,8.5
+20,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,5,PINTA Hoplaaga,American India Pale Ale,15.5,6.6
+21,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,5,PINTA Vermont IPA,American India Pale Ale,15.5,6.1
+22,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,5,PINTA Pierwsza Pomoc,EuropeanPilsner,10.5,4.1

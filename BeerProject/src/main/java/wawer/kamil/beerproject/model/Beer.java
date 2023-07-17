@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+import wawer.kamil.beerproject.model.audited.JpaAuditedEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,14 +17,18 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "BEER")
-public class Beer implements Serializable {
+@Audited
+public class Beer extends JpaAuditedEntity implements Serializable {
 
     private static final long serialVersionUID = -6229128548566797958L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "beer_id", nullable = false)
-    private Long beerId;
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Version
+    private Long version;
 
     @Column(name = "name", nullable = false)
     private String name;

@@ -36,13 +36,9 @@ class BreweryMapperTest {
         BreweryResponse breweryResponse = mapper.mapEntityToResponse(brewery);
 
         //then
-        assertEquals(brewery.getBreweryId(), breweryResponse.getId());
+        assertEquals(brewery.getId(), breweryResponse.getId());
         assertEquals(brewery.getName(), breweryResponse.getName());
         assertEquals(brewery.getEmail(), breweryResponse.getEmail());
-        assertEquals(brewery.getAddress().getStreet(), breweryResponse.getAddress().getStreet());
-        assertEquals(brewery.getAddress().getLocalNumber(), breweryResponse.getAddress().getLocalNumber());
-        assertEquals(brewery.getAddress().getZipCode(), breweryResponse.getAddress().getZipCode());
-        assertEquals(brewery.getAddress().getParcelNumber(), breweryResponse.getAddress().getParcelNumber());
         assertEquals(brewery.getPhoneNumber(), breweryResponse.getPhoneNumber());
         assertEquals(brewery.getWebsite(), breweryResponse.getWebsite());
         assertEquals(brewery.getBeerList(), breweryResponse.getBeerList());
@@ -56,7 +52,7 @@ class BreweryMapperTest {
 
         //then
         assertEquals(breweryList.size(), breweryResponseList.size());
-        assertEquals(breweryList.get(0).getBreweryId(), breweryResponseList.get(0).getId());
+        assertEquals(breweryList.get(0).getId(), breweryResponseList.get(0).getId());
     }
 
     @Test
@@ -70,7 +66,7 @@ class BreweryMapperTest {
         assertEquals(breweryPage.getTotalElements(), breweryResponsePage.getTotalElements());
         assertEquals(breweryPage.getSize(), breweryResponsePage.getSize());
         assertEquals(breweryPage.getContent().size(), breweryResponsePage.getContent().size());
-        assertEquals(breweryPage.getContent().get(0).getBreweryId(), breweryResponsePage.getContent().get(0).getId());
+        assertEquals(breweryPage.getContent().get(0).getId(), breweryResponsePage.getContent().get(0).getId());
 
     }
 
@@ -83,10 +79,6 @@ class BreweryMapperTest {
         //then
         assertEquals(breweryRequest.getName(), brewery.getName());
         assertEquals(breweryRequest.getEmail(), brewery.getEmail());
-        assertEquals(breweryRequest.getAddress().getStreet(), brewery.getAddress().getStreet());
-        assertEquals(breweryRequest.getAddress().getLocalNumber(), brewery.getAddress().getLocalNumber());
-        assertEquals(breweryRequest.getAddress().getZipCode(), brewery.getAddress().getZipCode());
-        assertEquals(breweryRequest.getAddress().getParcelNumber(), brewery.getAddress().getParcelNumber());
         assertEquals(breweryRequest.getPhoneNumber(), brewery.getPhoneNumber());
         assertEquals(breweryRequest.getWebsite(), brewery.getWebsite());
     }

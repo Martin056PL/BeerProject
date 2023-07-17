@@ -27,6 +27,7 @@ public class UserRegistrationHelper {
     public static UserRegistrationData getValidUserRegistrationData() {
         return new UserRegistrationData(
                 1L,
+                0L,
                 user,
                 "9280d346-e9af-11ec-8fea-0242ac120002",
                 now(getClock()).plusMinutes(15),
@@ -37,6 +38,7 @@ public class UserRegistrationHelper {
     public static UserRegistrationData getUserRegistrationDataWithoutConfirmedToken() {
         return new UserRegistrationData(
                 1L,
+                0L,
                 user,
                 "9280d346-e9af-11ec-8fea-0242ac120002",
                 now(getClock()).plusMinutes(15),
@@ -47,6 +49,7 @@ public class UserRegistrationHelper {
     public static UserRegistrationData getUserRegistrationDataWithoutConfirmedTokenAndDifferentUuid() {
         return new UserRegistrationData(
                 1L,
+                0L,
                 user,
                 "1111aaaa-bbbb-2222-3333-bbbbac120002",
                 now(getClock()).plusMinutes(15),
@@ -57,6 +60,7 @@ public class UserRegistrationHelper {
     public static UserRegistrationData getUserRegistrationDataWithExpiredToken() {
         return new UserRegistrationData(
                 1L,
+                0L,
                 user,
                 "9280d346-e9af-11ec-8fea-0242ac120002",
                 now(getClock()).minusMinutes(15),

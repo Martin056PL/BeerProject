@@ -4,13 +4,26 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="8" author="Kamil Wawer">
+    <changeSet id="4.0" author="Kamil Wawer">
         <createTable tableName="USER">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="created_at" type="datetime"/>
-            <column name="update_date_time" type="datetime"/>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdBy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedBy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="username" type="varchar(255)">
                 <constraints unique="true"/>
             </column>
@@ -32,6 +45,27 @@
                                  constraintName="FK5cxy225g3c11e2c3y1c45qdfdfo"
                                  referencedColumnNames="id"
                                  referencedTableName="USER"/>
+    </changeSet>
+
+    <changeSet id="4.1" author="Kamil Wawer">
+        <createTable tableName="USER_AUD">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="REV" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="PK_BREWERY_AUD"/>
+            </column>
+            <column name="REVTYPE" type="tinyint"/>
+            <column name="username" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="is_account_non_expired" type="boolean"/>
+            <column name="is_account_non_locked" type="boolean"/>
+            <column name="is_credentials_non_expired" type="boolean"/>
+            <column name="is_enabled" type="boolean"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

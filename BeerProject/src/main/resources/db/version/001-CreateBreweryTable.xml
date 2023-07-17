@@ -4,14 +4,45 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="Kamil Wawer">
+    <changeSet id="1.0" author="Kamil Wawer">
         <createTable tableName="BREWERY">
-            <column name="brewery_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="BREWERY_PK" nullable="false"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdBy" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastModifiedBy" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="email" type="varchar(255)"/>
-            <column name="address_id" type="bigint"/>
+            <column name="phone_number" type="bigint"/>
+            <column name="website" type="varchar(255)"/>
+            <column name="brewery_image" type="MEDIUMBLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1" author="Kamil Wawer">
+        <createTable tableName="BREWERY_AUD">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="REV" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="PK_BREWERY_AUD"/>
+            </column>
+            <column name="REVTYPE" type="tinyint"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
             <column name="phone_number" type="bigint"/>
             <column name="website" type="varchar(255)"/>
             <column name="brewery_image" type="MEDIUMBLOB"/>

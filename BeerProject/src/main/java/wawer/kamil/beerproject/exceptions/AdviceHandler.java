@@ -50,6 +50,7 @@ public class AdviceHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleElementNotFoundException() {
         setExceptionProperties(
                 "Your item hasn't been found! Check request params!",
+                //TODO change to BAD_REQUEST
                 NOT_FOUND
         );
         return new ResponseEntity<>(exceptionFormat, exceptionFormat.getStatus());

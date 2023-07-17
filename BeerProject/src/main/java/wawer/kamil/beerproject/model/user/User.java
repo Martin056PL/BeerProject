@@ -3,10 +3,12 @@ package wawer.kamil.beerproject.model.user;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import wawer.kamil.beerproject.model.DataAudit;
+import wawer.kamil.beerproject.model.audited.JpaAuditedEntity;
 import wawer.kamil.beerproject.model.registration.UserRegistrationData;
 
 import javax.persistence.*;
@@ -19,11 +21,14 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Table(name = "USER")
-public class User extends DataAudit implements UserDetails {
+@Audited
+public class User extends JpaAuditedEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Version
+    private Long version;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
@@ -37,6 +42,7 @@ public class User extends DataAudit implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id")
     )
     @Column(name = "granted_authorities")
+    @NotAudited
     private Set<String> grantedAuthorities;
 
     @Column(name = "is_account_non_expired")

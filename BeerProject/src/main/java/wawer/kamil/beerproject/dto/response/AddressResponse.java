@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class AddressResponse {
 
-    private Long addressId;
+    private Long id;
     private String street;
     private String parcelNumber;
     private String localNumber;

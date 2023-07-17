@@ -1,6 +1,9 @@
 package wawer.kamil.beerproject.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import wawer.kamil.beerproject.model.audited.JpaAuditedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -14,16 +17,19 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "beerList")
 @Table(name = "BREWERY")
-public class Brewery implements Serializable {
+@Audited
+public class Brewery extends JpaAuditedEntity implements Serializable {
 
     private static final long serialVersionUID = -9149691662724951820L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brewery_id")
-    private Long breweryId;
+    @Column(name = "id")
+    private Long id;
+
+    @Version
+    private Long version;
 
     @NotEmpty
     @Column(nullable = false)
@@ -36,9 +42,9 @@ public class Brewery implements Serializable {
     @Column(name = "phone_number", nullable = false)
     private Long phoneNumber;
 
-    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @OneToOne(targetEntity = Address.class, mappedBy = "brewery")
     @NotNull
+    @NotAudited
     private Address address;
 
     private String website;
@@ -48,6 +54,8 @@ public class Brewery implements Serializable {
             targetEntity = Beer.class,
             cascade = CascadeType.ALL
     )
+    @NotAudited
+    @ToString.Exclude
     private List<Beer> beerList;
 
     @Lob
@@ -55,6 +63,12 @@ public class Brewery implements Serializable {
     private byte[] breweryImage;
 
     public void assignBreweryToAllBeersOnBreweriesList() {
-        Optional.ofNullable(this.getBeerList()).ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
+        Optional.ofNullable(this.getBeerList())
+                .ifPresent(beers -> beers.forEach(beer -> beer.setBrewery(this)));
+    }
+
+    public void assignAddressToBrewery(){
+        Optional.ofNullable(this.address)
+                .ifPresent(add -> add.setBrewery(this));
     }
 }

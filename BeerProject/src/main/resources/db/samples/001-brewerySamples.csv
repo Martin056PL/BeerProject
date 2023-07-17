@@ -1,6 +1,6 @@
-brewery_id,name,email,address_id,phone_number,website
-1,Browar Zakładowy,kontakt@browarzakladowy.pl,1,123123123,http://browarzakladowy.pl
-2,Deer Bear,browar@deerbear.pl,2,731533688,http://deerbear.pl/
-3,Kormoran,biuro@browarkormoran.pl,3,600305620,https://browarkormoran.pl/
-4,Dziki wschod,kontakt@browardzikiwschod.pl,4,506448234,https://browardzikiwschod.pl
-5,Pinta,pinta@browarpinta.pl,5,514295723,http://www.browarpinta.pl/
+id,version,createdBy,createdDate,lastModifiedDate,lastModifiedBy,name,email,phone_number,website
+1,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Browar Zakładowy,kontakt@browarzakladowy.pl,123123123,http://browarzakladowy.pl
+2,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Deer Bear,browar@deerbear.pl,731533688,http://deerbear.pl/
+3,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Kormoran,biuro@browarkormoran.pl,600305620,https://browarkormoran.pl/
+4,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Dziki wschod,kontakt@browardzikiwschod.pl,506448234,https://browardzikiwschod.pl
+5,0,wawer_k,2023-02-20 20:20:00,2023-02-20 20:20:00,wawer_k,Pinta,pinta@browarpinta.pl,514295723,http://www.browarpinta.pl/

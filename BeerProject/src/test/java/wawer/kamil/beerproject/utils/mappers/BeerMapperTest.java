@@ -36,7 +36,7 @@ class BeerMapperTest {
         BeerResponse beerResponse = beerMapper.mapEntityToResponse(beer);
 
         //then
-        assertEquals(beer.getBeerId(), beerResponse.getId());
+        assertEquals(beer.getId(), beerResponse.getId());
         assertEquals(beer.getName(), beerResponse.getName());
         assertEquals(beer.getAlcohol(), beerResponse.getAlcohol());
         assertEquals(beer.getExtract(), beerResponse.getExtract());
@@ -54,7 +54,7 @@ class BeerMapperTest {
         assertEquals(beerPage.getTotalElements(), beerResponsePage.getTotalElements());
         assertEquals(beerPage.getSize(), beerResponsePage.getSize());
         assertEquals(beerPage.getContent().size(), beerResponsePage.getContent().size());
-        assertEquals(beerPage.getContent().get(0).getBeerId(), beerResponsePage.getContent().get(0).getId());
+        assertEquals(beerPage.getContent().get(0).getId(), beerResponsePage.getContent().get(0).getId());
     }
 
     @Test
@@ -65,7 +65,7 @@ class BeerMapperTest {
 
         //then
         assertEquals(beerList.size(), beerResponsePage.size());
-        assertEquals(beerList.get(0).getBeerId(), beerResponsePage.get(0).getId());
+        assertEquals(beerList.get(0).getId(), beerResponsePage.get(0).getId());
     }
 
     @Test

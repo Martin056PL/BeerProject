@@ -66,6 +66,7 @@ public class BreweryServiceImpl implements BreweryService {
     public BreweryResponse createNewBrewery(BreweryRequest breweryRequest) {
         Brewery brewery = entityMapper.mapRequestEntityToEntity(breweryRequest);
         brewery.assignBreweryToAllBeersOnBreweriesList();
+        brewery.assignAddressToBrewery();
         Brewery savedBrewery = breweryRepository.save(brewery);
         return entityMapper.mapEntityToResponse(savedBrewery);
     }
